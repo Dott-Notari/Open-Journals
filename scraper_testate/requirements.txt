@@ -1,0 +1,10 @@
+requests>=2.31
+beautifulsoup4>=4.12
+lxml>=5.0
+trafilatura>=1.12
+python-docx>=1.1
+openpyxl>=3.1
+tzdata>=2024.1
+yt-dlp[default]>=2025.1.1     # YouTube; serve anche deno (brew install deno)
+imageio-ffmpeg>=0.5           # ffmpeg di riserva se non installato nel sistema
+# faster-whisper>=1.0.3       # trascrizione quando mancano i sottotitoli: richiede Python 3.12 o inferiore

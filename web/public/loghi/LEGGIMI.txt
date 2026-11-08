@@ -1,0 +1,20 @@
+Loghi della piattaforma. Caricare qui i file ufficiali in formato SVG con questi nomi esatti:
+
+unisa.svg        Università degli Studi di Salerno
+ilgiornale.svg   il Giornale
+avvenire.svg     Avvenire
+fatto.svg        Il Fatto Quotidiano
+ansa.svg         ANSA
+ilpost.svg       Il Post
+libero.svg       Libero
+manifesto.svg    il manifesto
+mattino.svg      Il Mattino
+corriere.svg     Corriere della Sera
+repubblica.svg   la Repubblica
+lastampa.svg     La Stampa
+messaggero.svg   Il Messaggero
+verita.svg       La Verità
+sole24ore.svg    Il Sole 24 Ore
+youtube.svg      YouTube
+
+Finché un file manca, la piattaforma mostra il nome della fonte al posto del logo.
