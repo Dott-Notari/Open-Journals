@@ -27,7 +27,7 @@ concurrency:
 jobs:
   estrazione:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 360   # massimo di GitHub per un job
     steps:
       - name: Controllo dei parametri
         env:
