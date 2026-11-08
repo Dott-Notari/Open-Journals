@@ -26,10 +26,11 @@ scraper-testate-piattaforma/
 │   ├── app/                         pagine: fonti, scraper per fonte, estrazioni, area docente, accesso
 │   ├── components/                  vetro, griglia delle fonti, moduli, animazioni GSAP
 │   ├── lib/                         client Supabase, elenco delle fonti
-│   ├── public/loghi/                loghi ufficiali (vedi LEGGIMI.txt)
+│   ├── public/loghi/                loghi delle testate, di YouTube e dell'Università (WebP)
 │   └── proxy.js                     sessione, accesso obbligatorio, Content-Security-Policy con nonce
 └── supabase/
     ├── migrations/0001_schema.sql   tabelle, coda, validazione, regole di sicurezza, storage
+    ├── migrations/0002_senza_limiti.sql  nessun tetto per gli studenti, video fino a 35 minuti, file fino a 5 GB
     └── docente_iniziale.sql         assegnazione del ruolo di docente dopo la prima registrazione
 ```
 
@@ -54,3 +55,7 @@ Nei repository pubblici GitHub sospende i workflow programmati dopo 60 giorni se
 ## Variabili d'ambiente su Vercel
 
 NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (visibili al browser, protette dalle regole RLS); SUPABASE_SERVICE_ROLE_KEY, GITHUB_TOKEN (token a grana fine con il solo permesso Actions in lettura e scrittura su questo repository) e GITHUB_REPOSITORY (nella forma utente/scraper-testate-piattaforma), solo lato server.
+
+## Limiti
+
+Gli studenti non hanno tetti su articoli, video, periodi, link o numero di estrazioni. Restano solo vincoli tecnici: un'estrazione si ferma dopo 330 minuti (GitHub interrompe ogni job a 6 ore) e consegna ciò che ha raccolto; i video oltre 35 minuti sono esclusi; le estrazioni sulla stessa testata procedono una alla volta, in coda.
