@@ -1,4 +1,0 @@
-Loghi della piattaforma, in formato WebP: unisa, ilgiornale, avvenire, fatto, ansa, ilpost, libero,
-manifesto, mattino, corriere, repubblica, lastampa, messaggero, verita, sole24ore, youtube (.webp).
-Per sostituirne uno basta caricare un file con lo stesso nome. Se cambiano le proporzioni,
-aggiornare RAPPORTI in web/lib/fonti.js.
