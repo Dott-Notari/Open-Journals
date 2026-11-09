@@ -20,8 +20,10 @@ permissions:
   contents: read
   actions: write   # serve solo ad avviare l'estrazione successiva in coda
 
+# la coda su Supabase decide quante estrazioni per testata girano insieme;
+# qui si evita solo che la stessa estrazione parta due volte
 concurrency:
-  group: estrazione-${{ inputs.fonte }}
+  group: estrazione-${{ inputs.id }}
   cancel-in-progress: false
 
 jobs:
@@ -42,20 +44,35 @@ jobs:
           persist-credentials: false
 
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        id: python
         with:
           python-version: "3.12"
-          cache: pip
-          cache-dependency-path: scraper_testate/requirements.txt
 
-      - name: Dipendenze del motore
-        run: python -m pip install --quiet -r scraper_testate/requirements.txt
+      # ambiente Python già pronto da un'esecuzione precedente: niente installazioni a ogni avvio
+      - name: Ambiente Python in cache
+        id: ambiente
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ inputs.fonte == 'youtube' && 'video' || 'testate' }}-${{ hashFiles('scraper_testate/requirements.txt') }}
 
-      - name: Dipendenze YouTube (ffmpeg, Whisper)
+      - name: Dipendenze (solo se manca la cache)
+        if: steps.ambiente.outputs.cache-hit != 'true'
+        env:
+          FONTE: ${{ inputs.fonte }}
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install --quiet -r scraper_testate/requirements.txt
+          if [ "$FONTE" = "youtube" ]; then .venv/bin/python -m pip install --quiet "faster-whisper>=1.0.3"; fi
+
+      - name: Attivazione dell'ambiente
+        run: echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: ffmpeg per YouTube
         if: inputs.fonte == 'youtube'
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
-          python -m pip install --quiet "faster-whisper>=1.0.3"
 
       - uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
         if: inputs.fonte == 'youtube'
