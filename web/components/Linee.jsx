@@ -12,7 +12,7 @@ export default function Linee() {
     const misura = () => {
       const d = Math.min(devicePixelRatio || 1, 2);
       w = innerWidth; h = innerHeight; c.width = w * d; c.height = h * d; ctx.setTransform(d, 0, 0, d, 0, 0);
-      colore = getComputedStyle(html).getPropertyValue('--blu-3').trim() || '#6FA3E0';
+      colore = getComputedStyle(html).getPropertyValue('--trama').trim() || '#9C9C9C';
     };
     const disegna = (t) => {
       ctx.clearRect(0, 0, w, h);

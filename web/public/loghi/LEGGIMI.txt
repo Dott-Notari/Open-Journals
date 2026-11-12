@@ -1,4 +1,5 @@
-Loghi della piattaforma, in formato WebP: unisa, ilgiornale, avvenire, fatto, ansa, ilpost, libero,
+Loghi delle testate e di YouTube in formato WebP: ilgiornale, avvenire, fatto, ansa, ilpost, libero,
 manifesto, mattino, corriere, repubblica, lastampa, messaggero, verita, sole24ore, youtube (.webp).
-Per sostituirne uno basta caricare un file con lo stesso nome. Se cambiano le proporzioni,
-aggiornare RAPPORTI in web/lib/fonti.js.
+Per sostituirne uno basta caricare un file con lo stesso nome; se cambiano le proporzioni,
+aggiornare RAPPORTI in web/lib/fonti.js. Il logo di Open New Media è in components/Logo.jsx,
+le icone del sito (favicon, apple-touch-icon, og-image) nella cartella public.

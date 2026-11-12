@@ -1,8 +1,5 @@
 import { headers } from 'next/headers';
-import '@fontsource-variable/newsreader/standard.css';
-import '@fontsource-variable/newsreader/standard-italic.css';
-import '@fontsource-variable/bodoni-moda/opsz.css';
-import '@fontsource-variable/bodoni-moda/opsz-italic.css';
+import '@fontsource-variable/outfit';
 import './globals.css';
 import Linee from '@/components/Linee';
 import Nav from '@/components/Nav';
@@ -11,12 +8,14 @@ import { supabaseServer } from '@/lib/supabase-server';
 
 export const metadata = {
   title: { default: "Open New Media", template: "%s · Open New Media" },
-  icons: { icon: '/loghi/unisa.webp' },
+  icons: { icon: [{ url: '/favicon.ico', sizes: '48x48' }, { url: '/favicon.svg', type: 'image/svg+xml' }], apple: '/apple-touch-icon.png' },
+  manifest: '/site.webmanifest',
+  openGraph: { title: 'Open New Media', images: ['/og-image-chiaro.png'] },
   robots: { index: false, follow: false },
 };
 export const viewport = {
   width: 'device-width', initialScale: 1, viewportFit: 'cover',
-  themeColor: [{ media: '(prefers-color-scheme: light)', color: '#EEF1F5' }, { media: '(prefers-color-scheme: dark)', color: '#08111C' }],
+  themeColor: [{ media: '(prefers-color-scheme: light)', color: '#F4F4F2' }, { media: '(prefers-color-scheme: dark)', color: '#111111' }],
 };
 
 // tema e pausa salvati, applicati prima del primo disegno

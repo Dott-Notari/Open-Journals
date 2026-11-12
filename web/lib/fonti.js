@@ -2,7 +2,7 @@ const GENERICA = 'Si cerca per periodo, da una pagina di sezione o di rubrica, o
 
 // larghezza / altezza dei file in public/loghi
 export const RAPPORTI = { ansa: 1, corriere: 12.93, fatto: 2.45, ilgiornale: 6.64, manifesto: 6, mattino: 7, messaggero: 5.64,
-  ilpost: 2.82, sole24ore: 4.52, repubblica: 5.21, lastampa: 8.28, verita: 4.62, libero: 4.84, avvenire: 3.58, youtube: 4.47, unisa: 1 };
+  ilpost: 2.82, sole24ore: 4.52, repubblica: 5.21, lastampa: 8.28, verita: 4.62, libero: 4.84, avvenire: 3.58, youtube: 4.47 };
 
 export const FONTI = [
   { chiave: 'ilgiornale', nome: 'il Giornale', dominio: 'ilgiornale.it' },

@@ -3,6 +3,7 @@ import Ingresso from '@/components/Ingresso';
 import Rassegna from '@/components/Rassegna';
 import Contatore from '@/components/Contatore';
 import Piede from '@/components/Piede';
+import { Completo } from '@/components/Logo';
 import { FONTI } from '@/lib/fonti';
 import { supabaseServer } from '@/lib/supabase-server';
 
@@ -20,14 +21,8 @@ export default async function Home() {
     <>
       <main id="contenuto" className="pagina">
         <Ingresso style={{ display: 'flex', flexDirection: 'column', gap: 26, paddingTop: 36 }}>
-          <h1 className="titolo">
-            <span className="maschera"><span>Open</span></span>
-            <span className="maschera"><span className="tenue" style={{ fontStyle: 'italic', fontWeight: 400 }}>New Media</span></span>
-          </h1>
-          <div className="riga" data-segue="" style={{ gap: 14 }}>
-            <img src="/loghi/unisa.webp" alt="" width={44} height={44} />
-            <span>Università degli Studi di Salerno<br /><span className="tenue">Sociologia della comunicazione interculturale</span></span>
-          </div>
+          <h1 data-logo="" style={{ margin: 0 }}><Completo className="logo-hero" /></h1>
+          <p className="spaziato tenue" data-segue="">Sociologia della comunicazione interculturale</p>
           {numeri && (
             <div className="cifre" data-segue="">
               <span className="cifra"><Contatore valore={numeri.articoli} /><span className="tenue">articoli</span></span>

@@ -2,25 +2,26 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Newspaper, Archive, ShieldCheck, LogOut, Sun, Moon, MonitorSmartphone, Pause, Play } from 'lucide-react';
+import { Newspaper, Archive, ShieldCheck, LogOut, Pause, Play } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Orologio from './Orologio';
+import { Simbolo, Orizzontale } from './Logo';
 
-const TEMI = { sistema: ['Tema di sistema', MonitorSmartphone], chiaro: ['Tema chiaro', Sun], scuro: ['Tema scuro', Moon] };
-const PROSSIMO = { sistema: 'chiaro', chiaro: 'scuro', scuro: 'sistema' };
 
 export function Controlli() {
-  const [tema, setTema] = useState('sistema');
+  const [scuro, setScuro] = useState(false);
   const [pausa, setPausa] = useState(false);
   useEffect(() => {
-    setTema(document.documentElement.dataset.tema || 'sistema');
+    const d = document.documentElement.dataset.tema;
+    setScuro(d ? d === 'scuro' : matchMedia('(prefers-color-scheme: dark)').matches);
     setPausa(document.documentElement.hasAttribute('data-pausa'));
   }, []);
+  // l'interruttore del logo: la pallina scorre e i colori si invertono, come nel marchio
   function cambiaTema() {
-    const t = PROSSIMO[tema];
-    setTema(t);
-    try { t === 'sistema' ? localStorage.removeItem('st.tema') : localStorage.setItem('st.tema', t); } catch {}
-    if (t === 'sistema') delete document.documentElement.dataset.tema; else document.documentElement.dataset.tema = t;
+    const t = scuro ? 'chiaro' : 'scuro';
+    setScuro(!scuro);
+    try { localStorage.setItem('st.tema', t); } catch {}
+    document.documentElement.dataset.tema = t;
   }
   function cambiaPausa() {
     const p = !pausa;
@@ -28,14 +29,13 @@ export function Controlli() {
     try { p ? localStorage.setItem('st.pausa', '1') : localStorage.removeItem('st.pausa'); } catch {}
     document.documentElement.toggleAttribute('data-pausa', p);
   }
-  const [nomeTema, IconaTema] = TEMI[tema];
   return (
     <>
       <button type="button" className="voce icona" onClick={cambiaPausa} aria-label={pausa ? 'Riprendi le animazioni' : 'Ferma le animazioni'} title={pausa ? 'Riprendi le animazioni' : 'Ferma le animazioni'} aria-pressed={pausa}>
         {pausa ? <Play size={18} aria-hidden="true" /> : <Pause size={18} aria-hidden="true" />}
       </button>
-      <button type="button" className="voce icona" onClick={cambiaTema} aria-label={`${nomeTema}: cambia`} title={nomeTema}>
-        <IconaTema size={18} aria-hidden="true" />
+      <button type="button" className="interruttore-tema" onClick={cambiaTema} aria-pressed={scuro} aria-label="Tema scuro" title={scuro ? 'Passa al tema chiaro' : 'Passa al tema scuro'}>
+        <Simbolo titolo="" aria-hidden="true" />
       </button>
     </>
   );
@@ -64,8 +64,7 @@ export default function Nav({ docente }) {
     <header className="testata">
       <div className="testata-barra vetro">
         <Link href="/" className="marchio">
-          <img src="/loghi/unisa.webp" alt="" width={36} height={36} />
-          <span>Open New Media</span>
+          <Orizzontale titolo="Open New Media, pagina iniziale" />
         </Link>
         <Orologio />
         <nav aria-label="Principale" className="voci">

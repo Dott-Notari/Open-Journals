@@ -75,11 +75,11 @@ export default function GrigliaFonti({ fonti }) {
   return (
     <div ref={box} style={{ display: 'flex', flexDirection: 'column', gap: 44 }}>
       <section aria-labelledby="testate" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-        <h2 id="testate" className="titolo-2">Testate</h2>
+        <h2 id="testate" className="spaziato tenue" style={{ margin: 0 }}>Testate</h2>
         <div className="griglia">{testate.map((f) => <Tessera key={f.chiave} f={f} onApri={apri} />)}</div>
       </section>
       <section aria-labelledby="video" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-        <h2 id="video" className="titolo-2">Video</h2>
+        <h2 id="video" className="spaziato tenue" style={{ margin: 0 }}>Video</h2>
         <div className="griglia"><Tessera f={yt} onApri={apri} /></div>
       </section>
     </div>
