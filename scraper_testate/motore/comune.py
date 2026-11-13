@@ -19,7 +19,9 @@ RUMORE = re.compile(
     r"scarica l'app|clicca qui per|p\.\s?iva\s?\d|s\.p\.a\.,\s*via\b)", re.I)
 SEGNALI_PAYWALL = re.compile(
     r"(questo articolo è riservato|per continuare a leggere|contenuto riservato agli abbonati|"
-    r"sblocca l'articolo|accedi per leggere l'articolo completo)", re.I)
+    r"sblocca l'articolo|accedi per leggere l'articolo completo|"
+    r"subscribe to (continue|read)|already a subscriber|this article is for subscribers|"
+    r"suscr[ií]bete para (seguir|continuar) leyendo|contenido exclusivo para suscriptores)", re.I)
 
 
 # ------------------------------------------------------------------ date

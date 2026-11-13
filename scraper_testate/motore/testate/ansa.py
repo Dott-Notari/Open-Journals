@@ -25,6 +25,12 @@ class Ansa(Testata):
     note_ricerca_data = ("le sitemap contengono solo le uscite recenti; non esiste un archivio "
                          "interrogabile per date lontane")
 
+    def wayback_prefissi(self, dal, al):
+        from ..comune import giorni
+        return [(p, "prefix") for g in giorni(dal, al) for p in
+                [f"www.ansa.it/sito/notizie/{s}/{g:%Y/%m/%d}/" for s in NAZIONALI] +
+                [f"www.ansa.it/{r}/notizie/{g:%Y/%m/%d}/" for r in REGIONI]]
+
     def sezione_da_url(self, url):
         m = re.search(r"ansa\.it/(?:sito/notizie/)?([a-z0-9]+)/", url)
         return m.group(1) if m else ""

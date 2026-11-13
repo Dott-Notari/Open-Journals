@@ -9,6 +9,8 @@ Senza argomenti parte la modalità guidata:
 
 Oppure da riga di comando:
     python scraper.py data avvenire --dal 2026-10-01 --al 2026-10-31 --parole "migrant*,sbarc*"
+    python scraper.py data verita,corriere,ilpost --dal 2026-10-01 --al 2026-10-31 --parole "migrant*"
+    python scraper.py data estere --dal 2026-11-01 --al 2026-11-07 --parole "migrant*" --cerca-in titolo
     python scraper.py elenco https://www.avvenire.it/tag/migranti_4439 --dal 2026-01-01
     python scraper.py link https://www.ilgiornale.it/news/... https://www.ansa.it/...
     python scraper.py youtube "https://www.youtube.com/watch?v=..." --lingua it
@@ -23,6 +25,7 @@ Opzioni comuni: --formati docx,txt,html,xlsx,jsonl,tlab  --max 200  --pausa 2
 """
 import argparse
 import re
+import shutil
 import sys
 from datetime import date
 from pathlib import Path
@@ -32,7 +35,7 @@ from motore.destinazioni import CartellaLocale
 from motore.esecuzione import cartella_per, esegui
 from motore.modello import Parametri
 from motore.rete import Rete
-from motore.testate import TESTATE
+from motore.testate import TESTATE, NonSupportato
 from motore.verifiche import verifica
 from motore.youtube import ParametriYT, cartella_yt, esegui_youtube
 
@@ -50,13 +53,34 @@ def lista(s):
     return [x.strip() for x in (s or "").split(",") if x.strip()]
 
 
+def testate_valide(s):
+    """Una o più testate separate da virgola, oppure «tutte», «italiane», «estere»."""
+    from motore.testate.estere import ESTERE
+    estere = [t.chiave for t in ESTERE]
+    gruppi = {"tutte": list(TESTATE), "estere": estere, "italiane": [k for k in TESTATE if k not in estere]}
+    chiavi = gruppi.get(s.strip().lower()) or lista(s)
+    ignote = [k for k in chiavi if k not in TESTATE]
+    if ignote:
+        raise argparse.ArgumentTypeError(f"testate non previste: {', '.join(ignote)} "
+                                         f"(disponibili: {', '.join(TESTATE)}, oppure tutte/italiane/estere)")
+    return list(dict.fromkeys(chiavi))
+
+
 def avvia(p, args):
     radice = Path(args.cartella) if getattr(args, "cartella", None) else radice_locale()
     cartella = cartella_per(p, radice)
     print(f"\nCartella dell'estrazione: {cartella}\n")
     rete = Rete(pausa=getattr(args, "pausa", PAUSA_DEFAULT), log=print)
-    esegui(p, CartellaLocale(cartella), cartella / "_lavoro", rete=rete, log=print,
-           salva_grezzi=not getattr(args, "no_grezzi", False))
+    try:
+        esegui(p, CartellaLocale(cartella), cartella / "_lavoro", rete=rete, log=print,
+               salva_grezzi=not getattr(args, "no_grezzi", False))
+    except NonSupportato:
+        # la testata non si può interrogare così (es. manca la chiave): non lasciare cartelle vuote
+        if cartella.exists() and not any(f.is_file() for f in cartella.rglob("*")):
+            shutil.rmtree(cartella)
+            if not any(cartella.parent.iterdir()):
+                cartella.parent.rmdir()
+        raise
     print(f"\nFatto. I file sono in: {cartella}")
 
 
@@ -84,10 +108,18 @@ def opzioni_comuni(sp):
 def riga_di_comando(argv):
     ap = argparse.ArgumentParser(description="Scraper didattico delle testate giornalistiche")
     sub = ap.add_subparsers(dest="comando", required=True)
-    sp = sub.add_parser("data", help="articoli di una testata in un intervallo di date")
-    sp.add_argument("testata", choices=list(TESTATE))
+    sp = sub.add_parser("data", help="articoli di una o più testate in un intervallo di date")
+    sp.add_argument("testata", type=testate_valide,
+                    help="chiave della testata, più chiavi separate da virgola, oppure tutte/italiane/estere")
     sp.add_argument("--dal", type=data_valida, required=True)
     sp.add_argument("--al", type=data_valida, default=date.today().isoformat())
+    sp.add_argument("--senza-ricerca", action="store_true",
+                    help="con le parole chiave, scorre l'archivio per data invece di usare la ricerca della testata")
+    sp.add_argument("--fonte", choices=["auto", "archivio", "ricerca", "gdelt", "wayback"], default="auto",
+                    help="da dove prendere gli indirizzi: auto (ricerca se ci sono parole, altrimenti archivio), "
+                         "archivio della testata, ricerca del sito, GDELT, Wayback Machine")
+    sp.add_argument("--parole-gdelt", type=lista, default=[],
+                    help="parole in inglese per GDELT, che cerca sulla traduzione inglese degli articoli")
     opzioni_comuni(sp)
     sp = sub.add_parser("elenco", help="articoli a partire da una pagina di sezione, tag o rubrica")
     sp.add_argument("url")
@@ -101,6 +133,10 @@ def riga_di_comando(argv):
     sp.add_argument("testata", choices=list(TESTATE))
     sp.add_argument("--pausa", type=float, default=PAUSA_DEFAULT)
     sub.add_parser("testate", help="elenco delle testate disponibili")
+    sp = sub.add_parser("pacchetto", help="cartella per aggiornare la piattaforma online con Claude (chat)")
+    sp.add_argument("--cartella", default=None, help="dove scriverla (default Desktop/Pacchetto_Claude_Piattaforma)")
+    sp = sub.add_parser("schede", help="schede Word e Markdown delle testate, con gli esiti delle prove")
+    sp.add_argument("--cartella", default=None, help="dove scriverle (default Desktop/Siti_API/schede_testate)")
     sub.add_parser("diagnosi", help="controlla Python, librerie, ffmpeg e deno")
     sp = sub.add_parser("prova", help="estrazioni reali su periodi casuali per tutte le testate")
     sp.add_argument("casi", nargs="*", help="testate o casi da provare (tutti se omessi)")
@@ -176,9 +212,19 @@ def riga_di_comando(argv):
         from motore.diagnosi import diagnosi
         diagnosi()
         return
+    if args.comando == "pacchetto":
+        from motore.pacchetto import scrivi_pacchetto
+        scrivi_pacchetto(args.cartella)
+        return
+    if args.comando == "schede":
+        from motore.schede import scrivi_schede
+        scrivi_schede(args.cartella)
+        return
     if args.comando == "testate":
+        from motore.testate.ricerca import MOTORI
         for k, t in TESTATE.items():
-            print(f"{k:12} {t.nome:22} {t.note_ricerca_data}")
+            ricerca = "ricerca: sì " if k in MOTORI or k == "guardian" else "ricerca: no "
+            print(f"{k:12} {t.nome:22} {ricerca} {t.note_ricerca_data}")
         return
     if args.comando == "verifica":
         rete = Rete(pausa=args.pausa, log=print)
@@ -194,7 +240,22 @@ def riga_di_comando(argv):
     if args.comando == "data":
         if args.dal > args.al:
             sys.exit("La data iniziale è successiva a quella finale.")
-        p = Parametri("data", testata=args.testata, dal=args.dal, al=args.al, **comuni)
+        esiti = []
+        for k in args.testata:
+            fonte = "archivio" if args.senza_ricerca and args.fonte == "auto" else args.fonte
+            p = Parametri("data", testata=k, dal=args.dal, al=args.al, usa_ricerca=not args.senza_ricerca,
+                          fonte=fonte, parole_gdelt=args.parole_gdelt, **comuni)
+            if len(args.testata) > 1:
+                print(f"\n{'=' * 70}\n{TESTATE[k].nome}\n{'=' * 70}")
+            try:
+                avvia(p, args)
+                esiti.append(f"  {TESTATE[k].nome:22} completata")
+            except NonSupportato as e:
+                print(e)
+                esiti.append(f"  {TESTATE[k].nome:22} saltata: {e}")
+        if len(args.testata) > 1:
+            print("\nRIEPILOGO\n" + "\n".join(esiti))
+        return
     elif args.comando == "elenco":
         p = Parametri("elenco", elenco=args.url, dal=args.dal, al=args.al, **comuni)
     else:
@@ -251,12 +312,16 @@ def guidata():
         if not link:
             sys.exit("Nessun link inserito.")
     parole = lista(chiedi("Parole chiave separate da virgola (invio per nessuna)", default=""))
-    cerca_in = "testo"
+    cerca_in, usa_ricerca = "testo", True
     if parole:
         cerca_in = "titolo" if chiedi("Cercarle solo nel titolo? (s/n)", lambda r: r in "sn", "n") == "s" else "testo"
+        from motore.testate.ricerca import MOTORI
+        if testata in MOTORI or testata == "guardian":
+            usa_ricerca = chiedi(f"Usare il motore di ricerca di {TESTATE[testata].nome}? È più veloce; "
+                                 f"«n» scorre tutto l'archivio del periodo (s/n)", lambda r: r in "sn", "s") == "s"
     formati = lista(chiedi("Formati", default=",".join(FORMATI)))
     p = Parametri({"1": "data", "2": "elenco", "3": "link"}[modo], testata=testata, link=link,
-                  elenco=elenco, dal=dal, al=al, parole=parole, cerca_in=cerca_in,
+                  elenco=elenco, dal=dal, al=al, parole=parole, cerca_in=cerca_in, usa_ricerca=usa_ricerca,
                   formati=[f for f in formati if f in FORMATI] or list(FORMATI))
     avvia(p, argparse.Namespace(cartella=None, pausa=PAUSA_DEFAULT, no_grezzi=False))
 
@@ -287,7 +352,10 @@ def guidata_youtube():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1:
-        guidata()
-    else:
-        riga_di_comando(sys.argv[1:])
+    try:
+        if len(sys.argv) == 1:
+            guidata()
+        else:
+            riga_di_comando(sys.argv[1:])
+    except NonSupportato as e:
+        sys.exit(str(e))

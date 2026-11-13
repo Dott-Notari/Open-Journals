@@ -26,15 +26,60 @@ PIANO = {
     "ilpost": ("data", date(2010, 6, 1), "mese", None),
     "libero": ("data", date(2008, 1, 1), "mese", None),
     "manifesto": ("data", OGGI - timedelta(days=700), 7, None),
-    "mattino": ("data", OGGI - timedelta(days=1), 1, None),
+    "mattino": ("data", OGGI, 1, None),
     "mattino_sezione": ("elenco", OGGI - timedelta(days=60), 5, "https://www.ilmattino.it/napoli/cronaca/"),
-    "messaggero": ("data", OGGI - timedelta(days=1), 1, None),
+    "messaggero": ("data", OGGI, 1, None),
     "corriere": ("data", date(2020, 6, 1), 2, None),
     "repubblica": ("data", date(2021, 1, 1), "mese", None),
     "lastampa": ("data", date(2022, 8, 1), "mese", None),
     "verita": ("data", OGGI - timedelta(days=700), 7, None),
     "sole24ore": ("data", OGGI - timedelta(days=30), 5, None),
+    "independent": ("data", OGGI - timedelta(days=80), 2, None),
+    "mirror": ("data", date(2010, 1, 1), 1, None),
+    "elmundo": ("data", date(2015, 1, 1), 2, None),
+    "fatto_parole": ("data", date(2015, 1, 1), 30, None),
+    "avvenire_parole": ("data", date(2015, 1, 1), "mese", None),
+    "verita_parole": ("data", OGGI - timedelta(days=700), 30, None),
+    "ilpost_parole": ("data", date(2015, 1, 1), "mese", None),
+    "corriere_parole": ("data", OGGI - timedelta(days=200), 30, None),
+    "sole24ore_parole": ("data", OGGI - timedelta(days=200), 30, None),
 }
+
+# pagine elenco (sezioni, tag) di ogni testata, per provare il comando «elenco»
+ELENCHI = {
+    "avvenire": "https://www.avvenire.it/tag/migranti_4439",
+    "fatto": "https://www.ilfattoquotidiano.it/cronaca/",
+    "ilpost": "https://www.ilpost.it/italia/",
+    "libero": "https://www.liberoquotidiano.it/politica/",
+    "manifesto": "https://ilmanifesto.it/sezioni/politica",
+    "messaggero": "https://www.ilmessaggero.it/roma/",
+    "corriere": "https://www.corriere.it/cronache/",
+    "repubblica": "https://www.repubblica.it/cronaca/",
+    "lastampa": "https://www.lastampa.it/cronaca/",
+    "verita": "https://www.laverita.info/mondo",
+    "sole24ore": "https://www.ilsole24ore.com/sez/italia",
+    "independent": "https://www.independent.co.uk/news/uk/politics",
+    "mirror": "https://www.mirror.co.uk/news/politics/",
+    "elmundo": "https://www.elmundo.es/espana.html",
+}
+# pagine elenco che il sito non permette di sfogliare oltre la prima: si provano sugli ultimi giorni
+SOLO_PRIMA_PAGINA = ("corriere", "manifesto", "sole24ore", "independent", "mirror", "elmundo", "libero")
+for _k, _u in ELENCHI.items():
+    PIANO.setdefault(f"{_k}_elenco", ("elenco", OGGI - timedelta(days=2), 3, _u) if _k in SOLO_PRIMA_PAGINA
+                     else ("elenco", OGGI - timedelta(days=20), 5, _u))
+
+# fonti esterne di scoperta: Wayback per le testate con la data nel percorso, GDELT su due testate
+PIANO.update({
+    "ansa_wayback": ("data", date(2023, 1, 1), 1, None),
+    "fatto_wayback": ("data", date(2018, 1, 1), 1, None),
+    "repubblica_gdelt": ("data", date(2019, 1, 1), 7, None),
+    "corriere_gdelt": ("data", date(2019, 1, 1), 7, None),
+})
+
+# casi che provano la ricerca per parole con il motore della testata
+PAROLE = {c: ["migrant*"] for c in PIANO if c.endswith(("_parole", "_gdelt"))}
+FONTE = {c: c.rsplit("_", 1)[1] for c in PIANO if c.endswith(("_wayback", "_gdelt"))}
+PAROLE_GDELT = {c: ["migrants", "refugees"] for c in PIANO if c.endswith("_gdelt")}
 
 
 def periodo(rnd, inizio, durata):
@@ -57,15 +102,16 @@ def prova(chiavi=None, massimo=20, seme=None, log=print, minuti=10):
     radice = radice_locale()
     R = [f"PROVA SU PERIODI CASUALI  {OGGI.isoformat()}  seme {seme}  (al massimo {massimo} articoli per testata)",
          "Per ripetere la stessa prova: python scraper.py prova --seme " + str(seme), "=" * 78]
-    sintesi = []
+    sintesi, esiti = [], []
     for caso in chiavi:
         modalita, inizio, durata, elenco = PIANO[caso]
-        k = caso.split("_")[0]
+        k = caso.rsplit("_", 1)[0] if caso.rsplit("_", 1)[0] in TESTATE else caso.split("_")[0]
         t = TESTATE[k]
         dal, al = periodo(random.Random(f"{seme}-{caso}"), inizio, durata)
         log(f"\n>>> {t.nome} ({caso}): {dal} / {al}  (lettura delle sitemap e degli elenchi in corso...)")
         p = Parametri(modalita, testata=k if modalita == "data" else None, elenco=elenco,
-                      dal=dal.isoformat(), al=al.isoformat(), max_articoli=massimo)
+                      dal=dal.isoformat(), al=al.isoformat(), max_articoli=massimo, parole=PAROLE.get(caso, []),
+                      fonte=FONTE.get(caso, "auto"), parole_gdelt=PAROLE_GDELT.get(caso, []))
         cart = cartella_per(p, radice)
         t0 = time.monotonic()
         R += ["", f"## {t.nome}  [{caso}]  {modalita}  {dal} / {al}" + (f"  da {elenco}" if elenco else "")]
@@ -101,17 +147,32 @@ def prova(chiavi=None, massimo=20, seme=None, log=print, minuti=10):
                 R.append(f"    da controllare: {a['url']}  inizio {a['testo'][:120]!r}")
             R.append(f"  cartella: {cart}")
             sintesi.append((t.nome, caso, len(arts), sosp, parz, len(fuori), durata_min))
+            esiti.append({"caso": caso, "testata": k, "modalita": modalita, "fonte": FONTE.get(caso, "auto"),
+                          "dal": dal.isoformat(), "al": al.isoformat(), "elenco": elenco,
+                          "parole": PAROLE.get(caso, []), "raccolti": len(arts), "esaminati": esaminati,
+                          "da_controllare": sosp, "parziali": parz, "riservati": ris,
+                          "fuori_periodo": len(fuori), "parole_mediana": parole, "coerenza": round(coer, 2),
+                          "minuti": round(durata_min, 1), "interrotta": "INTERROTTA" in scheda,
+                          "avvisi": scheda.split("AVVISI SULLA COPERTURA")[1].strip().split("\n\n")[0]
+                          if "AVVISI SULLA COPERTURA" in scheda else "",
+                          "esempi": [a["titolo"][:100] for a in arts[:3]], "cartella": str(cart)})
         except KeyboardInterrupt:
             R.append("  interrotta dall'utente")
             break
         except Exception as e:
             R.append(f"  ERRORE: {e!r}")
             sintesi.append((t.nome, caso, 0, 0, 0, 0, (time.monotonic() - t0) / 60))
+            esiti.append({"caso": caso, "testata": k, "modalita": modalita, "fonte": FONTE.get(caso, "auto"),
+                          "dal": dal.isoformat(), "al": al.isoformat(), "elenco": elenco, "raccolti": 0,
+                          "errore": str(e), "minuti": round((time.monotonic() - t0) / 60, 1)})
     R += ["", "SINTESI", f"  {'testata':22} {'caso':16} {'raccolti':>8} {'da contr.':>9} {'parziali':>8} {'fuori':>6} {'min':>5}"]
     R += [f"  {n:22} {c:16} {a:>8} {s:>9} {p:>8} {f:>6} {m:>5.1f}" for n, c, a, s, p, f, m in sintesi]
     out = radice / "_ricognizione" / OGGI.isoformat()
     out.mkdir(parents=True, exist_ok=True)
     f = out / f"prova_periodi_{seme}.txt"
     f.write_text("\n".join(R) + "\n", encoding="utf-8")
+    (out / f"esiti_{seme}.json").write_text(json.dumps({"data": OGGI.isoformat(), "seme": seme, "massimo": massimo,
+                                                         "esiti": esiti}, ensure_ascii=False, indent=1),
+                                            encoding="utf-8")
     log(f"\nFatto. Riepilogo in {f}")
     return f

@@ -58,6 +58,9 @@ class Parametri:
     tutte: bool = False            # tutte le parole (AND) invece di almeno una (OR)
     escludi_riservati: bool = False  # scarta gli articoli dichiarati riservati agli abbonati
     cerca_in: str = "testo"        # "testo" | "titolo"
+    usa_ricerca: bool = True       # con parole chiave, usa la ricerca della testata dove il robots.txt la consente
+    fonte: str = "auto"            # "auto" | "archivio" | "ricerca" | "gdelt" | "wayback"
+    parole_gdelt: list = field(default_factory=list)   # parole in inglese per GDELT
     formati: list = field(default_factory=list)
     max_articoli: Optional[int] = None
 

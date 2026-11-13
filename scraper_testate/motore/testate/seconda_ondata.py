@@ -83,9 +83,24 @@ class _Gedi(_Mensile):
 
     def piano_per_data(self, rete, dal, al, log, parole=None):
         sorgenti = super().piano_per_data(rete, dal, al, log, parole)
+        oggi = date.today()
         if not sorgenti[0].urls:   # riserva: sitemap news con le sole uscite recenti
             urls, minima = SM.per_data_pubblicazione(rete, [self.news], dal, al, self.e_articolo)
             sorgenti = [SorgenteURL("sitemap news", urls, _avviso(self.nome, minima, dal))]
+        elif (al.year, al.month) == (oggi.year, oggi.month):
+            # la sitemap del mese in corso elenca solo gli ultimi uno o due giorni: si aggiunge la sitemap
+            # news e si segnala che i giorni già usciti da entrambe non sono raggiungibili per data
+            urls, minima = SM.per_data_pubblicazione(rete, [self.news], dal, al, self.e_articolo)
+            noti = set(sorgenti[0].urls)
+            sorgenti.append(SorgenteURL("sitemap news (uscite recenti)", [u for u in urls if u not in noti]))
+            date_mese = [d for d in map(self.data_da_url, noti) if d] + ([minima] if minima else [])
+            prima = min(date_mese) if date_mese else None
+            inizio_mese = date(oggi.year, oggi.month, 1)
+            if prima and max(dal, inizio_mese) < prima:
+                sorgenti[0].avviso = (f"{self.nome}: per il mese in corso le sitemap arrivano solo al "
+                                      f"{prima.isoformat()}; i giorni dal {max(dal, inizio_mese).isoformat()} "
+                                      f"al {(prima - timedelta(days=1)).isoformat()} non sono raggiungibili per data "
+                                      f"(si recuperano a mese chiuso, o dalle pagine di sezione con il comando elenco)")
         return sorgenti
 
 
@@ -107,12 +122,89 @@ class LaStampa(_Gedi):
     re_articolo = re.compile(r"^https://www\.lastampa\.it/(?!la-zampa/).*\d{4}/\d{2}/\d{2}/news/[^/]+-\d{6,}/?$")
 
 
-class Libero(_Mensile):
-    elenchi_prova = ("https://www.liberoquotidiano.it/news/italia/",)
-    chiave, nome, dominio = "libero", "Libero", "liberoquotidiano.it"
-    modello_file = "https://www.liberoquotidiano.it/sitemap/Articolo-{anno}-{mese}.xml"
-    re_articolo = re.compile(r"^https://www\.liberoquotidiano\.it/[a-z]+/.*/\d{5,}/[^/]+/?$")
-    note_ricerca_data = "sitemap mensili dal 2006; la data esatta si legge in ogni articolo"
+class Libero(Testata):
+    """Dal novembre 2026 su Arc XP, come il Giornale: le vecchie sitemap mensili non esistono più.
+    Per data: sitemap giornaliere (dalla migrazione) e l'elenco API ei-feed-paginated-api, ordinato dal
+    più recente e consultabile per circa 9.900 articoli per richiesta (tutto il sito o una sezione)."""
+    chiave, nome, dominio = "libero", "Libero Quotidiano", "liberoquotidiano.it"
+    re_articolo = re.compile(r"^https://www\.liberoquotidiano\.it/news/[a-z0-9-]+/(?:\d+/)?[^/?#]+/?$")
+    note_ricerca_data = ("dal novembre 2026 piattaforma Arc XP: sitemap giornaliere dalla migrazione e, per i "
+                         "periodi precedenti, l'elenco degli articoli del sito (circa tre mesi e mezzo) e delle "
+                         "sezioni (alcuni mesi o anni, fino a 9.900 articoli ciascuna); oltre, --fonte wayback")
+    BASE = "https://www.liberoquotidiano.it"
+    API = BASE + "/pf/api/v3/content/fetch/ei-feed-paginated-api"
+    INDICE = BASE + "/arc/outboundfeeds/sitemap-index/?outputType=xml"
+    SEZIONI = BASE + "/arc/outboundfeeds/sitemap-section-index/?outputType=xml"
+    ESCLUSE = ("agenzie", "blog", "multimedia", "x-video-embed", "general")
+    PER_PAGINA, MASSIMO = 100, 9900
+
+    def normalizza(self, url):
+        u = super().normalizza(url)
+        return u if u.endswith("/") else u + "/"
+
+    def pagina_elenco(self, base, n):
+        return base if n == 1 else None   # le pagine HTML di sezione non sono paginabili
+
+    def _elenco(self, rete, sezione, dal, al, minime):
+        import json
+        from .ricerca import FuoriPortata, _giorno, _ordinati
+
+        def pagina(n):
+            q = {"from": n * self.PER_PAGINA, "size": self.PER_PAGINA, **({"sections": sezione} if sezione else {})}
+            r = rete.get(self.API, params={"query": json.dumps(q)})
+            try:
+                els = r.json().get("content_elements", []) if r is not None and r.status_code == 200 else []
+            except ValueError:
+                els = []
+            voci = [(self.BASE + e["canonical_url"], _giorno(e.get("display_date"))) for e in els
+                    if e.get("type") == "story" and e.get("canonical_url")]
+            date = [g for _, g in voci if g]
+            if date:
+                minime[sezione] = min(date + ([minime[sezione]] if minime.get(sezione) else []))
+            return voci
+        try:
+            return list(_ordinati(pagina, dal, al, prima=0, ultima=self.MASSIMO // self.PER_PAGINA - 1))
+        except FuoriPortata:
+            return []
+
+    def piano_per_data(self, rete, dal, al, log, parole=None):
+        oggi = date.today().isoformat()
+        mappa = {}
+        for loc, _ in SM.leggi_indice(rete, self.INDICE):
+            m = re.search(r"/sitemap/(\d{4}-\d{2}-\d{2}|latest)/", loc)
+            if m:
+                mappa[oggi if m.group(1) == "latest" else m.group(1)] = loc
+        urls, coperti = [], set()
+        for g in giorni(dal, al):
+            if g.isoformat() in mappa:
+                voci = SM.leggi_urlset(rete, mappa[g.isoformat()])
+                urls += [v[0] for v in voci if self.e_articolo(self.normalizza(v[0]))]
+                coperti.add(g)
+        sorgenti = [SorgenteURL(f"sitemap giornaliere ({len(coperti)} giorni)", urls)] if urls else []
+        if len(coperti) == len(list(giorni(dal, al))):
+            return sorgenti
+        minime = {}
+        tutti = self._elenco(rete, None, dal, al, minime)
+        if minime.get(None) and minime[None] <= dal:
+            log(f"  Libero: elenco del sito, {len(tutti)} articoli nel periodo")
+            return sorgenti + [SorgenteURL("elenco degli articoli del sito (API Arc)", tutti)]
+        # il periodo è più vecchio di quanto raggiunge l'elenco generale: si passa sezione per sezione
+        sezioni = []
+        for loc, _ in SM.leggi_indice(rete, self.SEZIONI):
+            m = re.search(r"/sitemap/category/([a-z0-9-]+)/\?", loc)
+            if m and m.group(1) not in self.ESCLUSE:
+                sezioni.append("/" + m.group(1))
+        per_sezione = list(tutti)
+        for s in sezioni:
+            trovati = self._elenco(rete, s, dal, al, minime)
+            per_sezione += trovati
+            log(f"  Libero: sezione {s}, {len(trovati)} articoli nel periodo"
+                + (f" (l'elenco risale al {minime[s].isoformat()})" if minime.get(s) and minime[s] > dal else ""))
+        corte = [s for s in sezioni if minime.get(s) and minime[s] > dal]
+        avviso = (f"Libero: {len(corte)} sezioni su {len(sezioni)} non risalgono fino al {dal.isoformat()} "
+                  f"(elenchi online limitati a 9.900 articoli); per completare usare --fonte wayback") if corte else ""
+        return sorgenti + [SorgenteURL(f"elenchi delle sezioni (API Arc, {len(sezioni)} sezioni)",
+                                       list(dict.fromkeys(per_sezione)), avviso)]
 
 
 # ------------------------------------------------------------------ sitemap giornaliere
@@ -197,86 +289,34 @@ class Verita(Testata):
     paginazione = "{base}page/{n}/"   # verificata con il collaudo dell'8 novembre 2026
     elenchi_prova = ("https://www.laverita.info/mondo",)
     chiave, nome, dominio = "verita", "La Verità", "laverita.info"
-    indice = "https://www.laverita.info/sitemap_index.xml"
     re_articolo = re.compile(
         r"^https://www\.laverita\.info/(?:(?!video/|podcast|author/|tag/|category/|edicola|feed|page/)"
         r"[a-z0-9-]+/[a-z0-9-]+/?|[a-z0-9-]+-\d{9,}\.html)$")
     selettori_corpo = (".lv-article__body", ".article-body__text")
-    note_ricerca_data = ("fino al giugno 2026 le vecchie sitemap ordinate per data di pubblicazione; dopo la "
-                         "migrazione del sito le sitemap degli articoli filtrate per data di modifica (entro dieci "
-                         "giorni dalla fine del periodo), con verifica della data su ogni articolo")
-
-    MIGRAZIONE = date(2026, 7, 1)
-    VECCHIO_INDICE = "https://www.laverita.info/sitemap.xml"
+    note_ricerca_data = ("API REST di WordPress con filtro per date (verifica del 12 novembre 2026): archivio "
+                         "completo dal dicembre 2018; per i mesi precedenti solo pochi articoli, il resto "
+                         "si recupera con --fonte wayback. Le vecchie sitemap non sono ordinate per data")
+    API = "https://www.laverita.info/wp-json/wp/v2/posts"
+    INIZIO_API = date(2018, 12, 1)
 
     def piano_per_data(self, rete, dal, al, log, parole=None):
-        sorgenti = []
-        if dal < self.MIGRAZIONE:
-            urls = self.archivio_precedente(rete, dal, min(al, self.MIGRAZIONE), log)
-            sorgenti.append(SorgenteURL("archivio precedente alla migrazione (sitemap per data)", urls))
-        if al >= self.MIGRAZIONE - timedelta(days=10):
-            urls = SM.per_lastmod(rete, self.indice, r"/post-sitemap\d*\.xml$", max(dal, self.MIGRAZIONE),
-                                  self.e_articolo, al, margine=10)
-            sorgenti.append(SorgenteURL("sitemap degli articoli", urls))
-        log(f"  La Verità: {sum(len(s.urls) for s in sorgenti)} articoli candidati")
-        return sorgenti
-
-    def archivio_precedente(self, rete, dal, al, log):
-        """Le vecchie sitemap (feeds/sitemaps/sitemap_N.xml, 250 articoli ciascuna) sono ordinate per
-        identificativo, cioè per data di pubblicazione, dal più recente (N=1) al più vecchio; la loro data
-        di modifica invece non è affidabile per gli anni più vecchi. La data vera si legge quindi da pochi
-        articoli campione, con ricerche binarie prima sui file e poi dentro i file di confine."""
-        files = sorted((loc for loc, _ in SM.leggi_indice(rete, self.VECCHIO_INDICE)
-                        if re.search(r"/feeds/sitemaps/sitemap_\d+\.xml$", loc)),
-                       key=lambda u: int(re.search(r"_(\d+)\.xml$", u).group(1)))
-        if not files:
-            return []
-        voci, date_art = {}, {}
-
-        def urls_file(i):
-            if i not in voci:
-                voci[i] = [u for u, _, _ in SM.leggi_urlset(rete, files[i]) if self.e_articolo(u)]
-            return voci[i]
-
-        def data_articolo(u):
-            if u not in date_art:
-                r = rete.get(u, cache=True)
-                try:
-                    date_art[u] = self.estrai(r.text, u).giorno() if r is not None and r.status_code == 200 else None
-                except Exception:
-                    date_art[u] = None
-            return date_art[u]
-
-        def piu_vecchia(i):
-            for u in reversed(urls_file(i)[-3:]):      # l'ultimo articolo del file, o uno vicino
-                g = data_articolo(u)
-                if g:
-                    return g
-            return None
-
-        def primo(n, cond):                            # primo indice in [0, n) per cui cond è vera
-            lo, hi = 0, n
-            while lo < hi:
-                mid = (lo + hi) // 2
-                if cond(mid):
-                    hi = mid
-                else:
-                    lo = mid + 1
-            return lo
-
-        vecchia_ok = lambda i: (lambda g: g is None or g <= al)(piu_vecchia(i))
-        f_inizio = primo(len(files), vecchia_ok)
-        f_fine = f_inizio + primo(len(files) - f_inizio, lambda k: (lambda g: g is None or g < dal)(piu_vecchia(f_inizio + k)))
-        f_fine = min(f_fine, len(files) - 1)
-        candidati = [u for i in range(f_inizio, f_fine + 1) for u in urls_file(i)]
-
-        def data_k(k):
-            return data_articolo(candidati[k])
-        a = primo(len(candidati), lambda k: (lambda g: g is None or g <= al)(data_k(k)))
-        b = primo(len(candidati), lambda k: (lambda g: g is not None and g < dal)(data_k(k)))
-        log(f"  La Verità: archivio precedente, sitemap {f_inizio + 1}-{f_fine + 1} di {len(files)}, "
-            f"{max(0, b - a)} articoli nel periodo")
-        return candidati[a:b]
+        urls = []
+        for n in range(1, 1000):
+            r = rete.get(self.API, params={"after": f"{dal}T00:00:00", "before": f"{al}T23:59:59",
+                                           "per_page": 100, "page": n, "orderby": "date", "order": "desc",
+                                           "_fields": "link"})
+            try:
+                voci = r.json() if r is not None and r.status_code == 200 else []
+            except ValueError:
+                voci = []
+            urls += [v["link"] for v in voci if v.get("link")]
+            if not voci or n >= int(r.headers.get("X-WP-TotalPages", 1)):
+                break
+        urls = [u for u in dict.fromkeys(urls) if self.e_articolo(u)]
+        log(f"  La Verità: API di WordPress, {len(urls)} articoli nel periodo")
+        avviso = (f"La Verità: l'archivio interrogabile per data parte dal dicembre 2018; per i giorni precedenti "
+                  f"usare --fonte wayback") if dal < self.INIZIO_API else ""
+        return [SorgenteURL("API REST di WordPress per data", urls, avviso)]
 
 
 class Manifesto(Testata):

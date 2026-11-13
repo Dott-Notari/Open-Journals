@@ -84,10 +84,12 @@ def main():
     except Exception as e:
         stato.chiudi()
         stato.log(f"ERRORE: {e!r}")
+        # NonSupportato del motore: il messaggio è già pensato per chi usa la piattaforma
+        messaggio = str(e)[:800] if e.__class__.__name__ == "NonSupportato" else f"{e.__class__.__name__}: {str(e)[:800]}"
         try:
             sb.aggiorna("estrazioni", {
                 "stato": "errore", "conclusa_il": adesso(), "avanzamento": "errore",
-                "errore": f"{e.__class__.__name__}: {str(e)[:800]}", "log": stato.testo_log()},
+                "errore": messaggio, "log": stato.testo_log()},
                 id=f"eq.{id_estrazione}")
         except Exception:
             pass

@@ -5,8 +5,9 @@ from .fatto import Fatto
 from .ansa import Ansa
 from .base import Generica, NonSupportato  # noqa: F401
 from .seconda_ondata import NUOVE
+from .estere import ESTERE
 
-TESTATE = {t.chiave: t for t in (IlGiornale(), Avvenire(), Fatto(), Ansa(), *NUOVE)}
+TESTATE = {t.chiave: t for t in (IlGiornale(), Avvenire(), Fatto(), Ansa(), *NUOVE, *ESTERE)}
 GENERICA = Generica()
 
 

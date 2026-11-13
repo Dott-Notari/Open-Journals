@@ -193,7 +193,7 @@ def descrittore(p: Parametri):
         parti = [x for x in re.sub(r"https?://[^/]+", "", p.elenco or "").split("/") if x]
         base = "elenco-" + F.ascii_slug("-".join(parti[-2:]) or "home", 40)
     else:
-        base = "data"
+        base = "data" if p.fonte in ("auto", "archivio", "ricerca") else f"data-{p.fonte}"
     if p.parole:
         base += "_" + F.ascii_slug("-".join(p.parole), 40)
     if p.dal or p.al:
@@ -225,6 +225,10 @@ def cartella_per(p: Parametri, radice=None):
 
 
 # ======================================================================== esecuzione
+def chiave_doppione(a):
+    return (a.testata, C.piega(a.titolo).strip(), a.data[:10]) if a.titolo else (a.url,)
+
+
 def sorgenti_per(p: Parametri, rete, log):
     if p.modalita == "link":
         gruppi = {}
@@ -235,6 +239,23 @@ def sorgenti_per(p: Parametri, rete, log):
         t = TESTATE.get(p.testata) if p.testata else per_url(p.elenco)
         return [(t, SorgenteElenco(f"elenco {p.elenco}", p.elenco))]
     t = TESTATE[p.testata]
+    if p.fonte == "gdelt":
+        from .scoperta import gdelt
+        return [(t, s) for s in gdelt(rete, t, p.parole_gdelt or p.parole, p.d_dal(), p.d_al(), log)]
+    if p.fonte == "wayback":
+        from .scoperta import wayback
+        return [(t, s) for s in wayback(rete, t, p.d_dal(), p.d_al(), log)]
+    if p.fonte == "ricerca":
+        sorgenti = t.piano_per_parole(rete, p.parole, p.d_dal(), p.d_al(), log) if p.parole else None
+        if sorgenti is None:
+            raise NonSupportato(f"{t.nome}: ricerca per parole non disponibile (serve --parole e una testata "
+                                f"con motore di ricerca consentito dal robots.txt)")
+        return [(t, s) for s in sorgenti]
+    if p.parole and p.usa_ricerca and p.fonte == "auto":
+        sorgenti = t.piano_per_parole(rete, p.parole, p.d_dal(), p.d_al(), log)
+        if sorgenti is not None:
+            return [(t, s) for s in sorgenti]
+        log(f"  {t.nome}: nessuna ricerca per parole utilizzabile, si scorre l'archivio per data")
     return [(t, s) for s in t.piano_per_data(rete, p.d_dal(), p.d_al(), log, parole=p.parole)]
 
 
@@ -251,8 +272,14 @@ def esegui(p: Parametri, destinazione=None, cartella_lavoro=None, rete=None, log
     pat = C.compila_parole(p.parole)
     pat_ascii = C.compila_parole([C.piega(x) for x in p.parole])
     t0, interrotta = time.monotonic(), False
+    # stesso articolo raggiungibile da due indirizzi (es. La Verità prima e dopo la migrazione del sito)
+    gia_raccolti = {chiave_doppione(a) for a in lav.articoli}
     try:
-        for testata, sorg in sorgenti_per(p, rete, log):
+        sorgenti = sorgenti_per(p, rete, log)
+        # il limite di tempo vale per lo scaricamento degli articoli, non per la raccolta degli indirizzi
+        # (che con la Wayback Machine o con molte sezioni può richiedere da sola parecchi minuti)
+        t_scarico = time.monotonic()
+        for testata, sorg in sorgenti:
             lav.sorgenti.append(f"{testata.nome}: {sorg.descrizione}")
             if getattr(sorg, "avviso", "") and sorg.avviso not in lav.avvisi:
                 lav.avvisi.append(sorg.avviso)
@@ -262,7 +289,7 @@ def esegui(p: Parametri, destinazione=None, cartella_lavoro=None, rete=None, log
             for url in (scorr if scorr else sorg.urls):
                 if p.max_articoli and len(lav.articoli) >= p.max_articoli:
                     break
-                if tempo_max and time.monotonic() - t0 > tempo_max:
+                if tempo_max and time.monotonic() - t_scarico > tempo_max:
                     raise TimeoutError
                 t = testata if testata.riconosce(url) else per_url(url)
                 url = t.normalizza(url)
@@ -275,6 +302,9 @@ def esegui(p: Parametri, destinazione=None, cartella_lavoro=None, rete=None, log
                     if (dal and d_url < dal) or (al and d_url > al):
                         lav.registra(url, "fuori_intervallo")
                         continue
+                if not rete.consentito(url):
+                    lav.registra(url, "escluso_robots")
+                    continue
                 if pat and p.cerca_in == "titolo" and p.modalita != "link" and \
                         not C.corrisponde(pat_ascii, C.piega(C.slug_url(url)), p.tutte):
                     lav.registra(url, "parole_assenti", "titolo (dall'indirizzo)")
@@ -302,6 +332,10 @@ def esegui(p: Parametri, destinazione=None, cartella_lavoro=None, rete=None, log
                 if not C.corrisponde(pat, campo, p.tutte):
                     lav.registra(url, "parole_assenti")
                     continue
+                if chiave_doppione(art) in gia_raccolti:
+                    lav.registra(url, "doppione", "stesso titolo e data di un articolo già raccolto")
+                    continue
+                gia_raccolti.add(chiave_doppione(art))
                 lav.registra(url, "ok", art=art, html=r.text if salva_grezzi else None)
                 n = len(lav.articoli)
                 log(f"  [{n}] {art.data[:10] or '----------'}  {art.titolo[:90]}"
@@ -363,6 +397,9 @@ def scheda(lav, p, arts, durata, rete):
     testate = sorted({a.testata for a in arts}) or ([TESTATE[p.testata].nome] if p.testata in TESTATE else [])
     note_data = {TESTATE[k].nome: TESTATE[k].note_ricerca_data for k in TESTATE
                  if TESTATE[k].nome in testate and TESTATE[k].note_ricerca_data}
+    note_ricerca = {TESTATE[k].nome: TESTATE[k].nota_ricerca for k in TESTATE
+                    if TESTATE[k].nome in testate and TESTATE[k].nota_ricerca}
+    da_ricerca = any(s.split(": ", 1)[-1].startswith("ricerca") for s in lav.sorgenti)
     metodi = Counter(a.metodo for a in arts)
     R = ["SCHEDA DI ESTRAZIONE", "=" * 60,
          f"Strumento: Scraper didattico testate, versione {VERSIONE}",
@@ -385,18 +422,27 @@ def scheda(lav, p, arts, durata, rete):
           "SORGENTI CONSULTATE"] + [f"  {s}" for s in lav.sorgenti]
     for nome, nota in note_data.items():
         R.append(f"  Nota su {nome}: {nota}")
+    if da_ricerca:
+        for nome, nota in note_ricerca.items():
+            R.append(f"  Ricerca per parole su {nome}: {nota}")
+        R.append("  Gli articoli proposti dal motore di ricerca della testata sono stati riscaricati e")
+        R.append("  verificati: restano nel corpus solo quelli che contengono davvero le parole chiave.")
+        R.append("  La copertura dipende dal motore della testata (per un elenco completo: --senza-ricerca).")
     R += ["", "ESITI",
           f"  Indirizzi esaminati: {len(lav.fatti)}",
           f"  Articoli raccolti: {len(arts)}",
           f"  Fuori dall'intervallo di date: {c.get('fuori_intervallo', 0)}",
           f"  Scartati perché senza le parole chiave: {c.get('parole_assenti', 0)}",
           f"  Scartati perché riservati agli abbonati: {c.get('riservato', 0)}",
+          f"  Esclusi dal robots.txt della testata (non scaricati): {c.get('escluso_robots', 0)}",
+          f"  Doppioni scartati (stesso articolo da un secondo indirizzo): {c.get('doppione', 0)}",
           f"  Errori: {c.get('errore', 0)}",
           f"  Articoli dichiarati riservati agli abbonati: {sum(a.accesso_libero is False for a in arts)}"
           f" (di cui con testo parziale: {sum(a.parziale and a.accesso_libero is False for a in arts)})",
           f"  Articoli con testo parziale: {sum(a.parziale for a in arts)}",
           f"  Articoli da controllare (testo breve o poco coerente col titolo): {sum(a.sospetto for a in arts)}",
-          f"  Richieste di rete in questa sessione: {rete.richieste}", "",
+          f"  Richieste di rete in questa sessione: {rete.richieste}",
+          f"  Pagine di elenco o sitemap escluse dal robots.txt: {len(rete.esclusi)}", "",
           "MODALITÀ DI ESTRAZIONE DEL TESTO"]
     R += [f"  {m or 'non determinata'}: {n} articoli" for m, n in metodi.most_common()]
     if lav.avvisi:
@@ -412,5 +458,9 @@ def scheda(lav, p, arts, durata, rete):
           "  che per gli anni meno recenti può non coincidere con quanto pubblicato in edizione cartacea.",
           "  L'indicatore di coerenza misura la quota di parole del titolo presenti nell'avvio del testo:",
           "  valori bassi segnalano estrazioni da verificare a mano.",
+          "  Lo strumento rispetta il robots.txt di ogni testata (RFC 9309) e l'eventuale Crawl-delay,",
+          "  si presenta con un User-Agent che dichiara la finalità di ricerca e non aggira paywall",
+          "  né protezioni anti-bot: gli articoli riservati agli abbonati compaiono con il testo che",
+          "  la testata rende pubblico e sono segnalati nell'indice.",
           "  I testi sono raccolti per finalità di studio e ricerca e non vanno ridistribuiti."]
     return "\n".join(R) + "\n"

@@ -50,6 +50,8 @@ def parametri_da_riga(dati):
         elenco=p.get("elenco"), dal=p.get("dal"), al=p.get("al"), parole=list(p.get("parole", [])),
         tutte=bool(p.get("tutte", False)), escludi_riservati=False,   # decisione: riservati sempre inclusi
         cerca_in=p.get("cerca_in", "testo"), formati=list(p.get("formati", [])),
+        fonte=p.get("fonte", "auto"), usa_ricerca=bool(p.get("usa_ricerca", True)),
+        parole_gdelt=list(p.get("parole_gdelt", [])),
         max_articoli=p.get("max_articoli"))   # None: nessun limite
 
 
@@ -84,7 +86,9 @@ def esegui_testata(dati, sb, stato, impostazioni):
     with tempfile.TemporaryDirectory() as tmp:
         radice = cartella_per(par, radice=tmp).name     # stesso nome della cartella locale
     righe_nota = []
-    if par.testata == "ansa" and par.modalita == "data" and impostazioni["ansa_indicizzazione_attiva"]:
+    # ANSA per periodo: indice quotidiano della piattaforma, salvo che si scelga Wayback o GDELT
+    if (par.testata == "ansa" and par.modalita == "data" and par.fonte in ("auto", "archivio")
+            and impostazioni["ansa_indicizzazione_attiva"]):
         par, righe_nota = prepara_ansa(par, sb, rete, stato)
     dest = ZipConNota(radice, lambda: testo_nota(
         dati["id"], impostazioni["giorni_conservazione"],

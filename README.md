@@ -1,4 +1,4 @@
-# Scraper didattico delle testate giornalistiche: piattaforma web
+# Open New Media: piattaforma dello scraper didattico delle testate
 
 Piattaforma del corso di Sociologia della comunicazione interculturale per costruire corpora giornalistici e video destinati all'analisi in un contesto di studio e ricerca. Gli studenti approvati dal docente scelgono una testata o YouTube, avviano un'estrazione e scaricano il risultato con la stessa struttura prodotta dallo scraper locale. I testi raccolti non vengono ripubblicati né ridistribuiti e gli archivi restano disponibili solo per pochi giorni.
 
@@ -6,7 +6,7 @@ Piattaforma del corso di Sociologia della comunicazione interculturale per costr
 
 ```
 scraper-testate-piattaforma/
-├── scraper_testate/            motore Python 1.12, identico alla versione locale
+├── scraper_testate/            motore Python 1.13, identico alla versione locale
 ├── piattaforma/                collegamento tra motore, Supabase e GitHub Actions
 │   ├── esegui_estrazione.py         esegue un'estrazione registrata (testate o YouTube)
 │   ├── testate_piattaforma.py       motore con ZipMemoria, indice per l'ANSA, nota di piattaforma
@@ -31,6 +31,10 @@ scraper-testate-piattaforma/
 └── supabase/
     ├── migrations/0001_schema.sql   tabelle, coda, validazione, regole di sicurezza, storage
     ├── migrations/0002_senza_limiti.sql  nessun tetto per gli studenti, video fino a 35 minuti, file fino a 5 GB
+    ├── migrations/0003_svuota.sql        lo studente può svuotare le proprie estrazioni concluse
+    ├── migrations/0004_ferma_riprendi.sql fermare un'estrazione e riprenderla dal punto in cui si è fermata
+    ├── migrations/0005_velocita.sql       estrazioni parallele per testata e pausa regolabile
+    ├── migrations/0006_motore_113.sql     motore 1.13: fonte degli indirizzi, nuove testate estere
     └── docente_iniziale.sql         assegnazione del ruolo di docente dopo la prima registrazione
 ```
 

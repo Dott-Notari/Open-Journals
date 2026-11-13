@@ -30,6 +30,9 @@ class Fatto(Testata):
     def pagina_elenco(self, base, n):
         return base if n == 1 else base.rstrip("/") + f"/page/{n}/"
 
+    def wayback_prefissi(self, dal, al):
+        return [(f"www.ilfattoquotidiano.it/{g:%Y/%m/%d}/", "prefix") for g in giorni(dal, al)]
+
     def piano_per_data(self, rete, dal, al, log, parole=None):
         return [SorgenteElenco(f"archivio del {g.isoformat()}",
                                f"https://www.ilfattoquotidiano.it/{g:%Y/%m/%d}/",

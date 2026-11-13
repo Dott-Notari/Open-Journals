@@ -1,4 +1,83 @@
-# Scraper didattico delle testate giornalistiche
+# Scraper didattico delle testate giornalistiche (versione Siti_API)
+
+Questa copia, in `Desktop/Siti_API/motore_testate`, estende il motore di `Desktop/scraper_testate` con quanto emerso dalla mappatura con reverse-api-engineer (cartelle `Siti_API/<testata>/`). La copia originale non è stata modificata. Le estrazioni finiscono in `Desktop/Siti_API/estrazioni/<testata>/…`, con la stessa struttura di sempre. Le schede delle testate, con le modalità possibili per ciascuna e gli esiti delle prove, sono in `Desktop/Siti_API/schede_testate/`.
+
+## Novità della versione 1.13
+
+**Rispetto del robots.txt.** Prima di ogni richiesta lo strumento legge il robots.txt della testata secondo lo standard RFC 9309, con i caratteri jolly che il modulo standard di Python ignora. Gli indirizzi esclusi non vengono scaricati e sono contati nella scheda, e il Crawl-delay dichiarato sostituisce la pausa quando è più lungo (Daily Mirror: 10 secondi). Come prima, lo strumento si presenta con un User-Agent che dichiara la finalità di ricerca e non aggira paywall né protezioni anti-bot.
+
+**Ricerca per parole chiave con il motore della testata.** Con `data … --parole`, sulle testate che lo consentono le parole vengono cercate nel motore di ricerca del sito invece di scaricare tutto l'archivio del periodo. Su periodi lunghi è molto più veloce. Gli articoli proposti vengono poi scaricati e verificati, come sempre. Le testate interessate sono:
+
+| Testata | Motore |
+|---|---|
+| Il Fatto Quotidiano | feed della ricerca di WordPress |
+| Avvenire | API del sito, con filtro per date |
+| La Verità | API REST di WordPress, con filtro per date |
+| Il Post | API di ricerca (api.ilpost.org) |
+| Corriere della Sera | API di ricerca (searchapiservice), edizioni locali comprese |
+| Il Sole 24 Ore | ricerca di argomenti.ilsole24ore.com |
+| The Guardian | API ufficiale Open Platform |
+
+Non si usano le ricerche di la Repubblica, Il Mattino, Il Messaggero ed El Mundo, che il robots.txt esclude. Per Corriere, Il Post e Sole 24 Ore, che cercano solo parole intere, `migrant*` viene cercato come migrant, migranta, migrante, migranti e migranto. Con `--senza-ricerca` si torna allo scorrimento completo dell'archivio per data.
+
+**Testate straniere.**
+
+| Chiave | Testata | Ricerca per data |
+|---|---|---|
+| `independent` | The Independent | sitemap giornaliere, ultimi 90 giorni circa |
+| `mirror` | Daily Mirror | sitemap mensili dal 1998, ma con 10 secondi tra le richieste: conviene `--cerca-in titolo` |
+| `elmundo` | El Mundo | emeroteca giornaliera |
+| `guardian` | The Guardian | API ufficiale, archivio dal 1999; serve una chiave gratuita |
+
+Per il Guardian la chiave si richiede su https://open-platform.theguardian.com/access/. Poi si copia `.env.esempio` come `.env` e si inserisce la chiave; da terminale si può usare `export GUARDIAN_API_KEY=…`.
+
+Le altre testate mappate non sono incluse:
+- The Times vieta l'accesso automatico a tutto il sito.
+- Financial Times ed El País mettono gli articoli dietro una verifica anti-bot (Cloudflare, DataDome).
+- The Economist, The Telegraph, Daily Mail e The Sun bloccano le richieste automatiche.
+
+La documentazione tecnica di ciascuna è nella sua cartella in `Siti_API`.
+
+**Scelta della fonte degli indirizzi (`--fonte`).** Con il comando `data` si può scegliere da dove prendere gli indirizzi:
+
+| Valore | Da dove prende gli indirizzi |
+|---|---|
+| `auto` (predefinito) | ricerca del sito se ci sono parole chiave e la testata la consente, altrimenti archivio |
+| `archivio` | sitemap, archivi per giorno ed elenchi della testata |
+| `ricerca` | solo il motore di ricerca della testata |
+| `wayback` | indice dell'Internet Archive, per i periodi che la testata non espone più (ANSA, Il Mattino, Il Messaggero, Libero e Independent oltre i loro limiti, La Verità prima del 2019); lento |
+| `gdelt` | indice internazionale GDELT, con parole in inglese in `--parole-gdelt`; sperimentale, perché il servizio limita molto le richieste |
+
+In tutti i casi gli articoli vengono scaricati dal sito della testata e verificati; le copie archiviate non vengono usate. Quando la ricerca del sito non arriva al periodo richiesto, lo strumento passa da solo all'archivio. Il limite di tempo di una prova vale per lo scaricamento degli articoli e non per la raccolta degli indirizzi.
+
+**Schede delle testate.** `python scraper.py schede` riscrive le schede in `Siti_API/schede_testate/`: un file Word e Markdown per testata, l'indice `README.md` e `riepilogo_testate.xlsx`, con gli esiti dell'ultima `prova`.
+
+**Pacchetto per la piattaforma online.** `python scraper.py pacchetto` scrive sul Desktop la cartella `Pacchetto_Claude_Piattaforma`. Contiene le regole per testata (JSON e Markdown), l'interfaccia del motore, le istruzioni da dare a Claude (chat) per aggiornare la piattaforma, gli esiti delle prove, il codice del motore e le schede. Va rigenerata dopo ogni aggiornamento.
+
+**Più testate con un comando.** Al posto della testata si possono indicare più chiavi separate da virgola, oppure `tutte`, `italiane` o `estere`. Ogni testata produce la sua cartella. Le testate che non si possono interrogare (per esempio il Guardian senza chiave) vengono saltate e il riepilogo finale lo dice.
+
+**Mese in corso su Repubblica e La Stampa.** La sitemap del mese corrente elenca solo gli ultimi uno o due giorni. Per questo lo strumento aggiunge la sitemap news e, quando alcuni giorni del periodo non si raggiungono più, lo scrive tra gli avvisi della scheda. Quei giorni si recuperano a mese chiuso, oppure con il comando `elenco` dalle pagine di sezione.
+
+**Modalità guidata e prove.** Con parole chiave su una testata che ha la ricerca, la modalità guidata chiede se usarla. `python scraper.py prova` comprende ora anche le testate straniere e i casi `<testata>_parole`, che provano la ricerca con `migrant*`.
+
+## Installazione (questa copia)
+
+L'ambiente `.venv`, con Python 3.12, è già pronto e VS Code lo usa in automatico. Per ricrearlo: `uv venv .venv --python 3.12 && uv pip install --python .venv/bin/python -r requirements.txt`.
+
+```
+python scraper.py data verita --dal 2026-01-01 --al 2026-06-30 --parole "migrant*,sbarc*"
+python scraper.py data corriere --dal 2026-10-01 --al 2026-10-31 --parole "migrant*" --senza-ricerca
+python scraper.py data guardian --dal 2026-11-01 --al 2026-11-07 --parole "migrants,asylum"
+python scraper.py data independent --dal 2026-11-01 --al 2026-11-07 --parole "migrant*" --cerca-in titolo
+python scraper.py data verita,corriere,ilpost --dal 2026-10-01 --al 2026-10-31 --parole "migrant*"
+python scraper.py data estere --dal 2026-11-01 --al 2026-11-07 --parole "migrant*" --cerca-in titolo
+python scraper.py data ansa --dal 2024-03-01 --al 2024-03-02 --fonte wayback
+python scraper.py schede
+python scraper.py testate
+```
+
+---
+
 
 Strumento per il corso di Sociologia della comunicazione interculturale. Raccoglie articoli da il Giornale, Avvenire, Il Fatto Quotidiano e ANSA (e, in modalità generica, da qualsiasi altro sito) e li salva in una cartella di lavoro organizzata, nei formati Word, testo, HTML, Excel, JSONL e T-LAB, con una scheda che documenta come è stato costruito il corpus.
 
