@@ -1,0 +1,1470 @@
+{
+  "motore": "1.13 (Siti_API)",
+  "generato": "2026-11-12",
+  "regole_generali": {
+    "user_agent": "ScraperDidattico/1.0 (ricerca e didattica universitaria, Sociologia della comunicazione interculturale)",
+    "pausa_predefinita_secondi": 2.0,
+    "pausa_minima_secondi": 1.0,
+    "rispetto_robots_txt": true,
+    "aggiramento_paywall": false,
+    "fonti": {
+      "auto": "ricerca del sito se ci sono parole e la testata la consente, altrimenti archivio",
+      "archivio": "sitemap, archivi ed elenchi della testata",
+      "ricerca": "solo il motore di ricerca della testata",
+      "wayback": "indirizzi dall'indice CDX dell'Internet Archive; articoli scaricati dal sito",
+      "gdelt": "indirizzi dall'indice GDELT (parole in inglese); sperimentale"
+    }
+  },
+  "testate": [
+    {
+      "chiave": "ilgiornale",
+      "nome": "il Giornale",
+      "sito": "https://www.ilgiornale.it",
+      "dominio": "ilgiornale.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "Arc XP (Fusion)",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap giornaliere solo recenti; prima, pagine tag e macrosezioni (circa 10.000 articoli ciascuna)",
+          "come": "le sitemap coprono solo gli ultimi giorni; per i periodi precedenti si scorrono le pagine tag delle parole chiave e le macrosezioni, ciascuna consultabile online solo per circa 10.000 articoli (le sezioni generali risalgono di pochi mesi, i tag tematici anche di anni)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore pubblico (il sito usa un widget esterno, /cerca.html è escluso dal robots.txt); le parole chiave attivano anche le pagine /tag/<parola>/"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/{n}/",
+          "pagine": "tag (/tag/immigrazione/), sezioni (/politica/, /cronache/…), autori (/autore/<slug>/); paginazione /N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile ma lento (data non nell'indirizzo)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/arc/outboundfeeds/rss/ (ultimi 100), /rss/category/<sezione>/, /rss/tag/<tag>/, /rss/autore/<slug>/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente sitemap, elenchi e articoli; esclude /cerca.html, /agenzie/, /news/adnkronos/",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale nel JSON della pagina (Fusion.globalContent)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per periodi lontani partire da un tag tematico con «elenco».",
+      "risorse_non_usate": [
+        "API Arc /pf/api/v3/content/fetch/ei-feed-paginated-api con filtri per sezione, tag e autore (fino a 9.900 risultati, senza testo): utile per elenchi, ma equivale alle pagine tag già usate",
+        "sitemap giornaliere /arc/outboundfeeds/sitemap2/AAAA-MM-GG/ (circa 150 articoli al giorno): da valutare per estendere l'archivio per data",
+        "sitemap delle dirette (/diretta/…): i liveblog sono esclusi dal motore"
+      ]
+    },
+    {
+      "chiave": "avvenire",
+      "nome": "Avvenire",
+      "sito": "https://www.avvenire.it",
+      "dominio": "avvenire.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "Nuxt con API propria (Naxos CMS)",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2000-01-01",
+          "copertura": "completo; per gli anni meno recenti l'archivio online è una selezione",
+          "come": "sitemap mensili dal 2000; la data esatta si legge in ogni articolo; per gli anni meno recenti l'archivio online è una selezione",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API di ricerca del sito con filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/{n}",
+          "pagine": "tag (/tag/migranti_4439), sezioni, redazione/autori; paginazione /N"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile ma lento (data non nell'indirizzo)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (pochi articoli)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "nessun feed RSS pubblico"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente sitemap, API e articoli; esclude le pagine di ricerca HTML (/ricerca), non l'API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale per gli articoli liberi; segnalati quelli riservati",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Le pagine tag sono corpora tematici già pronti; per parole chiave la ricerca con filtro date.",
+      "risorse_non_usate": [
+        "API per tag (/api/naxos/tag/stories/<id>) e per giornalista (/api/naxos/journalist/<id>): equivalenti alle pagine tag e autore già usabili con «elenco»",
+        "API della storia (/api/naxos/story/<id>) con testo strutturato: non serve, la pagina HTML basta",
+        "santo del giorno (/api/saints), configurazione della home: non pertinenti"
+      ]
+    },
+    {
+      "chiave": "fatto",
+      "nome": "Il Fatto Quotidiano",
+      "sito": "https://www.ilfattoquotidiano.it",
+      "dominio": "ilfattoquotidiano.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress dietro Cloudflare",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2009-01-01",
+          "copertura": "completo",
+          "come": "archivi per giorno di WordPress, scorsi pagina per pagina",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "feed della ricerca interna di WordPress, dal più recente, con salto alla pagina del periodo",
+          "solo_parole_intere": false,
+          "profondita": "circa due anni (il feed si ferma dopo 150-200 pagine)",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "sezioni, rubriche e tag paginati con /page/N/ (es. /cronaca/, /cervelli-fuga/)"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": true,
+          "nota": "efficiente: un prefisso per giorno (/AAAA/MM/GG/)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (ultimi 25), /category/<sezione>/feed/, /tag/<tag>/feed/, commenti /comments/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente archivi, ricerca e articoli a questo User-Agent; blocca diversi bot di intelligenza artificiale",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale per gli articoli liberi; i contenuti per sostenitori possono risultare parziali",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per periodi lunghi con parole chiave la ricerca è la via più rapida; per un corpus completo di un periodo, l'archivio per giorno.",
+      "risorse_non_usate": [
+        "API proprie /wp-json/mia/v1/: edizioni cartacee del giorno (copertina, PDF per abbonati), menu, editoriale del giorno: non usate perché non sono articoli web",
+        "/wp-json/wp/v2/posts risponde 401 (chiusa): per questo si usano archivi e feed",
+        "oEmbed /wp-json/oembed/1.0/embed?url=…: metadati di un articolo (autore, titolo)"
+      ]
+    },
+    {
+      "chiave": "ansa",
+      "nome": "ANSA",
+      "sito": "https://www.ansa.it",
+      "dominio": "ansa.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprio, pagine statiche",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo gli ultimi due giorni circa; il passato con fonte wayback",
+          "come": "le sitemap contengono solo le uscite recenti; non esiste un archivio interrogabile per date lontane",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "la ricerca /ricerca/ansait/ è esclusa dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "pagine di sezione non paginate"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": true,
+          "nota": "consigliata per i periodi passati: data nell'indirizzo, un prefisso per sezione e giorno"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona sulle notizie di agenzia"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "per sezione e per regione (elenco in /sito/static/ansa_rss.html)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente sitemap e articoli; vieta i bot di intelligenza artificiale (ClaudeBot, GPTBot…) ma non questo User-Agent",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (contenitore .news-txt); molti lanci sono brevi",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per il passato usare --fonte wayback (lento: circa un minuto per giorno di indice) o GDELT; per l'attualità l'archivio recente, eventualmente ogni giorno.",
+      "risorse_non_usate": [
+        "67 sitemap tematiche e regionali: già usate dal motore",
+        "lanci in inglese e in altre lingue (english, nuovaeuropa): esclusi dal motore"
+      ]
+    },
+    {
+      "chiave": "ilpost",
+      "nome": "Il Post",
+      "sito": "https://www.ilpost.it",
+      "dominio": "ilpost.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "Next.js su WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2009-01-01",
+          "copertura": "completo (brevi «flashes» escluse)",
+          "come": "sitemap mensili degli articoli dal 2009 (le brevi «flashes» sono escluse)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API di ricerca di Il Post, solo articoli, con salto alla pagina del periodo",
+          "solo_parole_intere": true,
+          "profondita": "tutto l'archivio",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "sezioni e tag paginati /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile (data nell'indirizzo)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/<sezione>/feed/ (10 articoli); nessun feed generale"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; esclude /cerca/ (pagina HTML) ma non l'API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale, salvo gli articoli riservati agli abbonati",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Ricerca per parole chiave; archivio mensile per corpus completi.",
+      "risorse_non_usate": [
+        "filtri della ricerca per categoria (category:politica) e periodo: utilizzabili in futuro per ricerche per sezione",
+        "sitemap delle «flashes» (brevi): escluse per scelta"
+      ]
+    },
+    {
+      "chiave": "libero",
+      "nome": "Libero Quotidiano",
+      "sito": "https://www.liberoquotidiano.it",
+      "dominio": "liberoquotidiano.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "Arc XP (dal novembre 2026, come il Giornale)",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "dalla migrazione dell'11 novembre 2026 sitemap giornaliere; prima elenchi API (circa 3,5 mesi per tutto il sito, mesi o anni per sezione); oltre, fonte wayback",
+          "come": "dal novembre 2026 piattaforma Arc XP: sitemap giornaliere dalla migrazione e, per i periodi precedenti, l'elenco degli articoli del sito (circa tre mesi e mezzo) e delle sezioni (alcuni mesi o anni, fino a 9.900 articoli ciascuna); oltre, --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "/search/?keyword= è escluso dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "le pagine HTML di sezione e tag mostrano solo pochi articoli e non si sfogliano; per le sezioni lo strumento usa l'elenco API"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "consigliata per i periodi più vecchi degli elenchi API (gli indirizzi vecchi reindirizzano ai nuovi)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non verificati sul nuovo sito"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente sitemap, API ed articoli; esclude le notizie di agenzia (adnkronos, italpress) e la ricerca",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per periodi recenti l'archivio per data; per anni passati Wayback. La migrazione è di questi giorni: struttura da ricontrollare fra qualche settimana.",
+      "risorse_non_usate": [
+        "API Arc ei-feed-paginated-api con filtri per sezione, tag e autore: usata per l'archivio per data",
+        "sitemap per sezione (/arc/outboundfeeds/sitemap/category/<sezione>/, ultimi 100 articoli)",
+        "Attenzione: libero.it (mappato con reverse-api-engineer) è il portale Italiaonline, non il quotidiano"
+      ]
+    },
+    {
+      "chiave": "manifesto",
+      "nome": "il manifesto",
+      "sito": "https://ilmanifesto.it",
+      "dominio": "ilmanifesto.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "Next.js su Directus",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap per data di modifica, verificate articolo per articolo",
+          "come": "sitemap degli articoli filtrate per data di modifica (che sul manifesto coincide con la pubblicazione, entro tre giorni); molti articoli sono riservati agli abbonati e possono risultare come testo parziale",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "il backend Directus ha una ricerca a testo pieno con filtri per data, sezione, autore e argomento, ma richiede la chiave che il sito invia ai visitatori anonimi: non usata per scelta"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni (/sezioni/politica), argomenti, autori: solo la prima pagina, nessuna paginazione funziona"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile ma lento"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "nessuno"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; dichiara ai-train=no (nessun uso per addestrare IA)",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "spesso parziale: molti articoli sono riservati agli abbonati; tolto il riassunto generato da IA",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Corpus con testo pieno solo sugli articoli liberi; per analisi su titoli e sommari i metadati bastano.",
+      "risorse_non_usate": [
+        "API Directus pulse.ilmanifesto.it: metadati (titolo, sommario, argomenti, autori) di tutto l'archivio dal 2002, senza testo integrale; utile per contare e selezionare articoli, da usare solo con il consenso della testata"
+      ]
+    },
+    {
+      "chiave": "mattino",
+      "nome": "Il Mattino",
+      "sito": "https://www.ilmattino.it",
+      "dominio": "ilmattino.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS Caltagirone, HTML",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite del giorno (sitemap news); il passato con elenco o wayback",
+          "come": "solo le uscite degli ultimi giorni (sitemap news); per periodi precedenti si parte dalle pagine di sezione con il comando elenco",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "la ricerca /ricerca/ è esclusa dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/?p={n}",
+          "pagine": "sezioni e sottosezioni con ?p=N (es. /napoli/cronaca/), tag /t/<slug>"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile ma lento (data non nell'indirizzo)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non trovati"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente sitemap ed elenchi; esclude ricerca e sez=JSON",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale per gli articoli liberi (JSON-LD)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per periodi passati partire da una sezione con «elenco»; Wayback come alternativa.",
+      "risorse_non_usate": [
+        "chiamate interne sez=JSON (notifiche, utente): escluse dal robots.txt e non pertinenti"
+      ]
+    },
+    {
+      "chiave": "corriere",
+      "nome": "Corriere della Sera",
+      "sito": "https://www.corriere.it",
+      "dominio": "corriere.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS RCS, HTML con API di ricerca",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2020-05-27",
+          "copertura": "sitemap giornaliere",
+          "come": "sitemap giornaliere dal maggio 2020; per gli ultimi giorni le sitemap di sezione con le cento uscite più recenti",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API di ricerca del Corriere, edizioni locali comprese, con salto alla pagina del periodo",
+          "solo_parole_intere": true,
+          "profondita": "tutto l'archivio della ricerca (anche prima del 2020)",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni (/cronache/…): solo la prima pagina, nessuna forma di paginazione funziona (collaudo del 12 novembre)"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile (data nell'indirizzo in forma 26_novembre_12)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/rss/<sezione>.xml (indice in /rss/)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; vieta i bot di intelligenza artificiale ma non questo User-Agent",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale per gli articoli liberi; per i riservati spesso solo l'avvio",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Ricerca per parole chiave (anche anni prima del 2020, dove le sitemap non arrivano).",
+      "risorse_non_usate": [
+        "classifica dei più letti (toprated.rcs.it, per giorno): utile per studi sulla salienza, non integrata",
+        "filtro per sezione della ricerca (section=Politica…): utilizzabile in futuro",
+        "blocchi della home (appservice.corriere.it): non pertinenti"
+      ]
+    },
+    {
+      "chiave": "repubblica",
+      "nome": "la Repubblica",
+      "sito": "https://www.repubblica.it",
+      "dominio": "repubblica.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "GEDI (Kataweb)",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2010-01-01",
+          "copertura": "sitemap mensili; il mese in corso solo gli ultimi giorni",
+          "come": "sitemap mensili; gli articoli riservati agli abbonati espongono spesso solo titolo e sommario e risultano come testo parziale",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "ricerca.repubblica.it (con filtro date) e l'archivio giornaliero sono esclusi dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/?page={n}",
+          "pagine": "sezioni con ?page=N (es. /cronaca/), autori /autori/<slug>"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile (data nell'indirizzo)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/rss/<sezione>/rss2.0.xml"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente sitemap ed elenchi",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "quasi sempre parziale: gli articoli riservati espongono circa 400 caratteri",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per il testo pieno serve un accesso concordato con l'editore; per titoli e sommari il corpus è completo.",
+      "risorse_non_usate": [
+        "sitemap tematiche (Italian Tech, Il Gusto, Salute, Green&Blue, video): non integrate"
+      ]
+    },
+    {
+      "chiave": "lastampa",
+      "nome": "La Stampa",
+      "sito": "https://www.lastampa.it",
+      "dominio": "lastampa.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "GEDI (Kataweb)",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2022-08-01",
+          "copertura": "sitemap mensili (circa 50 mesi); il mese in corso solo gli ultimi giorni",
+          "come": "sitemap mensili; gli articoli riservati agli abbonati espongono spesso solo titolo e sommario e risultano come testo parziale",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "la ricerca del sito restituisce l'archivio di Repubblica, non usabile"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/?page={n}",
+          "pagine": "sezioni con ?page=N, argomenti /argomenti/<slug>/ (solo prima pagina), autori"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile (data nell'indirizzo)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/<sezione>/rss (circa 100 articoli)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; vieta i bot di intelligenza artificiale",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "parziale per gli articoli riservati (content_plan=locked)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Come Repubblica.",
+      "risorse_non_usate": [
+        "sitemap video e La Zampa: non integrate"
+      ]
+    },
+    {
+      "chiave": "messaggero",
+      "nome": "Il Messaggero",
+      "sito": "https://www.ilmessaggero.it",
+      "dominio": "ilmessaggero.it",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS Caltagirone, HTML",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite del giorno (sitemap news); il passato con elenco o wayback",
+          "come": "solo le uscite degli ultimi giorni (sitemap news); per periodi precedenti si parte dalle pagine di sezione con il comando elenco",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "la ricerca /ricerca/ è esclusa dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/?p={n}",
+          "pagine": "sezioni con ?p=N (es. /roma/), tag /t/<slug>, autori /autore/<slug>"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile ma lento"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/rss/<sezione>.xml (circa 20 articoli, codifica ISO-8859-1)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente sitemap, elenchi, feed; esclude ricerca, sez=JSON e sez=AJAX",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale per gli articoli liberi",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Come Il Mattino: elenchi di sezione per il passato.",
+      "risorse_non_usate": [
+        "archivio storico archivio.ilmessaggero.it: per abbonati, non esplorato",
+        "video su JW Player: fuori dal perimetro"
+      ]
+    },
+    {
+      "chiave": "verita",
+      "nome": "La Verità",
+      "sito": "https://www.laverita.info",
+      "dominio": "laverita.info",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress (Yoast)",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2018-12-01",
+          "copertura": "completo tramite API WordPress",
+          "come": "API REST di WordPress con filtro per date (verifica del 12 novembre 2026): archivio completo dal dicembre 2018; per i mesi precedenti solo pochi articoli, il resto si recupera con --fonte wayback. Le vecchie sitemap non sono ordinate per data",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "sezioni /<sezione>/page/N/, autori /u/<slug>"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile ma lento"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed (10, paginabile ?paged=N)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente quasi tutto",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale, salvo gli articoli con paywall (campo laverita_paywall)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "La testata più completa da interrogare: ricerca e date funzionano dal lato del sito.",
+      "risorse_non_usate": [
+        "la stessa API permette elenchi per categoria (143 sezioni), tag e autore con date: utilizzabili in futuro per selezioni per sezione senza parole chiave",
+        "sitemap news delle ultime 48 ore"
+      ]
+    },
+    {
+      "chiave": "sole24ore",
+      "nome": "Il Sole 24 Ore",
+      "sito": "https://www.ilsole24ore.com",
+      "dominio": "ilsole24ore.com",
+      "lingua": "it",
+      "gruppo": "italiane",
+      "stato": "attiva",
+      "piattaforma_sito": "Next.js con GraphQL",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap news di sezione, profondità variabile",
+          "come": "sitemap news delle sezioni, con profondità diversa da sezione a sezione",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "ricerca per parola di argomenti.ilsole24ore.com, solo notizie, al massimo circa 12.500 risultati per termine",
+          "solo_parole_intere": true,
+          "profondita": "al massimo circa 12.500 risultati per parola",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni /sez/<sezione>: solo la prima pagina; gli archivi /archivi/<sezione>/<N> sono paginati ma non ancora usati dallo strumento"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile ma lento"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/rss/<sezione>.xml"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; vieta alcuni bot di IA",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale per gli articoli liberi; i 24+ non espongono testo",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Ricerca per parole chiave; per periodi senza parole, elenchi o archivi di sezione.",
+      "risorse_non_usate": [
+        "archivi paginati /archivi/<sezione>/<N> (circa 10 articoli per pagina, dal più recente): alternativa per periodi recenti",
+        "quotazioni e meteo: non pertinenti"
+      ]
+    },
+    {
+      "chiave": "independent",
+      "nome": "The Independent",
+      "sito": "https://www.independent.co.uk",
+      "dominio": "independent.co.uk",
+      "lingua": "en",
+      "gruppo": "estere",
+      "stato": "attiva",
+      "piattaforma_sito": "React SSR",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "ultimi 90 giorni circa (sitemap giornaliere); prima, fonte wayback",
+          "come": "sitemap giornaliere degli articoli, solo per gli ultimi novanta giorni circa",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore pubblico; /search/ è escluso dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni, argomenti, autori: solo la prima pagina (il robots.txt esclude ?page=)"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "consigliata oltre i 90 giorni"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/<sezione>/rss (es. /news/world/europe/rss), /rss per tutto"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente sitemap e articoli; esclude ?page=, /search/, /api/",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale, salvo alcuni contenuti per iscritti",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Entro 90 giorni archivio con --cerca-in titolo; prima, Wayback o GDELT.",
+      "risorse_non_usate": [
+        "sitemap di sezioni, argomenti e autori (elenchi di indirizzi): non integrate"
+      ]
+    },
+    {
+      "chiave": "mirror",
+      "nome": "Daily Mirror",
+      "sito": "https://www.mirror.co.uk",
+      "dominio": "mirror.co.uk",
+      "lingua": "en",
+      "gruppo": "estere",
+      "stato": "attiva",
+      "piattaforma_sito": "Escenic (Reach plc)",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "1998-01-01",
+          "copertura": "sitemap mensili filtrate per data di modifica",
+          "come": "sitemap mensili dal 1998, con la data di ultima modifica di ogni articolo: si scaricano solo quelli modificati nel periodo o nei sette giorni successivi (gli articoli aggiornati molto dopo la pubblicazione possono sfuggire); il robots.txt chiede 10 secondi tra le richieste: conviene anche --cerca-in titolo",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "la ricerca /search/ è esclusa dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni (solo prima pagina utile)"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile ma lento"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/<sezione>/?service=rss, /rss.xml"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; Crawl-delay 10 secondi, rispettato",
+        "crawl_delay_secondi": 10,
+        "pausa_minima_secondi": 10,
+        "testo": "integrale (articleBody nel JSON-LD)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per la pausa di 10 secondi usare sempre --cerca-in titolo e periodi brevi.",
+      "risorse_non_usate": [
+        "notizie dell'ultima ora (JSON di breaking news): non pertinenti"
+      ]
+    },
+    {
+      "chiave": "elmundo",
+      "nome": "El Mundo",
+      "sito": "https://www.elmundo.es",
+      "dominio": "elmundo.es",
+      "lingua": "es",
+      "gruppo": "estere",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS Unidad Editorial, HTML",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "emeroteca giornaliera (profondità non verificata oltre il 2015)",
+          "come": "emeroteca giornaliera del sito; la ricerca interna (ariadna) è esclusa dal robots.txt e non viene usata",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "la ricerca ariadna.elmundo.es è esclusa dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni (/espana.html…) senza paginazione"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile (data nell'indirizzo)"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/rss/<sezione>.xml (50 articoli)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente emeroteca e articoli; esclude ricerca, JSON delle dirette, forum",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "spesso integrale anche negli articoli dichiarati premium (testo presente nella pagina pubblica)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per giorno; parole chiave come filtro, eventualmente --cerca-in titolo.",
+      "risorse_non_usate": [
+        "elenco delle sezioni in JSON (/ue-nydus/nydus-feeder.php): non necessario"
+      ]
+    },
+    {
+      "chiave": "guardian",
+      "nome": "The Guardian",
+      "sito": "https://www.theguardian.com",
+      "dominio": "theguardian.com",
+      "lingua": "en",
+      "gruppo": "estere",
+      "stato": "non attivata: serve la chiave GUARDIAN_API_KEY, il progetto ha scelto di non usarla",
+      "piattaforma_sito": "API ufficiale Open Platform",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "1999-01-01",
+          "copertura": "API ufficiale con chiave",
+          "come": "API ufficiale The Guardian Open Platform (content.guardianapis.com), archivio dal 1999",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API ufficiale",
+          "solo_parole_intere": false,
+          "profondita": "API ufficiale",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/?page={n}",
+          "pagine": "sezioni e tag (es. /world/migration) con ?page=N"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "non necessaria"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "non necessaria"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/<sezione>/rss"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Non attivata in questo progetto (si è scelto di non richiedere la chiave). Per attivarla: chiave gratuita su open-platform.theguardian.com/access, nel file .env come GUARDIAN_API_KEY.",
+      "risorse_non_usate": [
+        "l'API offre anche sezioni, tag e campi strutturati (bodyText, byline, wordcount): si potrebbe evitare lo scaricamento delle pagine; per ora si usa la pagina, come per le altre testate"
+      ]
+    }
+  ],
+  "escluse": [
+    {
+      "testata": "The Times / The Sunday Times",
+      "motivo": "robots.txt «Disallow: /» per tutti: nessun accesso automatico consentito"
+    },
+    {
+      "testata": "Financial Times",
+      "motivo": "articoli dietro verifica Cloudflare; il robots.txt vieta l'uso dei contenuti per IA; solo titoli da sitemap mensili (dal 1995) e RSS"
+    },
+    {
+      "testata": "El País",
+      "motivo": "articoli, ricerca e sitemap dietro verifica DataDome; solo due feed RSS aggiornati"
+    },
+    {
+      "testata": "The Economist",
+      "motivo": "verifica Cloudflare su tutto il sito"
+    },
+    {
+      "testata": "The Telegraph",
+      "motivo": "blocco Akamai su browser e richieste"
+    },
+    {
+      "testata": "Daily Mail",
+      "motivo": "blocco Akamai sulla home"
+    },
+    {
+      "testata": "The Sun",
+      "motivo": "verifica anti-bot e robots.txt «Disallow: /»"
+    },
+    {
+      "testata": "libero.it (portale)",
+      "motivo": "è il portale Italiaonline, non il quotidiano: nel motore c'è Libero Quotidiano"
+    }
+  ],
+  "fonti_da_valutare": [
+    {
+      "nome": "GDELT (api.gdeltproject.org)",
+      "descrizione": "indice internazionale delle notizie dal 2017, interrogabile per parola e dominio. Le parole si cercano sulla traduzione inglese, la copertura è parziale e il servizio accetta una richiesta ogni 5 secondi. Nelle prove del 12 novembre ha risposto solo alle prime richieste e poi ha rifiutato le successive (errore 429) anche a distanza di ore: da considerare sperimentale. --fonte gdelt --parole-gdelt."
+    },
+    {
+      "nome": "Wayback Machine (indice CDX di web.archive.org)",
+      "descrizione": "indirizzi delle pagine catturate dall'Internet Archive. Recupera periodi che sitemap ed elenchi non raggiungono più (ANSA, Il Mattino, Il Messaggero, Independent oltre 90 giorni). È lento e dipende da cosa è stato archiviato: --fonte wayback. Si usano solo gli indirizzi, mai le copie archiviate."
+    },
+    {
+      "nome": "Feed RSS",
+      "descrizione": "presenti su quasi tutte le testate: utili per un monitoraggio quotidiano programmato (una raccolta al giorno che accumula il corpus); non ancora un comando dello strumento."
+    },
+    {
+      "nome": "Solo metadati",
+      "descrizione": "per corpora molto grandi su titoli e sommari bastano sitemap news, ricerche e feed, senza scaricare gli articoli; non ancora un comando dello strumento."
+    },
+    {
+      "nome": "Classifiche dei più letti (Corriere)",
+      "descrizione": "per studi sulla salienza delle notizie; non integrate."
+    },
+    {
+      "nome": "Accesso con licenza",
+      "descrizione": "per il testo integrale degli articoli riservati serve un accesso concordato con l'editore (credenziali istituzionali, feed o API in licenza, o banche dati come quelle delle biblioteche universitarie); lo strumento non aggira i paywall."
+    }
+  ]
+}

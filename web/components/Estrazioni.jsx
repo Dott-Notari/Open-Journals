@@ -23,6 +23,7 @@ function sintesi(e) {
   if (p.elenco) pezzi.push('da una pagina elenco');
   if (p.sorgenti) pezzi.push(`${p.sorgenti.length} link YouTube`);
   if (p.cerca) pezzi.push(`ricerca «${p.cerca}»`);
+  if (p.fonte && p.fonte !== 'auto') pezzi.push(`indirizzi da ${{ archivio: 'archivio', ricerca: 'ricerca del sito', wayback: 'Wayback', gdelt: 'GDELT' }[p.fonte]}`);
   if (p.parole?.length) pezzi.push(`parole: ${p.parole.join(', ')}`);
   return pezzi.join('; ') || e.modalita;
 }

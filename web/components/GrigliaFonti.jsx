@@ -70,14 +70,17 @@ export default function GrigliaFonti({ fonti }) {
       .to(altre, { autoAlpha: 0, scale: 0.94, duration: 0.28, ease: 'power2.in', stagger: 0.008 }, 0)
       .to(el, { scale: 1.06, duration: 0.42, ease: 'expo.out' }, 0);
   }
-  const testate = fonti.filter((f) => f.chiave !== 'youtube');
+  const gruppi = [['italiane', 'Testate italiane'], ['estere', 'Testate estere']]
+    .map(([k, titolo]) => [k, titolo, fonti.filter((f) => f.gruppo === k)]).filter(([, , l]) => l.length);
   const yt = fonti.find((f) => f.chiave === 'youtube');
   return (
     <div ref={box} style={{ display: 'flex', flexDirection: 'column', gap: 44 }}>
-      <section aria-labelledby="testate" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-        <h2 id="testate" className="spaziato tenue" style={{ margin: 0 }}>Testate</h2>
-        <div className="griglia">{testate.map((f) => <Tessera key={f.chiave} f={f} onApri={apri} />)}</div>
-      </section>
+      {gruppi.map(([k, titolo, lista]) => (
+        <section key={k} aria-labelledby={`gruppo-${k}`} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+          <h2 id={`gruppo-${k}`} className="spaziato tenue" style={{ margin: 0 }}>{titolo}</h2>
+          <div className="griglia">{lista.map((f) => <Tessera key={f.chiave} f={f} onApri={apri} />)}</div>
+        </section>
+      ))}
       <section aria-labelledby="video" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         <h2 id="video" className="spaziato tenue" style={{ margin: 0 }}>Video</h2>
         <div className="griglia"><Tessera f={yt} onApri={apri} /></div>

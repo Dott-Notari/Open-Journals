@@ -1,28 +1,23 @@
-const GENERICA = 'Si cerca per periodo, da una pagina di sezione o di rubrica, oppure incollando i link.';
+import REGOLE from './regole_testate.json';
+import { GUIDA } from './guida';
 
-// larghezza / altezza dei file in public/loghi
+// larghezza / altezza dei file in public/loghi (le testate senza file mostrano il nome)
 export const RAPPORTI = { ansa: 1, corriere: 12.93, fatto: 2.45, ilgiornale: 6.64, manifesto: 6, mattino: 7, messaggero: 5.64,
   ilpost: 2.82, sole24ore: 4.52, repubblica: 5.21, lastampa: 8.28, verita: 4.62, libero: 4.84, avvenire: 3.58, youtube: 4.47 };
 
+// testate la cui ricerca per data copre solo gli ultimi giorni (avviso sulle date)
+const SOLO_RECENTE = { mattino: 1, messaggero: 1, independent: 90 };
+
+// Elenco delle fonti: le testate attive del motore (regole_testate.json) più YouTube
 export const FONTI = [
-  { chiave: 'ilgiornale', nome: 'il Giornale', dominio: 'ilgiornale.it' },
-  { chiave: 'avvenire', nome: 'Avvenire', dominio: 'avvenire.it',
-    nota: "L'archivio online parte dal 2000; per gli anni più vecchi contiene solo una parte degli articoli." },
-  { chiave: 'fatto', nome: 'Il Fatto Quotidiano', dominio: 'ilfattoquotidiano.it' },
-  { chiave: 'ansa', nome: 'ANSA', dominio: 'ansa.it',
-    nota: "Per i periodi si usa l'elenco delle uscite che la piattaforma salva ogni giorno, quindi si parte dal giorno in cui è stata attivata." },
-  { chiave: 'ilpost', nome: 'Il Post', dominio: 'ilpost.it' },
-  { chiave: 'libero', nome: 'Libero', dominio: 'liberoquotidiano.it' },
-  { chiave: 'manifesto', nome: 'il manifesto', dominio: 'ilmanifesto.it' },
-  { chiave: 'mattino', nome: 'Il Mattino', dominio: 'ilmattino.it' },
-  { chiave: 'corriere', nome: 'Corriere della Sera', dominio: 'corriere.it' },
-  { chiave: 'repubblica', nome: 'la Repubblica', dominio: 'repubblica.it' },
-  { chiave: 'lastampa', nome: 'La Stampa', dominio: 'lastampa.it' },
-  { chiave: 'messaggero', nome: 'Il Messaggero', dominio: 'ilmessaggero.it' },
-  { chiave: 'verita', nome: 'La Verità', dominio: 'laverita.info' },
-  { chiave: 'sole24ore', nome: 'Il Sole 24 Ore', dominio: 'ilsole24ore.com' },
-  { chiave: 'youtube', nome: 'YouTube', dominio: 'youtube.com' },
-].map((f) => ({ nota: GENERICA, ...f }));
+  ...REGOLE.testate.filter((t) => t.stato === 'attiva').map((t) => ({
+    chiave: t.chiave, nome: t.nome, dominio: t.dominio, gruppo: t.gruppo, lingua: t.lingua,
+    coperturaDal: t.modalita.data.copertura_dal, recenteGiorni: SOLO_RECENTE[t.chiave] ?? null,
+    fonti: t.modalita.data.fonti_consentite, ricerca: t.modalita.parole_con_ricerca_del_sito.disponibile,
+    primaPagina: t.modalita.elenco.solo_prima_pagina, guida: GUIDA[t.chiave], nota: GUIDA[t.chiave]?.periodo ?? '',
+  })),
+  { chiave: 'youtube', nome: 'YouTube', dominio: 'youtube.com', gruppo: 'video', nota: '' },
+];
 
 export const trovaFonte = (chiave) => FONTI.find((f) => f.chiave === chiave);
 

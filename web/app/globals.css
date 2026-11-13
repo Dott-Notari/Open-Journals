@@ -202,3 +202,9 @@ td { padding: 12px; border-bottom: 1px solid var(--linea); vertical-align: middl
 }
 
 .logo-hero { height: clamp(120px, 20vw, 220px); }
+
+/* Istruzioni per testata */
+.guida { display: grid; grid-template-columns: minmax(110px, auto) 1fr; gap: 8px 18px; margin: 14px 0 4px; }
+.guida dt { font-weight: 600; }
+.guida dd { margin: 0; color: var(--tenue); }
+@media (max-width: 560px) { .guida { grid-template-columns: 1fr; gap: 2px; } .guida dd { margin-bottom: 8px; } }
