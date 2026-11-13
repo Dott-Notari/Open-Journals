@@ -3,7 +3,8 @@ import { GUIDA } from './guida';
 
 // larghezza / altezza dei file in public/loghi (le testate senza file mostrano il nome)
 export const RAPPORTI = { ansa: 1, corriere: 12.93, fatto: 2.45, ilgiornale: 6.64, manifesto: 6, mattino: 7, messaggero: 5.64,
-  ilpost: 2.82, sole24ore: 4.52, repubblica: 5.21, lastampa: 8.28, verita: 4.62, libero: 4.84, avvenire: 3.58, youtube: 4.47 };
+  ilpost: 2.82, sole24ore: 4.52, repubblica: 5.21, lastampa: 8.28, verita: 4.62, libero: 4.84, avvenire: 3.58, youtube: 4.47,
+  independent: 4.29, mirror: 2.64, elmundo: 7.5 };
 
 // testate la cui ricerca per data copre solo gli ultimi giorni (avviso sulle date)
 const SOLO_RECENTE = { mattino: 1, messaggero: 1, independent: 90 };
