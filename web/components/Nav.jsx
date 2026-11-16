@@ -6,6 +6,7 @@ import { Newspaper, Archive, ShieldCheck, LogOut, Pause, Play } from 'lucide-rea
 import { supabase } from '@/lib/supabase';
 import Orologio from './Orologio';
 import { Simbolo, Orizzontale } from './Logo';
+import Avatar from './Avatar';
 
 
 export function Controlli() {
@@ -41,7 +42,7 @@ export function Controlli() {
   );
 }
 
-export default function Nav({ docente }) {
+export default function Nav({ docente, nome, email, foto }) {
   const percorso = usePathname();
   const router = useRouter();
   useEffect(() => {
@@ -74,6 +75,9 @@ export default function Nav({ docente }) {
             </Link>
           ))}
           <Controlli />
+          <Link href="/profilo" className="voce icona" aria-current={percorso.startsWith('/profilo') ? 'page' : undefined} aria-label="Profilo" title="Profilo">
+            <Avatar url={foto} nome={nome} email={email} size={30} />
+          </Link>
           <button type="button" className="voce icona" onClick={esci} aria-label="Esci" title="Esci"><LogOut size={18} aria-hidden="true" /></button>
         </nav>
       </div>

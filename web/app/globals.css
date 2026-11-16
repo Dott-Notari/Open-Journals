@@ -208,3 +208,26 @@ td { padding: 12px; border-bottom: 1px solid var(--linea); vertical-align: middl
 .guida dt { font-weight: 600; }
 .guida dd { margin: 0; color: var(--tenue); }
 @media (max-width: 560px) { .guida { grid-template-columns: 1fr; gap: 2px; } .guida dd { margin-bottom: 8px; } }
+
+/* Tempo e spia del motore */
+.cronometro { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+.spia { display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; color: var(--tenue); }
+.spia-punto { position: relative; width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
+.spia-punto.vivo::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--c); opacity: 0; animation: battito 1.6s ease-out infinite; }
+@keyframes battito { 0% { transform: scale(0.6); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
+.misure { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; }
+.etichetta-stato { display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 500; background: var(--linea); }
+.etichetta-stato.rossa { background: color-mix(in srgb, var(--accento) 16%, transparent); }
+
+/* Ritaglio della foto */
+.ritaglio { width: min(440px, calc(100vw - 32px)); padding: 24px; border: 0; color: var(--testo); }
+.ritaglio::backdrop { background: rgba(0, 0, 0, 0.45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.ritaglio-area { position: relative; width: 100%; aspect-ratio: 1; border-radius: 18px; overflow: hidden; background: #111; touch-action: none; cursor: grab; user-select: none; }
+.ritaglio-area:active { cursor: grabbing; }
+.ritaglio-area img { position: absolute; top: 0; left: 0; transform-origin: 0 0; pointer-events: none; max-width: none; }
+.ritaglio-area::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at center, transparent calc(50% - 13px), rgba(255, 255, 255, 0.85) calc(50% - 12px), rgba(255, 255, 255, 0.85) calc(50% - 11px), rgba(0, 0, 0, 0.55) calc(50% - 10px)); }
+.ritaglio-area:focus-visible { outline: 2.5px solid var(--accento); outline-offset: 3px; }
+input[type="range"] { accent-color: var(--accento); width: 100%; }
+
+@media (prefers-reduced-motion: reduce) { .spia-punto.vivo::after { animation: none; } }

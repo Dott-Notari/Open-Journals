@@ -6,11 +6,13 @@ import { Clock, LoaderCircle, CheckCircle2, PauseCircle, AlertTriangle, XCircle,
 import { supabase } from '@/lib/supabase';
 import { trovaFonte, data, giorno, peso } from '@/lib/fonti';
 import LogoFonte from './LogoFonte';
+import { Cronometro, Spia } from './Tempo';
+import { useEstrazioniInTempoReale } from '@/lib/tempoReale';
 
 const STATI = {
-  in_coda: ['In coda', Clock, '#475467'], avviata: ['In avvio', LoaderCircle, '#0A57C2'], in_corso: ['In corso', LoaderCircle, '#0A57C2'],
+  in_coda: ['In coda', Clock, 'var(--tenue)'], avviata: ['In avvio', LoaderCircle, 'var(--testo)'], in_corso: ['In corso', LoaderCircle, 'var(--testo)'],
   completata: ['Completata', CheckCircle2, 'var(--ok)'], interrotta: ['Interrotta', PauseCircle, 'var(--attenzione)'],
-  errore: ['Errore', AlertTriangle, 'var(--errore)'], annullata: ['Annullata', XCircle, '#475467'],
+  errore: ['Errore', AlertTriangle, 'var(--errore)'], annullata: ['Annullata', XCircle, 'var(--tenue)'],
 };
 const ICONE_FILE = { zip: FileArchive, video: Film, audio: Music };
 const CONCLUSE = ['completata', 'interrotta', 'errore', 'annullata'];
@@ -32,6 +34,7 @@ export default function Estrazioni() {
   const [righe, setRighe] = useState(null);
   const [giorni, setGiorni] = useState(5);
   const [errore, setErrore] = useState('');
+  const [utente, setUtente] = useState(null);
   const lista = useRef(null);
   const entrata = useRef(false);
   useEffect(() => {
@@ -44,8 +47,9 @@ export default function Estrazioni() {
     const sb = supabase();
     const { data: { user } } = await sb.auth.getUser();
     if (!user) return;
+    setUtente(user.id);
     const { data: r, error } = await sb.from('estrazioni')
-      .select('id,fonte,modalita,parametri,stato,richiesta,creata_il,conclusa_il,articoli,esaminati,errore,scheda,file_cancellati_il,estrazione_file(id,nome,tipo,dimensione,percorso)')
+      .select('id,fonte,modalita,parametri,stato,richiesta,creata_il,avviata_il,iniziata_il,conclusa_il,battito,segnale,segnale_testo,articoli,esaminati,errore,scheda,file_cancellati_il,estrazione_file(id,nome,tipo,dimensione,percorso)')
       .eq('utente', user.id).eq('nascosta', false).order('creata_il', { ascending: false }).limit(100);
     if (error) setErrore('Impossibile caricare le estrazioni: ricarica la pagina.');
     else setRighe(r);
@@ -54,9 +58,8 @@ export default function Estrazioni() {
   useEffect(() => {
     supabase().from('impostazioni').select('giorni_conservazione').single().then(({ data: i }) => i && setGiorni(i.giorni_conservazione));
     carica();
-    const t = setInterval(() => document.visibilityState === 'visible' && carica(), 10000);
-    return () => clearInterval(t);
   }, [carica]);
+  useEstrazioniInTempoReale(carica, { filtro: utente ? `utente=eq.${utente}` : undefined, ogni: 15000 });
 
   async function scarica(f) {
     const { data: s, error } = await supabase().storage.from('estrazioni').createSignedUrl(f.percorso, 120, { download: f.nome });
@@ -128,10 +131,18 @@ export default function Estrazioni() {
                 </span>
               </div>
               {inCorso && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <div className="barra" role="progressbar" aria-label="Estrazione in corso"><i /></div>
-                  <span className="tenue piccolo numeri">{e.articoli} raccolti su {e.esaminati} esaminati</span>
+                  <div className="misure">
+                    <Cronometro inizio={e.iniziata_il ?? e.avviata_il} />
+                    <span className="tenue piccolo numeri">{e.articoli} raccolti su {e.esaminati} esaminati</span>
+                    <Spia stato={e.stato} battito={e.battito} segnale={e.segnale} avviata={e.avviata_il} />
+                  </div>
+                  {e.segnale_testo && e.segnale !== 'ok' && <p className="tenue piccolo">{e.segnale_testo}</p>}
                 </div>
+              )}
+              {!inCorso && e.iniziata_il && e.conclusa_il && (
+                <span className="tenue piccolo numeri">Durata <Cronometro inizio={e.iniziata_il} fine={e.conclusa_il} /></span>
               )}
               {e.errore && <p className={`avviso ${e.stato === 'errore' ? 'errore' : 'giallo'}`} style={{ margin: 0 }}>{e.errore}</p>}
               <div className="riga" style={{ gap: 8 }}>

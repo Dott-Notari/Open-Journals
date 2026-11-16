@@ -1,12 +1,15 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { UserCheck, UserX, Save, Stethoscope, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { UserCheck, UserX, Save, Stethoscope, CheckCircle2, AlertTriangle, PauseCircle, PlayCircle, Trash2 } from 'lucide-react';
 import Segmenti from './Segmenti';
 import { supabase } from '@/lib/supabase';
 import { trovaFonte, data } from '@/lib/fonti';
 import LogoFonte from './LogoFonte';
+import Avatar from './Avatar';
+import { Cronometro, Spia } from './Tempo';
+import { useEstrazioniInTempoReale } from '@/lib/tempoReale';
 
-const SCHEDE = [['richieste', 'Studenti'], ['fonti', 'Fonti'], ['registro', 'Registro'], ['impostazioni', 'Impostazioni']];
+const SCHEDE = [['richieste', 'Utenti'], ['fonti', 'Fonti'], ['registro', 'Registro'], ['impostazioni', 'Impostazioni']];
 const NUMERI = [
   ['tempo_max_minuti', "Durata massima di un'estrazione (minuti)", 5, 330],
   ['yt_max_durata_minuti', 'Durata massima di un video (minuti)', 1, 600],
@@ -32,14 +35,48 @@ export default function Docente() {
     setDiagnosi(r.esiti || [{ nome: 'Diagnostica', ok: false, testo: r.errore }]);
   }
 
+  const [foto, setFoto] = useState({});
+  const STATI_IT = { in_coda: 'In coda', avviata: 'In avvio', in_corso: 'In corso', completata: 'Completata', interrotta: 'Interrotta', errore: 'Errore', annullata: 'Annullata' };
+  const MODI_IT = { data: 'Periodo', elenco: 'Pagina elenco', link: 'Link', sorgenti: 'Link video', ricerca: 'Ricerca' };
+
+  const caricaRegistro = useCallback(async () => {
+    const { data: r } = await sb.from('registro_estrazioni').select('*').order('creata_il', { ascending: false }).limit(300);
+    setRegistro(r || []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEstrazioniInTempoReale(caricaRegistro, { ogni: 10000 });
+
   async function carica() {
     const [s, f, r, i] = await Promise.all([
-      sb.from('profiles').select('id,email,nome,ruolo,approvato,registrato_il').order('approvato').order('registrato_il', { ascending: false }),
+      sb.from('profiles').select('id,email,nome,ruolo,approvato,sospeso,foto,registrato_il').order('approvato').order('registrato_il', { ascending: false }),
       sb.from('stato_testate').select('*').order('ordine'),
       sb.from('registro_estrazioni').select('*').order('creata_il', { ascending: false }).limit(200),
       sb.from('impostazioni').select('*').single(),
     ]);
     setStudenti(s.data || []); setFonti(f.data || []); setRegistro(r.data || []); setImp(i.data);
+    const percorsi = (s.data || []).map((u) => u.foto).filter(Boolean);
+    if (percorsi.length) {
+      const { data: firmati } = await sb.storage.from('foto').createSignedUrls(percorsi, 3600);
+      setFoto(Object.fromEntries((firmati || []).filter((x) => x.signedUrl).map((x) => [x.path, x.signedUrl])));
+    }
+  }
+  async function sospendi(u, valore) {
+    const { error } = await sb.rpc('imposta_sospensione', { p_utente: u.id, p_sospeso: valore });
+    setEsito(error ? error.message : valore ? `${u.nome || u.email} è sospeso.` : `${u.nome || u.email} è di nuovo attivo.`);
+    carica();
+  }
+  async function elimina(u) {
+    if (!confirm(`Eliminare l'account di ${u.nome || u.email}? Spariscono l'accesso, la foto e i file delle sue estrazioni. Il registro resta.`)) return;
+    const r = await fetch('/api/utenti', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: u.id }) });
+    const j = await r.json().catch(() => ({}));
+    setEsito(r.ok ? 'Account eliminato.' : j.errore || 'Eliminazione non riuscita.');
+    carica();
+  }
+  async function cancellaRegistro(corpo, domanda) {
+    if (!confirm(domanda)) return;
+    const r = await fetch('/api/registro', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) });
+    const j = await r.json().catch(() => ({}));
+    setEsito(r.ok ? `Voci cancellate: ${j.cancellate}.` : j.errore || 'Cancellazione non riuscita.');
+    caricaRegistro();
   }
   useEffect(() => { carica(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -63,7 +100,7 @@ export default function Docente() {
     setEsito(error ? error.message : 'Salvato.');
   }
 
-  const inAttesa = studenti.filter((s) => !s.approvato).length;
+  const inAttesa = studenti.filter((s) => !s.approvato && !s.sospeso).length;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <Segmenti voci={SCHEDE.map(([k, t]) => [k, k === 'richieste' && inAttesa ? `${t} (${inAttesa} in attesa)` : t])}
@@ -71,19 +108,28 @@ export default function Docente() {
       <p aria-live="polite" className="tenue" style={{ margin: 0, minHeight: 24 }}>{esito}</p>
 
       {scheda === 'richieste' && (
-        <section className="vetro" style={{ padding: '8px 24px' }} aria-label="Studenti">
-          {studenti.filter((s) => s.ruolo === 'studente').map((s) => (
-            <div key={s.id} className="riga" style={{ justifyContent: 'space-between', padding: '14px 0', borderBottom: '1px solid rgba(14,42,71,.08)' }}>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontWeight: 650 }}>{s.nome || s.email}</div>
-                <div className="tenue piccolo" style={{ overflowWrap: 'anywhere' }}>{s.email}, {data.format(new Date(s.registrato_il))}</div>
+        <section className="vetro" style={{ padding: '8px clamp(14px, 3vw, 24px)' }} aria-label="Utenti">
+          {studenti.map((u) => {
+            const io = u.ruolo === 'docente';
+            const [stato, rossa] = u.sospeso ? ['Sospeso', true] : !u.approvato ? ['In attesa', true] : io ? ['Docente', false] : ['Attivo', false];
+            return (
+              <div key={u.id} className="riga" style={{ padding: '14px 0', borderBottom: '1px solid var(--linea)', gap: 14 }}>
+                <Avatar url={foto[u.foto]} nome={u.nome} email={u.email} size={44} />
+                <div style={{ minWidth: 0, flex: '1 1 240px' }}>
+                  <div className="riga" style={{ gap: 8 }}><span style={{ fontWeight: 600 }}>{u.nome || u.email}</span><span className={`etichetta-stato${rossa ? ' rossa' : ''}`}>{stato}</span></div>
+                  <div className="tenue piccolo" style={{ overflowWrap: 'anywhere' }}>{u.email}, registrato il {data.format(new Date(u.registrato_il))}</div>
+                </div>
+                <div className="riga" style={{ gap: 8 }}>
+                  {!u.approvato && <button type="button" className="pulsante compatto" onClick={() => approva(u.id, true)}><UserCheck size={18} aria-hidden="true" />Approva</button>}
+                  {u.approvato && !io && !u.sospeso && <button type="button" className="pulsante compatto secondario" onClick={() => sospendi(u, true)}><PauseCircle size={18} aria-hidden="true" />Sospendi</button>}
+                  {u.sospeso && <button type="button" className="pulsante compatto" onClick={() => sospendi(u, false)}><PlayCircle size={18} aria-hidden="true" />Riattiva</button>}
+                  {u.approvato && !io && <button type="button" className="pulsante compatto secondario" onClick={() => approva(u.id, false)} title="Torna nella sala d'attesa"><UserX size={18} aria-hidden="true" />Revoca</button>}
+                  {!io && <button type="button" className="pulsante compatto secondario" onClick={() => elimina(u)} aria-label={`Elimina l'account di ${u.nome || u.email}`}><Trash2 size={17} aria-hidden="true" />Elimina</button>}
+                </div>
               </div>
-              {s.approvato
-                ? <button type="button" className="pulsante compatto secondario" onClick={() => approva(s.id, false)}><UserX size={18} aria-hidden="true" />Revoca</button>
-                : <button type="button" className="pulsante compatto" onClick={() => approva(s.id, true)}><UserCheck size={18} aria-hidden="true" />Approva</button>}
-            </div>
-          ))}
-          {!studenti.some((s) => s.ruolo === 'studente') && <p className="tenue" style={{ padding: '14px 0' }}>Nessuno studente.</p>}
+            );
+          })}
+          {!studenti.length && <p className="tenue" style={{ padding: '14px 0' }}>Nessun utente.</p>}
         </section>
       )}
 
@@ -118,21 +164,42 @@ export default function Docente() {
       )}
 
       {scheda === 'registro' && (
-        <section className="vetro scorre" style={{ padding: '12px 24px' }} aria-label="Registro delle estrazioni">
-          <table className="tabella-fonti">
-            <thead><tr><th scope="col">Data</th><th scope="col">Studente</th><th scope="col">Fonte</th><th scope="col">Modalità</th><th scope="col">Stato</th><th scope="col" style={{ textAlign: 'right' }}>Raccolti</th></tr></thead>
-            <tbody>
-              {registro.map((r) => (
-                <tr key={r.id}>
-                  <td className="numeri" style={{ whiteSpace: 'nowrap' }}>{data.format(new Date(r.creata_il))}</td>
-                  <td style={{ overflowWrap: 'anywhere' }}>{r.nome || r.email_utente}</td>
-                  <td translate="no">{trovaFonte(r.fonte)?.nome ?? r.fonte}</td>
-                  <td>{r.modalita}</td><td>{r.stato}</td>
-                  <td className="numeri" style={{ textAlign: 'right' }}>{r.articoli}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <section className="vetro" style={{ padding: '12px clamp(10px, 3vw, 24px)', display: 'flex', flexDirection: 'column', gap: 10 }} aria-label="Registro delle estrazioni">
+          <div className="riga" style={{ justifyContent: 'space-between' }}>
+            <span className="spia" style={{ '--c': 'var(--ok)' }}><span className="spia-punto vivo" aria-hidden="true" />Aggiornato in tempo reale</span>
+            {registro.some((r) => !['in_coda', 'avviata', 'in_corso'].includes(r.stato)) && (
+              <button type="button" className="pulsante compatto secondario" onClick={() => cancellaRegistro({ tutte: true }, 'Cancellare dal registro tutte le estrazioni concluse, con i loro file?')}>
+                <Trash2 size={17} aria-hidden="true" />Cancella le concluse
+              </button>
+            )}
+          </div>
+          <div className="scorre">
+            <table className="tabella-fonti">
+              <thead><tr><th scope="col">Data</th><th scope="col">Studente</th><th scope="col">Fonte</th><th scope="col">Modalità</th><th scope="col">Stato</th><th scope="col">Tempo</th><th scope="col" style={{ textAlign: 'right' }}>Raccolti</th><th scope="col"><span className="nascosto">Azioni</span></th></tr></thead>
+              <tbody>
+                {registro.map((r) => {
+                  const attiva = ['avviata', 'in_corso'].includes(r.stato);
+                  return (
+                    <tr key={r.id}>
+                      <td className="numeri" style={{ whiteSpace: 'nowrap' }}>{data.format(new Date(r.creata_il))}</td>
+                      <td style={{ overflowWrap: 'anywhere' }}>{r.nome || r.email_utente}</td>
+                      <td translate="no">{trovaFonte(r.fonte)?.nome ?? r.fonte}</td>
+                      <td>{MODI_IT[r.modalita] ?? r.modalita}</td>
+                      <td>{attiva ? <Spia stato={r.stato} battito={r.battito} segnale={r.segnale} /> : STATI_IT[r.stato] ?? r.stato}</td>
+                      <td>{r.iniziata_il ? <Cronometro inizio={r.iniziata_il} fine={r.conclusa_il} /> : '-'}</td>
+                      <td className="numeri" style={{ textAlign: 'right' }}>{r.articoli}</td>
+                      <td style={{ textAlign: 'right' }}>
+                        {!attiva && r.stato !== 'in_coda' && (
+                          <button type="button" className="voce icona" aria-label="Cancella dal registro" title="Cancella dal registro"
+                            onClick={() => cancellaRegistro({ ids: [r.id] }, 'Cancellare questa voce dal registro, con i suoi file?')}><Trash2 size={17} aria-hidden="true" /></button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
           {!registro.length && <p className="tenue" style={{ padding: '14px 0' }}>Nessuna estrazione.</p>}
         </section>
       )}

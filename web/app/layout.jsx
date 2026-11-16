@@ -25,16 +25,17 @@ export default async function Radice({ children }) {
   const nonce = (await headers()).get('x-nonce') ?? undefined;
   const sb = await supabaseServer();
   const { data: { user } } = await sb.auth.getUser();
-  const { data: profilo } = user ? await sb.from('profiles').select('ruolo,approvato').eq('id', user.id).single() : { data: null };
+  const { data: profilo } = user ? await sb.from('profiles').select('ruolo,approvato,sospeso,nome,foto').eq('id', user.id).single() : { data: null };
+  const { data: foto } = profilo?.foto ? await sb.storage.from('foto').createSignedUrl(profilo.foto, 3600) : { data: null };
   return (
     <html lang="it" suppressHydrationWarning>
       <head><script nonce={nonce} dangerouslySetInnerHTML={{ __html: preferenze }} /></head>
       <body>
         <a className="salta" href="#contenuto">Vai al contenuto</a>
         <Linee />
-        {profilo && !profilo.approvato ? <Attesa email={user.email} /> : (
+        {profilo && (!profilo.approvato || profilo.sospeso) ? <Attesa email={user.email} sospeso={profilo.sospeso} /> : (
           <>
-            {profilo && <Nav docente={profilo.ruolo === 'docente'} />}
+            {profilo && <Nav docente={profilo.ruolo === 'docente'} nome={profilo.nome} email={user.email} foto={foto?.signedUrl} />}
             {children}
           </>
         )}
