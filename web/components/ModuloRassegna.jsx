@@ -6,7 +6,8 @@ import Segmenti from './Segmenti';
 import Azioni from './Azioni';
 import Info from './Info';
 import { inviaEstrazione, lista } from '@/lib/invia';
-import { GRUPPI, fuoriArchivio } from '@/lib/fonti';
+import { GRUPPI, fuoriArchivio, oggi } from '@/lib/fonti';
+import CampoData from './CampoData';
 
 const FORMATI = [['docx', 'Word'], ['txt', 'Testo'], ['html', 'HTML'], ['xlsx', 'Excel'], ['jsonl', 'JSONL'], ['tlab', 'T-LAB']];
 const LINGUE = { it: 'italiano', es: 'spagnolo', en: 'inglese' };
@@ -105,8 +106,8 @@ export default function ModuloRassegna({ testate, iniziali, minuti }) {
             Ogni testata viene cercata nello stesso periodo, ciascuna con il suo metodo: per alcune l&apos;archivio è completo, per altre arriva solo a certe date. L&apos;esito di ognuna si legge in scheda_rassegna.txt.
           </Info></legend>
           <div className="due">
-            <label className="etichetta">Dal<input className="campo" type="date" name="dal" required value={dal} onChange={(e) => setDal(e.target.value)} /></label>
-            <label className="etichetta">Al<input className="campo" type="date" name="al" required value={al} onChange={(e) => setAl(e.target.value)} /></label>
+            <CampoData name="dal" etichetta="Dal" required value={dal} onChange={setDal} max={al || oggi()} />
+            <CampoData name="al" etichetta="Al" required value={al} onChange={setAl} min={dal || null} max={oggi()} />
           </div>
           {fuori.length > 0 && (
             <div className="avviso giallo">
@@ -146,7 +147,6 @@ export default function ModuloRassegna({ testate, iniziali, minuti }) {
           </label>
         </fieldset>
       </div>
-      <p className="tenue" style={{ fontSize: 14, margin: 0 }}>I testi raccolti servono per studio e ricerca e non vanno ridistribuiti.</p>
       <Azioni invio={invio} errore={errore} sintesi={sintesi} />
     </form>
   );

@@ -8,7 +8,8 @@ import Azioni from './Azioni';
 import Info from './Info';
 import { inviaEstrazione, lista } from '@/lib/invia';
 import { FONTI_INDIRIZZI } from '@/lib/guida';
-import { fuoriArchivio } from '@/lib/fonti';
+import { fuoriArchivio, limitiDate, giorno } from '@/lib/fonti';
+import CampoData from './CampoData';
 
 const MODI = [['data', 'Periodo', CalendarRange], ['elenco', 'Pagina elenco', LayoutList], ['link', 'Link', Link2]];
 const FORMATI = [['docx', 'Word'], ['txt', 'Testo'], ['html', 'HTML'], ['xlsx', 'Excel'], ['jsonl', 'JSONL'], ['tlab', 'T-LAB']];
@@ -28,6 +29,9 @@ export default function ModuloTestata({ fonte }) {
   const vociIndirizzi = fonte.fonti.filter((k) => k !== 'gdelt').map((k) => [k, FONTI_INDIRIZZI[k][0]]);
   // per SpazioNapoli il 2011-2019 è escluso dal robots.txt anche passando da Wayback
   const wb = fonte.fonti.includes('wayback') && fonte.chiave !== 'spazionapoli';
+  const lim = modo === 'data' ? limitiDate(fonte, indirizzi) : { max: limitiDate(fonte).max };
+  const notaCal = modo === 'data' && wb && !['wayback', 'gdelt'].includes(indirizzi) && lim.min
+    ? `Prima del ${giorno.format(new Date(lim.min))} l'archivio non arriva: per quelle date scegli Wayback qui sotto.` : null;
   const avviso = modo === 'data' && ['auto', 'archivio'].includes(indirizzi) ? fuoriArchivio(fonte, dal, al) : null;
 
   async function invia(e) {
@@ -87,8 +91,8 @@ export default function ModuloTestata({ fonte }) {
           )}
           {modo !== 'link' && (
             <div className="due">
-              <label className="etichetta">Dal<input className="campo" type="date" name="dal" required={modo === 'data'} value={dal} onChange={(e) => setDal(e.target.value)} /></label>
-              <label className="etichetta">Al<input className="campo" type="date" name="al" required={modo === 'data'} value={al} onChange={(e) => setAl(e.target.value)} /></label>
+              <CampoData name="dal" etichetta="Dal" required={modo === 'data'} value={dal} onChange={setDal} min={lim.min} max={al || lim.max} piede={notaCal} />
+              <CampoData name="al" etichetta="Al" required={modo === 'data'} value={al} onChange={setAl} min={dal || lim.min} max={lim.max} piede={notaCal} />
             </div>
           )}
           {avviso && (

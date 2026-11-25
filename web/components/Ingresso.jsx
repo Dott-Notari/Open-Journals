@@ -1,11 +1,14 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+
+// prima del disegno nel browser, così il contenuto non lampeggia prima dell'animazione
+const usaPrima = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 import gsap from 'gsap';
 
 // L'unico ingresso orchestrato: il logo sale, la pallina compare, poi il resto.
 export default function Ingresso({ children, className, style }) {
   const r = useRef(null);
-  useEffect(() => {
+  usaPrima(() => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = gsap.context(() => {
       gsap.timeline({ defaults: { ease: 'expo.out' } })

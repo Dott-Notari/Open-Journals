@@ -11,6 +11,7 @@ const ridotto = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Tessera di vetro: la lastra con il logo segue di poco il puntatore e si avvicina.
 function Tessera({ f, onApri, children, href = `/fonti/${f.chiave}`, largo }) {
+  const router = useRouter();
   const el = useRef(null);
   const giri = useRef(null);
   useEffect(() => {
@@ -32,7 +33,7 @@ function Tessera({ f, onApri, children, href = `/fonti/${f.chiave}`, largo }) {
   const video = f.chiave === 'youtube';
   return (
     <Link ref={el} href={href} className={`tessera vetro${video || largo ? ' video' : ''}`} data-tessera=""
-      onPointerMove={muovi} onPointerLeave={fuori} onClick={(e) => onApri(e, el.current, href)}
+      onPointerMove={muovi} onPointerLeave={fuori} onPointerEnter={() => router.prefetch(href)} onClick={(e) => onApri(e, el.current, href)}
       aria-label={`${f.nome}, ${s.testo.toLowerCase()}`}>
       <span className="faccia">{children ?? <LogoFonte chiave={f.chiave} nome={f.nome} area={video ? 9000 : 3800} massimo={video ? 72 : 60} />}</span>
       <span className="piede">
@@ -68,13 +69,17 @@ export default function GrigliaFonti({ fonti }) {
     }, box);
     return () => ctx.revert();
   }, []);
+  // La navigazione parte subito: mentre il server prepara la pagina della fonte compare il suo scheletro
+  // (loading.jsx), quindi non restano mai a schermo le scritte della pagina precedente.
   function apri(e, el, href) {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0 || ridotto()) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
     e.preventDefault();
-    const altre = [...box.current.querySelectorAll('[data-tessera]')].filter((t) => t !== el);
-    gsap.timeline({ onComplete: () => router.push(href) })
-      .to(altre, { autoAlpha: 0, scale: 0.94, duration: 0.28, ease: 'power2.in', stagger: 0.008 }, 0)
-      .to(el, { scale: 1.06, duration: 0.42, ease: 'expo.out' }, 0);
+    router.push(href);
+    if (ridotto()) return;
+    const altre = [...box.current.querySelectorAll('[data-tessera], h2, .cerca-fonti')].filter((t) => t !== el);
+    gsap.timeline()
+      .to(['#contenuto [data-logo]', '#contenuto [data-segue]', ...altre], { autoAlpha: 0, duration: 0.22, ease: 'power2.in', stagger: 0.004 }, 0)
+      .to(el, { scale: 1.04, duration: 0.35, ease: 'expo.out' }, 0);
   }
   const [cerca, setCerca] = useState('');
   const q = cerca.trim().toLowerCase();

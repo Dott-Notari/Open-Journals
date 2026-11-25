@@ -2,7 +2,6 @@ import GrigliaFonti from '@/components/GrigliaFonti';
 import Ingresso from '@/components/Ingresso';
 import Rassegna from '@/components/Rassegna';
 import Contatore from '@/components/Contatore';
-import Piede from '@/components/Piede';
 import { Completo } from '@/components/Logo';
 import { FONTI, RASSEGNA } from '@/lib/fonti';
 import { supabaseServer } from '@/lib/supabase-server';
@@ -34,7 +33,6 @@ export default async function Home() {
         </Ingresso>
         <GrigliaFonti fonti={fonti} />
       </main>
-      <Piede />
     </>
   );
 }

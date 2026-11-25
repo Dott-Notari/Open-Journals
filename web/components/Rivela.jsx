@@ -1,11 +1,14 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+
+// prima del disegno nel browser, così il contenuto non lampeggia prima dell'animazione
+const usaPrima = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 import gsap from 'gsap';
 
 // Ingresso della pagina di una fonte: il logo si «stampa» da sinistra, poi salgono i blocchi.
 export default function Rivela({ children, style }) {
   const r = useRef(null);
-  useEffect(() => {
+  usaPrima(() => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = gsap.context(() => {
       gsap.timeline({ defaults: { ease: 'expo.out' } })

@@ -13,11 +13,11 @@ import { useEstrazioniInTempoReale } from '@/lib/tempoReale';
 
 const SCHEDE = [['richieste', 'Utenti'], ['fonti', 'Fonti'], ['registro', 'Registro'], ['impostazioni', 'Impostazioni']];
 const NUMERI = [
-  ['tempo_max_minuti', "Durata massima di un'estrazione (minuti)", 5, 330],
-  ['yt_max_durata_minuti', 'Durata massima di un video (minuti)', 1, 600],
-  ['giorni_conservazione', 'Giorni di conservazione dei file', 1, 30],
-  ['parallele_per_fonte', 'Estrazioni contemporanee sulla stessa testata', 1, 4],
-  ['pausa_secondi', 'Pausa tra due richieste allo stesso sito (secondi)', 1, 5],
+  ['tempo_max_minuti', 'Durata di un\'estrazione', 5, 330, 'minuti'],
+  ['yt_max_durata_minuti', 'Durata di un video', 1, 600, 'minuti'],
+  ['giorni_conservazione', 'Conservazione dei file', 1, 30, 'giorni'],
+  ['parallele_per_fonte', 'Parallele per testata', 1, 4, 'al massimo'],
+  ['pausa_secondi', 'Pausa tra le richieste', 1, 5, 'secondi'],
 ];
 const INTERRUTTORI = [['registrazioni_aperte', 'Registrazioni aperte'], ['ansa_estrazioni_attive', 'Estrazioni ANSA'],
   ['ansa_indicizzazione_attiva', 'Indice quotidiano ANSA']];
@@ -216,15 +216,18 @@ export default function Docente() {
       {scheda === 'impostazioni' && imp && (
         <form onSubmit={salva} className="modulo vetro">
           <div className="due">
-            {NUMERI.map(([k, t, min, max]) => (
+            {NUMERI.map(([k, t, min, max, unita]) => (
               <label key={k} className="etichetta">{t}
-                <input className="campo" type="number" name={k} min={min} max={max} step={k === 'pausa_secondi' ? 0.5 : 1} required defaultValue={imp[k]} inputMode="decimal" />
+                <span className="campo-unita">
+                  <input className="campo" type="number" name={k} min={min} max={max} step={k === 'pausa_secondi' ? 0.5 : 1} required defaultValue={imp[k]} inputMode="decimal" />
+                  <span aria-hidden="true">{unita}</span>
+                </span>
               </label>
             ))}
           </div>
           <div>
             {INTERRUTTORI.map(([k, t]) => (
-              <label key={k} className="riga" style={{ justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid rgba(14,42,71,.08)', cursor: 'pointer' }}>
+              <label key={k} className="riga" style={{ justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--linea)', cursor: 'pointer' }}>
                 <span style={{ fontWeight: 550 }}>{t}</span>
                 <input type="checkbox" role="switch" className="interruttore" name={k} defaultChecked={imp[k]} />
               </label>

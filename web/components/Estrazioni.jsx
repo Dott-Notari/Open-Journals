@@ -186,7 +186,6 @@ export default function Estrazioni() {
           );
         })}
       </ul>
-      <p className="tenue piccolo" style={{ margin: 0 }}>I testi raccolti servono per studio e ricerca e non vanno ridistribuiti.</p>
     </>
   );
 }

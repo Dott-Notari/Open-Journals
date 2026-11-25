@@ -49,6 +49,11 @@ button, a, label, summary { touch-action: manipulation; -webkit-tap-highlight-co
 .riga { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .salta { position: absolute; left: -9999px; top: 12px; z-index: 100; padding: 10px 16px; border-radius: 12px; background: var(--lastra-forte); }
 .salta:focus { left: 16px; }
+.salta-lettura { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.scheletro { display: block; background: linear-gradient(90deg, var(--linea) 0%, color-mix(in srgb, var(--linea) 40%, transparent) 50%, var(--linea) 100%);
+  background-size: 200% 100%; animation: luccica 1.4s ease-in-out infinite; }
+@keyframes luccica { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .scheletro { animation: none; } }
 .nascosto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Fondale: linee di stampa in movimento (canvas) */
@@ -175,7 +180,12 @@ legend { display: flex; align-items: center; gap: 6px; font-size: 1.2rem; font-w
 .campo:hover { border-color: color-mix(in srgb, var(--accento) 45%, transparent); }
 .campo:focus-visible { outline: none; border-color: var(--accento); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accento) 22%, transparent); }
 textarea.campo { padding: 12px 16px; resize: vertical; line-height: 1.5; }
-.due { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+.due { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; align-items: stretch; }
+/* nelle griglie di campi le etichette restano in alto e i campi sulla stessa riga, anche se un'etichetta va a capo */
+.due > .etichetta > :is(.campo, .campo-unita, span:has(> .campo)) { margin-top: auto; }
+.campo-unita { position: relative; display: block; }
+.campo-unita .campo { padding-right: 96px; font-variant-numeric: tabular-nums; }
+.campo-unita > span { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--tenue); font-size: 0.9rem; font-weight: 400; pointer-events: none; }
 .gettoni { display: flex; flex-wrap: wrap; gap: 8px; }
 .gettone { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border-radius: 999px;
   border: 1px solid var(--linea); background: var(--lastra-forte); cursor: pointer; transition: background 160ms, border-color 160ms; }
@@ -188,6 +198,52 @@ textarea.campo { padding: 12px 16px; resize: vertical; line-height: 1.5; }
 .avviso.errore { background: color-mix(in srgb, var(--errore) 14%, transparent); color: var(--testo); }
 .avviso.giallo { background: color-mix(in srgb, var(--attenzione) 16%, transparent); }
 .avviso.blu { background: var(--linea); }
+
+/* Campo data e calendario */
+.campo-data .scelta-data { display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; cursor: pointer; color: var(--testo); font-weight: 400; }
+.campo-data .scelta-data svg { color: var(--tenue); flex-shrink: 0; }
+.campo-data .scelta-data[aria-expanded="true"] { border-color: var(--accento); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accento) 22%, transparent); }
+.campo-data .scelta-data[aria-invalid="true"] { border-color: var(--errore); }
+.data-nascosta { position: absolute; inset: auto 0 0 0; height: 1px; opacity: 0; pointer-events: none; border: 0; padding: 0; }
+.calendario { position: fixed; z-index: 210; width: min(320px, calc(100vw - 24px)); padding: 14px; border-radius: 22px; display: flex; flex-direction: column; gap: 10px;
+  background: var(--lastra-forte); animation: comparsa 280ms cubic-bezier(.3, 1.4, .5, 1); }
+.cal-testa { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.cal-titolo { border: 0; background: transparent; font-weight: 600; font-size: 1.05rem; text-transform: capitalize; padding: 8px 10px; border-radius: 12px; cursor: pointer; color: var(--testo); }
+.cal-titolo:hover, .cal-freccia:hover:not(:disabled) { background: var(--linea); }
+.cal-freccia { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--testo); cursor: pointer; }
+.cal-freccia:disabled { opacity: 0.25; cursor: default; }
+.cal-giorni { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-intestazione { text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--tenue); padding: 4px 0 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.cal-giorni button { aspect-ratio: 1; border: 0; border-radius: 50%; background: transparent; color: var(--testo); font-size: 0.92rem; cursor: pointer;
+  font-variant-numeric: tabular-nums; transition: background 140ms; }
+.cal-giorni button:hover:not(:disabled) { background: var(--linea); }
+.cal-giorni button[data-oggi] { box-shadow: inset 0 0 0 1.5px var(--accento); }
+.cal-giorni button[aria-pressed="true"] { background: var(--primario); color: var(--fondo); font-weight: 600; }
+.cal-giorni button:disabled { color: var(--tenue); opacity: 0.35; cursor: not-allowed; }
+.cal-giorni button:focus-visible, .cal-scelte button:focus-visible, .cal-piede button:focus-visible, .cal-titolo:focus-visible, .cal-freccia:focus-visible { outline: 2.5px solid var(--accento); outline-offset: 1px; }
+.cal-scelte { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.cal-scelte.anni { grid-template-columns: repeat(4, 1fr); max-height: 252px; overflow-y: auto; }
+.cal-scelte button { min-height: 44px; border: 0; border-radius: 14px; background: transparent; color: var(--testo); cursor: pointer; text-transform: capitalize; font-variant-numeric: tabular-nums; }
+.cal-scelte button:hover:not(:disabled) { background: var(--linea); }
+.cal-scelte button[aria-selected="true"] { background: var(--primario); color: var(--fondo); font-weight: 600; }
+.cal-scelte button:disabled { opacity: 0.3; cursor: not-allowed; }
+.cal-piede { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 8px; border-top: 1px solid var(--linea); }
+.cal-piede button { min-height: 36px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--linea); color: var(--testo); font-size: 0.88rem; cursor: pointer; }
+.cal-nota { margin: 0; font-size: 0.82rem; color: var(--tenue); line-height: 1.4; }
+@media (prefers-reduced-motion: reduce) { .calendario { animation: none; } }
+
+/* Accedi con Google: colori, font e misure delle linee guida di Google Identity */
+.pulsante-google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 44px; padding: 0 12px; border-radius: 999px;
+  background: #FFFFFF; border: 1px solid #747775; color: #1F1F1F; font-family: 'Roboto', arial, sans-serif; font-weight: 500; font-size: 14px; line-height: 20px;
+  letter-spacing: 0.25px; cursor: pointer; transition: background 160ms, box-shadow 160ms; }
+.pulsante-google:hover { background: #F8F9FA; box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15); }
+.pulsante-google:focus-visible { outline: 2.5px solid var(--accento); outline-offset: 3px; }
+.pulsante-google:disabled { opacity: 0.7; cursor: progress; }
+.pulsante-google-logo { display: grid; place-items: center; width: 20px; height: 20px; }
+:root[data-tema="scuro"] .pulsante-google { background: #131314; border-color: #8E918F; color: #E3E3E3; }
+@media (prefers-color-scheme: dark) { :root:not([data-tema="chiaro"]) .pulsante-google { background: #131314; border-color: #8E918F; color: #E3E3E3; } }
+.separatore { display: flex; align-items: center; gap: 12px; margin: 0; }
+.separatore::before, .separatore::after { content: ""; flex: 1; height: 1px; background: var(--linea); }
 
 /* Info: piccola nota che nasce dall'icona */
 .info { position: relative; display: inline-flex; }
@@ -213,7 +269,10 @@ td { padding: 12px; border-bottom: 1px solid var(--linea); vertical-align: middl
 .interruttore:checked { background: var(--ok); }
 .interruttore:checked::after { transform: translateX(20px); }
 
-.piede-pagina { max-width: 1240px; margin: 0 auto 28px; padding: 22px 28px; display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: center; justify-content: space-between; }
+.piede-pagina { max-width: 1240px; margin: 40px auto 28px; padding: 24px 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px 40px; align-items: start; }
+@media (max-width: 1272px) { .piede-pagina { margin-left: 16px; margin-right: 16px; } }
+.piede-colonna { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; min-height: 52px; justify-content: flex-start; }
+.piede-nota { grid-column: 1 / -1; margin: 0; padding-top: 14px; border-top: 1px solid var(--linea); }
 
 @media (prefers-reduced-motion: reduce) {
   .nastro, .barra i, .gira, .nota { animation: none; }

@@ -4,7 +4,8 @@ import { Completo } from '@/components/Logo';
 
 export const metadata = { title: 'Accesso' };
 
-export default function PaginaAccesso() {
+export default async function PaginaAccesso({ searchParams }) {
+  const { errore } = await searchParams;
   return (
     <main id="contenuto" style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: '40px 20px' }}>
       <Ingresso style={{ display: 'flex', flexWrap: 'wrap', gap: '40px 64px', alignItems: 'center', justifyContent: 'center', maxWidth: 1100, width: '100%' }}>
@@ -13,7 +14,7 @@ export default function PaginaAccesso() {
           <p data-segue=""><span className="spaziato">Sociologia della comunicazione interculturale</span><br />
             <span className="tenue">Responsabili scientifici: Vincenzo Esposito, Francesco Notari</span></p>
         </div>
-        <div data-segue=""><Accesso /></div>
+        <div data-segue=""><Accesso errore={errore} /></div>
       </Ingresso>
     </main>
   );

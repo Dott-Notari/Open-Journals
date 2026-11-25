@@ -5,6 +5,7 @@ import { LoaderCircle, MailCheck, ArrowRight } from 'lucide-react';
 import Segmenti from './Segmenti';
 import { Controlli } from './Nav';
 import { supabase } from '@/lib/supabase';
+import AccessoGoogle, { googleAttivo } from './AccessoGoogle';
 
 // Messaggi di Supabase Auth, per codice (più stabile del testo) e per testo.
 const MESSAGGI = {
@@ -24,11 +25,17 @@ const MESSAGGI = {
 };
 const traduci = (e) => MESSAGGI[e.code] || MESSAGGI[e.message] || `Registrazione non riuscita (${e.code || e.message}): avvisa il docente.`;
 
-export default function Accesso() {
+const ERRORI_RITORNO = {
+  dominio: 'Indirizzo non ammesso: accedi con la tua email istituzionale.',
+  chiuse: 'Le registrazioni sono chiuse: chiedi al docente.',
+  errore: 'Accesso non riuscito: riprova o usa email e password.',
+};
+
+export default function Accesso({ errore }) {
   const router = useRouter();
   const [scheda, setScheda] = useState('accedi');
   const [attesa, setAttesa] = useState(false);
-  const [msg, setMsg] = useState(null);
+  const [msg, setMsg] = useState(errore && ERRORI_RITORNO[errore] ? { tipo: 'errore', testo: ERRORI_RITORNO[errore] } : null);
 
   async function invia(e) {
     e.preventDefault();
@@ -58,6 +65,12 @@ export default function Accesso() {
         <Segmenti voci={[['accedi', 'Accedi'], ['registrati', 'Registrati']]} valore={scheda} onCambio={(k) => { setScheda(k); setMsg(null); }} etichetta="Accesso o registrazione" />
         <span className="voci"><Controlli /></span>
       </div>
+      {googleAttivo && (
+        <>
+          <AccessoGoogle testo={registra ? 'Registrati con Google' : 'Accedi con Google'} onErrore={(t) => setMsg({ tipo: 'errore', testo: t })} />
+          <p className="separatore tenue piccolo"><span>oppure con email e password</span></p>
+        </>
+      )}
       {registra && (
         <div className="due" style={{ gridTemplateColumns: '1fr 1fr' }}>
           <label className="etichetta">Nome<input className="campo" name="nome" autoComplete="given-name" required maxLength={60} /></label>

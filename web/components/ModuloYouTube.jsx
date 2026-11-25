@@ -6,6 +6,8 @@ import Segmenti from './Segmenti';
 import Azioni from './Azioni';
 import Info from './Info';
 import { inviaEstrazione, lista } from '@/lib/invia';
+import { oggi } from '@/lib/fonti';
+import CampoData from './CampoData';
 
 const MODI = [['sorgenti', 'Link', Link2], ['ricerca', 'Ricerca', Search]];
 const TESTO = [['auto', 'Automatico'], ['sottotitoli', 'Sottotitoli'], ['whisper', 'Whisper']];
@@ -16,6 +18,8 @@ export default function ModuloYouTube() {
   const [modo, setModo] = useState('sorgenti');
   const [testo, setTesto] = useState('auto');
   const [media, setMedia] = useState('entrambi');
+  const [dal, setDal] = useState('');
+  const [al, setAl] = useState('');
   const [invio, setInvio] = useState(false);
   const [errore, setErrore] = useState('');
 
@@ -56,8 +60,8 @@ export default function ModuloYouTube() {
             </div>
           )}
           <div className="due">
-            <label className="etichetta">Dal<input className="campo" type="date" name="dal" /></label>
-            <label className="etichetta">Al<input className="campo" type="date" name="al" /></label>
+            <CampoData name="dal" etichetta="Dal" value={dal} onChange={setDal} min="2005-04-23" max={al || oggi()} />
+            <CampoData name="al" etichetta="Al" value={al} onChange={setAl} min={dal || '2005-04-23'} max={oggi()} />
             <label className="etichetta">Numero massimo<input className="campo" type="number" name="max" min={1} inputMode="numeric" placeholder="Tutti" /></label>
           </div>
           <label className="etichetta">Parole nel titolo o nella descrizione

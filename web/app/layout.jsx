@@ -4,6 +4,7 @@ import './globals.css';
 import Linee from '@/components/Linee';
 import Nav from '@/components/Nav';
 import Attesa from '@/components/Attesa';
+import Piede from '@/components/Piede';
 import { supabaseServer } from '@/lib/supabase-server';
 
 export const metadata = {
@@ -37,6 +38,7 @@ export default async function Radice({ children }) {
           <>
             {profilo && <Nav docente={profilo.ruolo === 'docente'} nome={profilo.nome} email={user.email} foto={foto?.signedUrl} />}
             {children}
+            <Piede />
           </>
         )}
       </body>
