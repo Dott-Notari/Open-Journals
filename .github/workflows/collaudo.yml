@@ -27,7 +27,7 @@ concurrency:
 jobs:
   collaudo:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 345   # con oltre quaranta fonti il collaudo completo dura a lungo
     steps:
       - name: Controllo dei parametri
         env:
