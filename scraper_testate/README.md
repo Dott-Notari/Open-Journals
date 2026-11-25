@@ -2,6 +2,56 @@
 
 Questa copia, in `Desktop/Siti_API/motore_testate`, estende il motore di `Desktop/scraper_testate` con quanto emerso dalla mappatura con reverse-api-engineer (cartelle `Siti_API/<testata>/`). La copia originale non è stata modificata. Le estrazioni finiscono in `Desktop/Siti_API/estrazioni/<testata>/…`, con la stessa struttura di sempre. Le schede delle testate, con le modalità possibili per ciascuna e gli esiti delle prove, sono in `Desktop/Siti_API/schede_testate/`.
 
+## Novità della versione 1.14
+
+**Rassegna stampa.** Un solo comando interroga più testate e produce un corpus unico:
+
+```
+python scraper.py rassegna napoli,verita,corriere --dal 2026-11-01 --al 2026-11-07 --parole "de bruyne"
+python scraper.py rassegna tutte --dal 2026-11-20 --al 2026-11-20 --cerca-in titolo --parole "migrant*"
+```
+
+Si indicano chiavi e gruppi (`italiane`, `estere`, `napoli`, `tutte`) separati da virgola. Ogni testata usa il suo metodo migliore: la ricerca del sito quando ci sono parole chiave e la testata la consente, altrimenti l'archivio per data. Restano le regole di sempre (robots.txt, pause, nessun aggiramento di paywall). Il risultato finisce in `estrazioni/_rassegna/<data>_rassegna-…/` e ha la struttura di una normale estrazione:
+- un file per articolo, `corpus_completo.docx`, `indice_articoli.xlsx`, `corpus.jsonl` e `corpus_tlab.txt`, con la testata nella colonna Testata e nella variabile T-LAB `*TESTATA`;
+- `scheda_rassegna.txt`, con l'esito testata per testata;
+- `testate/<chiave>/scheda_estrazione.txt`, con i dettagli di ciascuna testata.
+
+Una testata che non si può interrogare viene saltata e segnalata, senza fermare le altre. Se la ricerca si interrompe, si rilancia lo stesso comando e riparte da dove si era fermata. `--max` vale per ciascuna testata.
+
+**Testate napoletane (gruppo `napoli`).**
+
+| Chiave | Testata | Ricerca per data | Ricerca del sito |
+|---|---|---|---|
+| `tuttonapoli` | TuttoNapoli | archivio completo, tramite gli identificativi progressivi degli articoli | no (il robots.txt esclude la paginazione) |
+| `calcionapoli24` | CalcioNapoli24 | dal 2011, sitemap numerate in ordine cronologico | no (esclusa dal robots.txt) |
+| `areanapoli` | AreaNapoli | sitemap a blocchi da 25.000 articoli | no |
+| `calcionapoli1926` | CalcioNapoli1926 | dal 2016, API di WordPress | sì, API di WordPress |
+| `spazionapoli` | SpazioNapoli | dal 2020, sitemap annuali (il robots.txt esclude gli articoli 2011-2019) | no (esclusa dal robots.txt) |
+| `ilnapolista` | il Napolista | dal 2010, API di WordPress, tutto il sito | sì, API di WordPress |
+
+Per la sola categoria Napoli del Napolista si usa `python scraper.py elenco https://www.ilnapolista.it/category/napoli/ --dal …`.
+
+**Testate venezuelane (gruppo `venezuela`).** Sono 18 testate, in spagnolo salvo tre in inglese.
+
+| Metodo per data | Testate | Ricerca del sito |
+|---|---|---|
+| API di WordPress con filtro per date | `ultimasnoticias`, `diariovea`, `runrunes`, `cronicauno`, `elestimulo`, `elcarabobeno`, `venezuelanalysis` (en), `caracaschronicles` (en) | sì |
+| sitemap degli articoli in ordine cronologico, filtrate per data di modifica | `elnacional`, `eldiario`, `correodelorinoco`, `elpitazo` (dal dicembre 2025), `caraotadigital`, `informe21`, `avn` (dal 2024), `telesur` (en, luglio 2024 - novembre 2025), `primicia` | no |
+| solo sitemap news (ultimi giorni) | `2001online` | no |
+
+Con le sitemap si tengono gli articoli modificati nel periodo o nei sette giorni successivi, e la data di pubblicazione si verifica su ogni articolo. Un articolo corretto molto tempo dopo la pubblicazione può sfuggire. Su El Pitazo gli articoli anteriori al dicembre 2025 risultano modificati in blocco, quindi la ricerca per data è affidabile solo da quel mese; per il periodo precedente conviene `--fonte wayback`. Le sitemap di teleSUR English si fermano al 19 novembre 2025.
+
+Non sono incluse:
+- El Universal e Globovisión: il robots.txt vieta l'accesso automatico.
+- TalCual ed El Periodiquito: hanno una protezione anti-bot.
+- Efecto Cocuyo e La Patilla: negano gli articoli allo strumento.
+- El Tiempo: il sito non risponde.
+- Frontera Digital: il dominio è in vendita.
+- Panorama: offline dal 2023.
+- El Luchador: non ha né API né sitemap degli articoli.
+
+I motivi sono anche in `schede_testate/README.md`.
+
 ## Novità della versione 1.13
 
 **Rispetto del robots.txt.** Prima di ogni richiesta lo strumento legge il robots.txt della testata secondo lo standard RFC 9309, con i caratteri jolly che il modulo standard di Python ignora. Gli indirizzi esclusi non vengono scaricati e sono contati nella scheda, e il Crawl-delay dichiarato sostituisce la pausa quando è più lungo (Daily Mirror: 10 secondi). Come prima, lo strumento si presenta con un User-Agent che dichiara la finalità di ricerca e non aggira paywall né protezioni anti-bot.

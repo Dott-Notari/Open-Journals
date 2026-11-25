@@ -6,7 +6,7 @@ Piattaforma del corso di Sociologia della comunicazione interculturale per costr
 
 ```
 scraper-testate-piattaforma/
-├── scraper_testate/            motore Python 1.13, identico alla versione locale
+├── scraper_testate/            motore Python 1.14, identico alla versione locale
 ├── piattaforma/                collegamento tra motore, Supabase e GitHub Actions
 │   ├── esegui_estrazione.py         esegue un'estrazione registrata (testate o YouTube)
 │   ├── testate_piattaforma.py       motore con ZipMemoria, indice per l'ANSA, nota di piattaforma
@@ -35,10 +35,12 @@ scraper-testate-piattaforma/
     ├── migrations/0004_ferma_riprendi.sql fermare un'estrazione e riprenderla dal punto in cui si è fermata
     ├── migrations/0005_velocita.sql       estrazioni parallele per testata e pausa regolabile
     ├── migrations/0006_motore_113.sql     motore 1.13: fonte degli indirizzi, nuove testate estere
+    ├── migrations/0007_profili_battito.sql profilo con foto, sospensione, spia del motore, tempo reale
+    ├── migrations/0008_motore_114_rassegna.sql motore 1.14: testate di Napoli e del Venezuela, rassegna stampa
     └── docente_iniziale.sql         assegnazione del ruolo di docente dopo la prima registrazione
 ```
 
-La cartella scraper_testate non viene modificata dalla piattaforma: per aggiornare il motore si sostituisce l'intera cartella con la nuova versione. Tutto ciò che serve alla messa in linea sta in piattaforma, che importa il motore e chiama motore.esecuzione.esegui() con ZipMemoria per le testate e motore.youtube.esegui_youtube() in una cartella temporanea per YouTube.
+La cartella scraper_testate non viene modificata dalla piattaforma: per aggiornare il motore si sostituisce l'intera cartella con la nuova versione. Tutto ciò che serve alla messa in linea sta in piattaforma, che importa il motore e chiama motore.esecuzione.esegui() con ZipMemoria per le testate, motore.rassegna.esegui_rassegna() per la rassegna stampa e motore.youtube.esegui_youtube() in una cartella temporanea per YouTube.
 
 ## Come funziona
 

@@ -14,6 +14,7 @@ from collections import deque
 from contextlib import contextmanager
 
 RE_RACCOLTO = re.compile(r"^\s*\[(\d+)\]\s")
+RE_TESTATA = re.compile(r"^(\S.*)\s+\((\d+) di (\d+)\)$")   # intestazione di ogni testata nella rassegna
 RE_LENTO = re.compile(r"il sito risponde (429|503|5\d\d)|chiede \d+ s tra una richiesta")
 RE_RETE = re.compile(r"^\s*rete: ")
 FINESTRA = 300     # secondi di log considerati per il segnale
@@ -39,6 +40,10 @@ class Stato:
         self.fermata_richiesta = False
         self.eventi = deque(maxlen=200)           # (istante, tipo) dei problemi recenti
         self.ultimo_avanzamento = time.monotonic()
+        self.rete = None              # se impostata, ogni nuova richiesta conta come segno di vita
+        self._richieste = 0
+        self._base = 0                # articoli delle testate già concluse (rassegna stampa)
+        self._parziale = 0
         self._ferma = threading.Event()
         self._intervallo = intervallo
         self._battito = threading.Thread(target=self._ciclo, daemon=True)
@@ -51,7 +56,17 @@ class Stato:
             self.righe.append(riga)
             m = RE_RACCOLTO.match(riga)
             if m:
-                self.articoli = max(self.articoli, int(m.group(1)))
+                self._parziale = max(self._parziale, int(m.group(1)))
+                self.articoli = self._base + self._parziale
+                self.ultimo_avanzamento = time.monotonic()
+            t = RE_TESTATA.match(riga)
+            if t:
+                # nuova testata della rassegna: la numerazione del motore riparte da 1
+                self._base += self._parziale
+                self._parziale = 0
+                self.bloccato = False      # un blocco riguarda il sito di prima, non il prossimo
+                self.eventi.clear()
+                self.fase(f"estrazione, testata {t.group(2)} di {t.group(3)}: {t.group(1).strip()}")
             if riga.strip():
                 self.ultima = riga.strip()[:300]
         if "Fermata per il limite di tempo" in testo:
@@ -96,10 +111,13 @@ class Stato:
 
     def invia(self):
         try:
+            if self.rete is not None and self.rete.richieste != self._richieste:
+                self._richieste = self.rete.richieste
+                self.ultimo_avanzamento = time.monotonic()
             segnale, testo = self.segnale()
             self.sb.aggiorna("estrazioni", {
                 "articoli": self.articoli, "esaminati": self.esaminati,
-                "avanzamento": f"{self.fase_corrente}: {self.ultima}"[:500],
+                "avanzamento": f"{self.fase_corrente} | {self.ultima}"[:500],
                 "battito": datetime.now(timezone.utc).isoformat(), "segnale": segnale, "segnale_testo": testo},
                 id=f"eq.{self.id}")
             riga = self.sb.seleziona("estrazioni", select="richiesta", id=f"eq.{self.id}")

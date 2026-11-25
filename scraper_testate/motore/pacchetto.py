@@ -35,6 +35,15 @@ COPERTURA = {
     "mirror": ("1998-01-01", "sitemap mensili filtrate per data di modifica", None),
     "elmundo": (None, "emeroteca giornaliera (profondità non verificata oltre il 2015)", None),
     "guardian": ("1999-01-01", "API ufficiale con chiave", "API ufficiale"),
+    # testate napoletane (verifica del 24 novembre 2026)
+    "tuttonapoli": ("2010-01-01", "completo: identificativi progressivi degli articoli, estremi del periodo "
+                                  "trovati con una ricerca binaria (circa un minuto prima di iniziare)", None),
+    "calcionapoli24": ("2011-03-30", "completo: sitemap numerate in ordine cronologico", None),
+    "areanapoli": (None, "sitemap a blocchi di 25.000 articoli (circa un anno ciascuno), dal più recente", None),
+    "calcionapoli1926": ("2016-10-15", "completo tramite API WordPress", "filtro per date sul sito"),
+    "spazionapoli": ("2020-01-01", "sitemap annuali; il robots.txt esclude gli articoli 2011-2019", None),
+    "ilnapolista": ("2010-03-24", "completo tramite API WordPress (tutto il sito, non solo la categoria Napoli)",
+                    "filtro per date sul sito"),
 }
 
 STATO = {"guardian": "non attivata: serve la chiave GUARDIAN_API_KEY, il progetto ha scelto di non usarla"}
@@ -47,13 +56,15 @@ def regole():
     from .testate import TESTATE
     from .testate.base import Testata
     from .testate.ricerca import MOTORI
-    from .testate.estere import ESTERE
-    estere = {t.chiave for t in ESTERE}
+    from .testate import gruppo_di
     out = []
     for k, t in TESTATE.items():
         sc = S.get(k, {})
-        dal, nota_arch, prof_ric = COPERTURA.get(k, (None, "", None))
         motore = MOTORI.get(k)
+        inizio = getattr(t, "INIZIO", None)
+        dal, nota_arch, prof_ric = COPERTURA.get(k) or (
+            inizio.isoformat() if inizio else None, t.note_ricerca_data,
+            "filtro per date sul sito" if motore else None)
         ha_ricerca = bool(motore) or k == "guardian"
         pag = t.pagina_elenco("https://esempio/elenco/", 2)
         solo_prima = pag is None
@@ -62,8 +73,8 @@ def regole():
         fonti = ["auto", "archivio"] + (["ricerca"] if ha_ricerca else []) + ["wayback", "gdelt"]
         out.append({
             "chiave": k, "nome": t.nome, "sito": sc.get("sito", ""), "dominio": t.dominio,
-            "lingua": "en" if k in ("independent", "mirror", "guardian") else "es" if k == "elmundo" else "it",
-            "gruppo": "estere" if k in estere else "italiane",
+            "lingua": t.lingua,
+            "gruppo": gruppo_di(k),
             "stato": STATO.get(k, "attiva"), "piattaforma_sito": sc.get("piattaforma", ""),
             "modalita": {
                 "data": {
@@ -189,7 +200,31 @@ def _md_interfaccia(campi):
           "- `tempo_max` (secondi) vale per lo scaricamento degli articoli, non per la raccolta degli indirizzi.",
           "- Con Wayback e GDELT si usano solo gli indirizzi; gli articoli si scaricano dal sito della testata.",
           "- Doppioni (stesso titolo e data) scartati; ricerche che non arrivano al periodo passano all'archivio.", "",
-          "## Novità rispetto alla versione 1.12", "",
+          "## Rassegna stampa (novità della 1.14)", "",
+          "Una sola estrazione su più testate, con un corpus unico:", "", "```python",
+          "from motore.rassegna import esegui_rassegna",
+          "p = Parametri(modalita=\"data\", dal=\"2026-11-01\", al=\"2026-11-07\", parole=[\"de bruyne\"],",
+          "              formati=[\"xlsx\", \"jsonl\", \"tlab\"])",
+          "zip_bytes = esegui_rassegna(p, [\"napoli\", \"verita\"], ZipMemoria(), None, rete=Rete(pausa=2), tempo_max=None)",
+          "```", "",
+          "- Il secondo argomento accetta chiavi e gruppi (`italiane`, `estere`, `napoli`, `venezuela`, `tutte`); `p.testata` è ignorato.",
+          "- Ogni testata usa il suo metodo migliore (ricerca del sito se ci sono parole e la testata la consente, "
+          "altrimenti archivio), con le regole di sempre.",
+          "- Lo zip contiene il corpus unico (un file per articolo, `corpus_completo.docx`, `indice_articoli.xlsx`, "
+          "`corpus.jsonl`, `corpus_tlab.txt` con la variabile `*TESTATA`), `scheda_rassegna.txt` con l'esito per testata "
+          "e `testate/<chiave>/scheda_estrazione.txt`.",
+          "- Una testata che non si può interrogare viene saltata e segnalata nella scheda della rassegna, senza fermare le altre.",
+          "- `tempo_max` vale per l'insieme delle testate; `max_articoli` vale per ciascuna testata.", "",
+          "## Novità rispetto alla versione 1.13", "",
+          "- Rassegna stampa (`motore/rassegna.py`, comando `python scraper.py rassegna`).",
+          "- Testate napoletane, gruppo `napoli`: tuttonapoli, calcionapoli24, areanapoli, calcionapoli1926, "
+          "spazionapoli, ilnapolista (`motore/testate/napoli.py`).",
+          "- Testate venezuelane, gruppo `venezuela` (18 testate, `motore/testate/venezuela.py`): API di WordPress, "
+          "sitemap in ordine cronologico filtrate per data di modifica, una sola testata con la sola sitemap news.",
+          "- Attributo `lingua` di ogni testata (it, es, en), riportato nelle regole.",
+          "- `esegui` accetta il parametro facoltativo `esito` (dizionario con articoli e stato), usato dalla rassegna stampa.",
+          "- Gruppi di testate in `motore.testate.GRUPPI`; `gruppo_di(chiave)` dà il gruppo di una testata.", "",
+          "## Novità della versione 1.13 rispetto alla 1.12", "",
           "- Nuovi campi `usa_ricerca`, `fonte`, `parole_gdelt` (i vecchi parametri restano validi).",
           "- Nuove testate: independent, mirror, elmundo, guardian (non attivata). Libero riscritto (nuova piattaforma "
           "del sito), La Verità per data via API, Mirror filtrato per data di modifica.",
@@ -206,15 +241,16 @@ ISTRUZIONI = """# Istruzioni per Claude: aggiornamento della piattaforma di scra
 Gestisco una piattaforma online che permette a studenti e ricercatori del corso di Sociologia della
 comunicazione interculturale di estrarre corpora di articoli di giornale. La piattaforma usa il motore Python
 «Scraper didattico delle testate» chiamando `motore.esecuzione.esegui(parametri, ZipMemoria(), None)`.
-Ho aggiornato il motore in locale alla versione {versione}: nuove testate, ricerca con i motori dei siti,
-fonti Wayback e GDELT, rispetto del robots.txt. Ora devo portare la piattaforma allo stesso livello.
+Ho aggiornato il motore in locale alla versione {versione}: nuove testate (sei testate sportive
+napoletane e diciotto testate venezuelane), rassegna stampa su più testate con un corpus unico, ricerca con i motori dei siti, fonti Wayback
+e GDELT, rispetto del robots.txt. Ora devo portare la piattaforma allo stesso livello.
 
 ## File allegati
 - `02_regole_testate.json`: per ogni testata le modalità consentite, le coperture, i vincoli e i testi d'aiuto.
   È la fonte di verità per le impostazioni.
 - `03_regole_testate.md`: la stessa cosa in forma leggibile.
 - `04_interfaccia_motore.md`: come chiamare il motore, i campi di `Parametri`, le regole di esecuzione e le
-  novità rispetto alla versione 1.12.
+  novità rispetto alle versioni precedenti, compresa la rassegna stampa.
 - `05_esiti_prove.json`: esiti delle prove reali del {oggi}, caso per caso.
 - `06_motore_{versione_file}.zip`: il codice aggiornato del motore (cartella `motore/` e `scraper.py`).
 - `07_schede/`: schede dettagliate per testata (Markdown) e riepilogo Excel.
@@ -226,7 +262,7 @@ fonti Wayback e GDELT, rispetto del robots.txt. Ora devo portare la piattaforma 
    della piattaforma e segnalamele.
 3. **Aggiorna le impostazioni per testata** seguendo `02_regole_testate.json`:
    - elenco delle testate selezionabili: solo quelle con `"stato": "attiva"`, raggruppate per `gruppo`
-     (italiane, estere);
+     (italiane, estere, napoli, venezuela);
    - per ogni testata mostra solo le opzioni consentite: la scelta della fonte (`fonti_consentite`), l'opzione
      «usa la ricerca del sito» solo se `parole_con_ricerca_del_sito.disponibile` è vero, l'avviso «solo la
      prima pagina» per gli elenchi con `solo_prima_pagina`;
@@ -237,7 +273,12 @@ fonti Wayback e GDELT, rispetto del robots.txt. Ora devo portare la piattaforma 
    - pausa: mai sotto `pausa_minima_secondi` della testata.
 4. **Aggiorna la chiamata al motore**, passando i nuovi campi `fonte`, `usa_ricerca` e `parole_gdelt`, e gestisci
    l'eccezione `NonSupportato` mostrando il suo messaggio all'utente.
-5. **Restituiscimi** l'elenco delle modifiche, i file modificati completi e una breve lista di controlli da fare
+5. **Aggiungi la rassegna stampa** (sezione «Rassegna stampa» di `04_interfaccia_motore.md`): nel form, una scelta
+   multipla di testate con caselle per gruppo (italiane, estere, napoli, venezuela) che chiama `esegui_rassegna` quando le
+   testate scelte sono più di una. Mostra all'utente che ogni testata usa il proprio metodo e copertura, e che
+   l'esito per testata è nella `scheda_rassegna.txt` dello zip. Mantieni la stessa durata massima delle estrazioni
+   singole, applicata all'intera rassegna stampa.
+6. **Restituiscimi** l'elenco delle modifiche, i file modificati completi e una breve lista di controlli da fare
    dopo la pubblicazione (per esempio un'estrazione di prova per testata, con le date indicate in `05_esiti_prove.json`).
 
 ## Vincoli da rispettare (non negoziabili)

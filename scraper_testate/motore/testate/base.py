@@ -34,6 +34,7 @@ class Testata:
     fine_testo = ()
     date_nell_url = False
     note_ricerca_data = ""
+    lingua = "it"
 
     # ------------------------------------------------ URL
     def riconosce(self, url):

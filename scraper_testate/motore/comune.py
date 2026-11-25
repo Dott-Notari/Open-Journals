@@ -106,6 +106,7 @@ def json_ld(soup):
                     "autori": [a.get("name", "") if isinstance(a, dict) else str(a) for a in autori],
                     "libero": libero,
                     "descrizione": d.get("description") or "",
+                    "corpo": d.get("articleBody") or "",
                 }
     return {}
 

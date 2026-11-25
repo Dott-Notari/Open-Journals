@@ -123,7 +123,7 @@ def main(chiavi=None):
     sb = Supabase()
     aggiorna_disp = os.environ.get("AGGIORNA_DISPONIBILITA", "").lower() == "true"
     # solo le fonti presenti sulla piattaforma (il Guardian, per esempio, non è attivato)
-    sulla_piattaforma = [r["chiave"] for r in sb.seleziona("stato_testate", select="chiave", order="ordine")]
+    sulla_piattaforma = [r["chiave"] for r in sb.seleziona("stato_testate", select="chiave", tipo="neq.rassegna", order="ordine")]
     chiavi = chiavi or sulla_piattaforma
     sconosciute = [k for k in chiavi if k != "youtube" and k not in TESTATE]
     if sconosciute:

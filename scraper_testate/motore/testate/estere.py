@@ -21,6 +21,7 @@ MESI_EN = {m: i for i, m in enumerate(("jan", "feb", "mar", "apr", "may", "jun",
 
 class Independent(Testata):
     chiave, nome, dominio = "independent", "The Independent", "independent.co.uk"
+    lingua = "en"
     re_articolo = re.compile(r"^https://www\.independent\.co\.uk/(?!advisor/|extras/indybest/).+-b\d{6,}\.html$")
     selettori_corpo = ("#articleContent",)
     fine_testo = ("join our commenting forum", "read more", "sign up to")
@@ -57,6 +58,7 @@ class Independent(Testata):
 
 class Mirror(_Mensile):
     chiave, nome, dominio = "mirror", "Daily Mirror", "mirror.co.uk"
+    lingua = "en"
     modello_file = "https://www.mirror.co.uk/sitemaps/map_art_{anno}-{mese}-01.xml"
     re_articolo = re.compile(r"^https://www\.mirror\.co\.uk/(?!all-about/|authors/|search/).+-\d{6,}$")
     paginazione = None
@@ -86,6 +88,7 @@ class Mirror(_Mensile):
 
 class ElMundo(Testata):
     chiave, nome, dominio = "elmundo", "El Mundo", "elmundo.es"
+    lingua = "es"
     re_articolo = re.compile(r"^https://www\.elmundo\.es/(?!elmundo/hemeroteca/).+/\d{4}/\d{2}/\d{2}/[0-9a-f]{24}\.html$")
     selettori_corpo = ("div.ue-c-article__body",)
     date_nell_url = True
@@ -118,6 +121,7 @@ class Guardian(Testata):
     """API ufficiale (Guardian Open Platform). Serve una chiave gratuita, da richiedere su
     https://open-platform.theguardian.com/access/ e da impostare nella variabile GUARDIAN_API_KEY."""
     chiave, nome, dominio = "guardian", "The Guardian", "theguardian.com"
+    lingua = "en"
     re_articolo = re.compile(r"^https://www\.theguardian\.com/[a-z0-9-]+(?:/[a-z0-9-]+)*/\d{4}/[a-z]{3}/\d{2}/[^/]+$")
     paginazione = "{base}?page={n}"
     note_ricerca_data = "API ufficiale The Guardian Open Platform (content.guardianapis.com), archivio dal 1999"

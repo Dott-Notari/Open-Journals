@@ -61,7 +61,10 @@ def main():
     cartella_tmp = None
     pubblico(f"[avvio] fonte {dati['fonte']}, modalità {dati['modalita']}")
     try:
-        if dati["fonte"] == "youtube":
+        if dati["fonte"] == "rassegna":
+            from .testate_piattaforma import esegui_rassegna_piattaforma
+            esito = esegui_rassegna_piattaforma(dati, sb, stato, impostazioni)
+        elif dati["fonte"] == "youtube":
             from . import youtube_piattaforma as Y
             cartella_tmp = Y.nuova_cartella_temporanea()
             esito = Y.esegui_video(dati, sb, stato, impostazioni, cartella_tmp)

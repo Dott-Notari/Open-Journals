@@ -12,6 +12,7 @@ from . import MOTORE  # noqa: F401
 from motore import comune as C
 from motore.destinazioni import ZipMemoria
 from motore.esecuzione import cartella_per, esegui
+from motore.rassegna import chiavi_rassegna, descrittore_rassegna, esegui_rassegna
 from motore.modello import Parametri
 from motore.rete import Rete
 
@@ -83,6 +84,7 @@ def prepara_ansa(par, sb, rete, stato):
 def esegui_testata(dati, sb, stato, impostazioni):
     par = parametri_da_riga(dati)
     rete = Rete(pausa=float(dati.get("pausa") or 2), log=stato.log)
+    stato.rete = rete
     with tempfile.TemporaryDirectory() as tmp:
         radice = cartella_per(par, radice=tmp).name     # stesso nome della cartella locale
     righe_nota = []
@@ -132,4 +134,73 @@ def esegui_testata(dati, sb, stato, impostazioni):
         "errore": errore,
         "file": [{"nome": f"{radice}.zip", "tipo": "zip", "dati": dati_zip, "mime": "application/zip"}]
                 + ([{"nome": "_ripresa.zip", "tipo": "ripresa", "dati": ripresa.getvalue(), "mime": "application/zip"}] if interrotta else []),
+    }
+
+
+class TempoMax(float):
+    """Limite di tempo della rassegna stampa. Il motore calcola il tempo residuo prima di ogni
+    testata (tempo_max - trascorso): se lo studente ha chiesto di fermare, o il limite è già
+    scattato, il residuo vale zero e le testate rimaste non partono."""
+
+    def __new__(cls, secondi, stato):
+        x = super().__new__(cls, secondi)
+        x.stato = stato
+        return x
+
+    def __sub__(self, altro):
+        if self.stato.fermata_richiesta or self.stato.fermata_per_tempo:
+            return 0.0
+        return float(self) - altro
+
+
+RE_RIGA_TESTATA = re.compile(r"^  (.{24})\s+(\d+)\s+(\d+)  (.+)$", re.M)
+
+
+def esegui_rassegna_piattaforma(dati, sb, stato, impostazioni):
+    """Rassegna stampa: più testate, un corpus unico. Ogni testata usa il suo metodo migliore."""
+    p = dati["parametri"]
+    par = Parametri(
+        modalita="data", dal=p["dal"], al=p["al"], parole=list(p.get("parole", [])),
+        tutte=bool(p.get("tutte", False)), escludi_riservati=False, cerca_in=p.get("cerca_in", "testo"),
+        formati=list(p.get("formati", [])), max_articoli=p.get("max_articoli"),
+        usa_ricerca=bool(p.get("usa_ricerca", True)))
+    chiavi = chiavi_rassegna(p["testate"])
+    radice = f"{date.today().isoformat()}_{descrittore_rassegna(par, chiavi)}"
+    righe = ["Rassegna stampa: ogni testata è stata interrogata con il proprio metodo e la propria",
+             "copertura (ricerca del sito se ci sono parole chiave e la testata la consente, altrimenti",
+             "archivio per data). L'esito di ciascuna testata è in scheda_rassegna.txt. Il limite di",
+             "tempo vale per l'intera rassegna, il numero massimo di articoli per ciascuna testata.",
+             "Nella rassegna l'ANSA copre solo gli ultimi giorni.", ""]
+    dest = ZipConNota(radice, lambda: testo_nota(
+        dati["id"], impostazioni["giorni_conservazione"], interrotta=False, righe_extra=righe))
+    rete = Rete(pausa=float(dati.get("pausa") or 2), log=stato.log)
+    stato.rete = rete
+    tempo = int(dati["tempo_max_minuti"]) * 60
+    stato.fase(f"rassegna stampa di {len(chiavi)} testate")
+    with allarme(tempo + 120, stato):
+        dati_zip = esegui_rassegna(par, chiavi, dest, None, rete=rete, log=stato.log,
+                                   salva_grezzi=False, tempo_max=TempoMax(tempo, stato))
+
+    with zipfile.ZipFile(io.BytesIO(dati_zip)) as z:
+        nomi = [n for n in z.namelist() if n.endswith("scheda_rassegna.txt")]
+        scheda = z.read(nomi[0]).decode("utf-8") if nomi else ""
+    m = re.search(r"TOTALE\s+(\d+)", scheda)
+    righe_t = RE_RIGA_TESTATA.findall(scheda.split("ESITO PER TESTATA")[-1].split("SORGENTI")[0])
+    saltate = [r[0].strip() for r in righe_t if r[3].startswith("saltata")]
+    interrotta = "INCOMPLETA" in scheda or not scheda
+    errore = None
+    if stato.fermata_richiesta:
+        errore = "Fermata su richiesta: l'archivio contiene le testate già raccolte."
+    elif interrotta:
+        errore = (f"Rassegna incompleta: limite di {dati['tempo_max_minuti']} minuti raggiunto o sito che ha "
+                  "bloccato le richieste. L'esito per testata è nella scheda.")
+    if saltate:
+        errore = ((errore or "") + f" Testate saltate: {', '.join(saltate)}.").strip()
+    return {
+        "stato": "interrotta" if (interrotta or stato.fermata_richiesta) else "completata",
+        "articoli": int(m.group(1)) if m else stato.articoli,
+        "esaminati": sum(int(r[2]) for r in righe_t),
+        "scheda": scheda,
+        "errore": errore,
+        "file": [{"nome": f"{radice}.zip", "tipo": "zip", "dati": dati_zip, "mime": "application/zip"}],
     }

@@ -260,9 +260,10 @@ def sorgenti_per(p: Parametri, rete, log):
 
 
 def esegui(p: Parametri, destinazione=None, cartella_lavoro=None, rete=None, log=print,
-           progresso=None, salva_grezzi=True, tempo_max=None):
+           progresso=None, salva_grezzi=True, tempo_max=None, esito=None):
     """Esegue l'estrazione. Uso locale: destinazione=CartellaLocale, cartella_lavoro=<cartella>/_lavoro.
-    Piattaforma: destinazione=ZipMemoria, cartella_lavoro=None. Restituisce destinazione.chiudi()."""
+    Piattaforma: destinazione=ZipMemoria, cartella_lavoro=None. Restituisce destinazione.chiudi().
+    Con esito (un dizionario) vi lascia articoli, stato e conteggi: lo usa la rassegna stampa."""
     rete = rete or Rete(log=log)
     lav = Lavoro(cartella_lavoro, p)
     if lav.ripresa():
@@ -361,17 +362,26 @@ def esegui(p: Parametri, destinazione=None, cartella_lavoro=None, rete=None, log
     durata = time.monotonic() - t0
     destinazione = destinazione or CartellaLocale(Path.cwd())
     scrivi_output(lav, p, destinazione, durata, rete)
+    if esito is not None:
+        esito.update(articoli=list(lav.articoli), completata=lav.completata, conteggi=dict(lav.conteggi()),
+                     avvisi=list(lav.avvisi), sorgenti=list(lav.sorgenti), esaminati=len(lav.fatti),
+                     durata=durata)
     return destinazione.chiudi()
 
 
 def scrivi_output(lav, p, dest, durata, rete):
     arts = sorted(lav.articoli, key=lambda a: (a.data or "9999", a.titolo))
+    scrivi_corpus(arts, p.formati, dest, f"Corpus {descrittore(p)}")
+    dest.scrivi("scheda_estrazione.txt", scheda(lav, p, arts, durata, rete))
+
+
+def scrivi_corpus(arts, formati, dest, titolo):
+    """File dell'estrazione (un file per articolo e corpus complessivi); numera gli articoli in ordine."""
     for i, a in enumerate(arts, 1):
         a.id = i
-    formati = p.formati or list(FORMATI)
+    formati = formati or list(FORMATI)
     if hasattr(dest, "pulisci"):
         dest.pulisci(("docx", "txt", "html"))
-    titolo = f"Corpus {descrittore(p)}"
     for a in arts:
         nome = F.nome_file(a)
         if "docx" in formati:
@@ -389,7 +399,6 @@ def scrivi_output(lav, p, dest, durata, rete):
             dest.scrivi("corpus.jsonl", F.jsonl(arts))
         if "tlab" in formati:
             dest.scrivi("corpus_tlab.txt", F.tlab(arts))
-    dest.scrivi("scheda_estrazione.txt", scheda(lav, p, arts, durata, rete))
 
 
 def scheda(lav, p, arts, durata, rete):

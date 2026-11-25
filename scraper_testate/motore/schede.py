@@ -4,6 +4,7 @@ Fonti: ricognizione dell'8 novembre 2026 (motore originale), mappatura con rever
 verifica dei robots.txt del 12 novembre 2026 (cartelle Siti_API/<testata>/), esiti di «prova».
 python scraper.py schede  scrive una scheda Word e Markdown per testata, più un riepilogo Excel."""
 import json
+import re
 from pathlib import Path
 
 from .config import cartella_desktop
@@ -266,6 +267,83 @@ S["guardian"] = dict(
              "gratuita su open-platform.theguardian.com/access, nel file .env come GUARDIAN_API_KEY.",
 )
 
+# ------------------------------------------------------------------ testate napoletane (24 novembre 2026)
+S["tuttonapoli"] = dict(
+    nome="TuttoNapoli", sito="https://www.tuttonapoli.net", piattaforma="CMS TCC (rete TuttoMercatoWeb), HTML",
+    archivio=("sì, completo", "identificativi progressivi degli articoli (/?action=read&idnotizia=N rimanda "
+                              "all'articolo): ricerca binaria del primo e dell'ultimo del periodo, poi tutti quelli "
+                              "compresi; circa un minuto per trovare gli estremi"),
+    ricerca=("no", "la ricerca /ricerca/?word= esiste, ma il robots.txt esclude «start=», cioè le pagine dopo la prima"),
+    elenchi="sezioni (/notizie/, /calciomercato-napoli/…): solo la prima pagina, perché il robots.txt esclude «start=»",
+    rss="/rss/ (ultimi articoli)", testo="integrale (molti articoli sono lanci ANSA ripresi)",
+    robots="consente articoli e sezioni; esclude /partite, /calendario_classifica e la paginazione «start=»",
+    wayback="non necessaria", gdelt="copertura scarsa (testata sportiva locale)",
+    altre=["sitemap news (ultimi due giorni): usata per trovare l'ultimo identificativo",
+           "conteggio letture (/?action=letture&idnotizia=N): non pertinente",
+           "mappatura completa con reverse-api-engineer in Siti_API/tuttonapoli"],
+    consigli="Archivio per data, anche per periodi lontani; parole chiave come filtro, meglio con --cerca-in titolo.",
+)
+S["calcionapoli24"] = dict(
+    nome="CalcioNapoli24", sito="https://www.calcionapoli24.it", piattaforma="CMS proprietario (PHP), HTML",
+    archivio=("sì, dal 2011", "circa 500 sitemap numerate art-sitemap-N.xml (circa 1000 articoli ciascuna) in ordine "
+                              "cronologico: ricerca binaria del primo file del periodo; l'ultimo file può non essere "
+                              "ancora nell'indice e lo strumento lo cerca da solo"),
+    ricerca=("no", "la pagina /search-result è esclusa dal robots.txt"),
+    elenchi="sezioni (/calcio_mercato/, /le_interviste/…): solo la prima pagina",
+    rss="non verificato", testo="integrale",
+    robots="consente sitemap e articoli; esclude la ricerca", wayback="non necessaria", gdelt="copertura scarsa",
+    altre=["sitemap degli articoli recenti (recent-sitemap.xml) e delle categorie (cat-sitemap.xml)"],
+    consigli="Archivio per data; parole chiave come filtro.",
+)
+S["areanapoli"] = dict(
+    nome="AreaNapoli", sito="https://www.areanapoli.it", piattaforma="CMS proprietario, HTML",
+    archivio=("sì", "indice di circa 12 sitemap da 25.000 articoli (circa un anno ciascuna), dal più recente, con la "
+                    "data di pubblicazione di ogni articolo: si leggono solo i blocchi del periodo"),
+    ricerca=("no", "nessun motore di ricerca pubblico interrogabile"),
+    elenchi="sezioni (/calciomercato/, /interviste/…): solo la prima pagina",
+    rss="/rss/google_news.xml", testo="integrale",
+    robots="consente; esclude /m, /test e diversi bot di monitoraggio dei diritti",
+    wayback="non necessaria", gdelt="copertura scarsa",
+    altre=["sitemap statica delle pagine di servizio (sitemap-static.xml)"],
+    consigli="Archivio per data; parole chiave come filtro.",
+)
+S["calcionapoli1926"] = dict(
+    nome="CalcioNapoli1926", sito="https://www.calcionapoli1926.it", piattaforma="WordPress",
+    archivio=("sì, dal 2016", "API REST di WordPress (/wp-json/wp/v2/posts) con filtro per date; circa 300.000 articoli"),
+    ricerca=("sì", "API REST di WordPress con ricerca (search) e filtro per date; trova anche parti di parola"),
+    elenchi="categorie (/category/<nome>/) paginate con /page/N/",
+    rss="/feed (indicato nel robots.txt come sitemap)", testo="integrale",
+    robots="consente; esclude /api, /modal e i parametri app_*", wayback="non necessaria", gdelt="copertura scarsa",
+    altre=["categorie e tag via /wp-json/wp/v2/categories e /tags: utilizzabili per filtri futuri"],
+    consigli="Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+)
+S["spazionapoli"] = dict(
+    nome="SpazioNapoli", sito="https://www.spazionapoli.it", piattaforma="WordPress",
+    archivio=("sì, dal 2020", "sitemap annuali sitemap-posttype-post.AAAA.xml con la data nell'indirizzo; il robots.txt "
+                              "esclude gli articoli dal 2011 al 2019 (/2011/ … /2019/), che restano non raggiungibili"),
+    ricerca=("no", "il robots.txt esclude ?s= e qualsiasi indirizzo con «&», quindi anche l'API con filtri"),
+    elenchi="archivi per giorno /AAAA/MM/GG/ (solo la prima pagina), categorie",
+    rss="/feed/", testo="integrale",
+    robots="esclude gli anni 2011-2019, la ricerca, gli indirizzi con «&», AMP e negozio",
+    wayback="non serve per 2011-2019: il robots.txt esclude comunque gli articoli", gdelt="copertura scarsa",
+    altre=["API REST di WordPress aperta (131.000 articoli) ma utilizzabile solo con un parametro alla volta"],
+    consigli="Archivio per data dal 2020; parole chiave come filtro.",
+)
+S["ilnapolista"] = dict(
+    nome="il Napolista", sito="https://www.ilnapolista.it", piattaforma="WordPress",
+    archivio=("sì, dal 2010", "API REST di WordPress con filtro per date (tutto il sito: calcio, Napoli, altri sport, "
+                              "cultura); circa 150.000 articoli"),
+    ricerca=("sì", "API REST di WordPress con ricerca e filtro per date (la ricerca HTML ?s= è esclusa dal robots.txt, "
+                   "l'API no)"),
+    elenchi="categorie (/category/napoli/, /category/flash-news/…) paginate con /page/N/",
+    rss="feed di categoria esclusi dal robots.txt", testo="integrale",
+    robots="consente; esclude ?s=, i feed di categoria e alcune cartelle di contenuti multimediali",
+    wayback="non necessaria", gdelt="copertura scarsa",
+    altre=["la categoria Napoli (/category/napoli/) è piccola (circa 4.600 articoli): molte notizie sul Napoli sono "
+           "in flash-news, serie-a, edicola"],
+    consigli="Per il solo Napoli: elenco https://www.ilnapolista.it/category/napoli/ oppure parole chiave sul sito intero.",
+)
+
 ESCLUSE = {
     "The Times / The Sunday Times": "robots.txt «Disallow: /» per tutti: nessun accesso automatico consentito",
     "Financial Times": "articoli dietro verifica Cloudflare; il robots.txt vieta l'uso dei contenuti per IA; "
@@ -276,6 +354,20 @@ ESCLUSE = {
     "Daily Mail": "blocco Akamai sulla home",
     "The Sun": "verifica anti-bot e robots.txt «Disallow: /»",
     "libero.it (portale)": "è il portale Italiaonline, non il quotidiano: nel motore c'è Libero Quotidiano",
+    "Panorama (Venezuela)": "sito offline dalla metà del 2023 (dominio inesistente); solo copie dell'Internet Archive, "
+                            "che lo strumento non usa",
+    "El Universal (Venezuela)": "robots.txt «Disallow: /» per tutti: nessun accesso automatico consentito",
+    "Globovisión": "robots.txt «Disallow: /» per tutti: nessun accesso automatico consentito",
+    "TalCual": "protezione anti-bot sull'API e sulle pagine",
+    "El Periodiquito": "protezione anti-bot (home e API rispondono 403 con verifica)",
+    "Efecto Cocuyo": "home e articoli negati con 403 allo strumento (l'API di WordPress risponde, ma gli articoli "
+                     "non si possono scaricare)",
+    "La Patilla": "articoli negati con 403 allo strumento (l'API di WordPress risponde, ma gli articoli non si "
+                  "possono scaricare)",
+    "El Tiempo (eltiempove.com)": "sito irraggiungibile nelle verifiche del 24-25 novembre 2026",
+    "Frontera Digital (fronteradigital.com)": "il dominio è in vendita e non ospita più la testata",
+    "El Luchador": "API di WordPress disattivata e nessuna sitemap degli articoli (la sitemap elenca solo le "
+                   "categorie): gli articoli non si possono trovare per data; restano utilizzabili i comandi link ed elenco",
 }
 
 FONTI_NUOVE = [
@@ -435,3 +527,54 @@ def scrivi_schede(cartella=None, radice_estrazioni=None, log=print):
     wb.save(cartella / "riepilogo_testate.xlsx")
     log(f"Schede scritte in {cartella} ({len(S)} testate)")
     return cartella
+
+
+# ------------------------------------------------------------------ testate venezuelane (24-25 novembre 2026)
+ROBOTS_VE = {
+    "elnacional": "consente articoli e sitemap; esclude /wp-json/, la ricerca ?s=", "caraotadigital":
+    "consente articoli e sitemap; esclude /wp-json/, /page/, la ricerca", "avn": "consente; esclude /wp-json/",
+    "telesur": "consente articoli e sitemap a questo User-Agent (blocchi solo per alcuni bot); esclude /wp-json/",
+    "2001online": "consente; esclude /buscar/, /portadas/, login e area utenti",
+    "correodelorinoco": "consente a questo User-Agent (blocchi solo per alcuni bot)",
+}
+
+
+def _schede_venezuela():
+    from .testate.venezuela import VENEZUELA, Online2001, _SitemapOrdinate, _WPVe
+    for t in VENEZUELA:
+        if t.chiave in S:
+            continue
+        sito = "https://" + re.sub(r"^https?://", "", getattr(t, "API", "") or getattr(t, "INDICE", "") or
+                                   getattr(t, "NEWS", "")).split("/")[0]
+        lingua = "inglese" if t.lingua == "en" else "spagnolo"
+        if isinstance(t, _WPVe):
+            dati = dict(piattaforma="WordPress",
+                        archivio=("sì" + (f", dal {t.INIZIO.year}" if t.INIZIO else ""), t.note_ricerca_data),
+                        ricerca=("sì", "API REST di WordPress con ricerca (search) e filtro per date; trova anche parti "
+                                       "di parola"),
+                        elenchi="categorie e tag paginati con /page/N/", rss="/feed/ e /category/<nome>/feed/",
+                        consigli="Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.")
+        elif isinstance(t, _SitemapOrdinate):
+            dati = dict(piattaforma="WordPress" if "Wix" not in t.note_ricerca_data else "Wix",
+                        archivio=("sì", t.note_ricerca_data),
+                        ricerca=("no", "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML "
+                                       "esclusa o non pubblica"),
+                        elenchi="categorie: solo la prima pagina", rss="/feed/ (WordPress)",
+                        consigli="Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro "
+                                 "(--cerca-in titolo per scaricare meno).")
+        elif isinstance(t, Online2001):
+            dati = dict(piattaforma="CMS proprietario", archivio=("solo recente", t.note_ricerca_data),
+                        ricerca=("no", "la ricerca /buscar/ è esclusa dal robots.txt"),
+                        elenchi="sezioni: solo la prima pagina", rss="non verificato",
+                        consigli="Monitoraggio dei giorni correnti; per il passato --fonte wayback (la data è "
+                                 "nell'indirizzo degli articoli).")
+        else:
+            continue
+        S[t.chiave] = dict(nome=t.nome, sito=sito, testo=f"integrale (in {lingua})",
+                           robots=ROBOTS_VE.get(t.chiave, "consente articoli, sitemap e API"),
+                           wayback="possibile", gdelt="copertura parziale (testate venezuelane)",
+                           altre=["mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in "
+                                  "Siti_API/<testata>/ quando disponibili"], **dati)
+
+
+_schede_venezuela()

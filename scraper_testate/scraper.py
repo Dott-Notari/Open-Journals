@@ -11,6 +11,7 @@ Oppure da riga di comando:
     python scraper.py data avvenire --dal 2026-10-01 --al 2026-10-31 --parole "migrant*,sbarc*"
     python scraper.py data verita,corriere,ilpost --dal 2026-10-01 --al 2026-10-31 --parole "migrant*"
     python scraper.py data estere --dal 2026-11-01 --al 2026-11-07 --parole "migrant*" --cerca-in titolo
+    python scraper.py rassegna napoli,verita --dal 2026-11-01 --al 2026-11-07 --parole "de bruyne"
     python scraper.py elenco https://www.avvenire.it/tag/migranti_4439 --dal 2026-01-01
     python scraper.py link https://www.ilgiornale.it/news/... https://www.ansa.it/...
     python scraper.py youtube "https://www.youtube.com/watch?v=..." --lingua it
@@ -54,15 +55,14 @@ def lista(s):
 
 
 def testate_valide(s):
-    """Una o più testate separate da virgola, oppure «tutte», «italiane», «estere»."""
-    from motore.testate.estere import ESTERE
-    estere = [t.chiave for t in ESTERE]
-    gruppi = {"tutte": list(TESTATE), "estere": estere, "italiane": [k for k in TESTATE if k not in estere]}
+    """Una o più testate separate da virgola, oppure un gruppo: «tutte», «italiane», «estere», «napoli», «venezuela»."""
+    from motore.testate import GRUPPI
+    gruppi = GRUPPI
     chiavi = gruppi.get(s.strip().lower()) or lista(s)
     ignote = [k for k in chiavi if k not in TESTATE]
     if ignote:
         raise argparse.ArgumentTypeError(f"testate non previste: {', '.join(ignote)} "
-                                         f"(disponibili: {', '.join(TESTATE)}, oppure tutte/italiane/estere)")
+                                         f"(disponibili: {', '.join(TESTATE)}, oppure tutte/italiane/estere/napoli/venezuela)")
     return list(dict.fromkeys(chiavi))
 
 
@@ -110,7 +110,7 @@ def riga_di_comando(argv):
     sub = ap.add_subparsers(dest="comando", required=True)
     sp = sub.add_parser("data", help="articoli di una o più testate in un intervallo di date")
     sp.add_argument("testata", type=testate_valide,
-                    help="chiave della testata, più chiavi separate da virgola, oppure tutte/italiane/estere")
+                    help="chiave della testata, più chiavi separate da virgola, oppure un gruppo: tutte/italiane/estere/napoli/venezuela")
     sp.add_argument("--dal", type=data_valida, required=True)
     sp.add_argument("--al", type=data_valida, default=date.today().isoformat())
     sp.add_argument("--senza-ricerca", action="store_true",
@@ -120,6 +120,17 @@ def riga_di_comando(argv):
                          "archivio della testata, ricerca del sito, GDELT, Wayback Machine")
     sp.add_argument("--parole-gdelt", type=lista, default=[],
                     help="parole in inglese per GDELT, che cerca sulla traduzione inglese degli articoli")
+    opzioni_comuni(sp)
+    sp = sub.add_parser("rassegna", aliases=["master"],
+                        help="rassegna stampa: stessa ricerca su più testate, con un corpus unico")
+    sp.add_argument("testata", type=testate_valide,
+                    help="chiavi o gruppi separati da virgola (es. napoli,verita,corriere oppure tutte)")
+    sp.add_argument("--dal", type=data_valida, required=True)
+    sp.add_argument("--al", type=data_valida, default=date.today().isoformat())
+    sp.add_argument("--senza-ricerca", action="store_true",
+                    help="con le parole chiave, scorre gli archivi per data invece di usare le ricerche dei siti")
+    sp.add_argument("--fonte", choices=["auto", "archivio", "ricerca", "gdelt", "wayback"], default="auto")
+    sp.add_argument("--parole-gdelt", type=lista, default=[])
     opzioni_comuni(sp)
     sp = sub.add_parser("elenco", help="articoli a partire da una pagina di sezione, tag o rubrica")
     sp.add_argument("url")
@@ -237,6 +248,20 @@ def riga_di_comando(argv):
     comuni = dict(parole=args.parole, tutte=args.tutte, cerca_in=args.cerca_in,
                   escludi_riservati=args.escludi_riservati,
                   formati=[f for f in args.formati if f in FORMATI], max_articoli=args.max)
+    if args.comando in ("rassegna", "master"):
+        if args.dal > args.al:
+            sys.exit("La data iniziale è successiva a quella finale.")
+        from motore.rassegna import cartella_rassegna, esegui_rassegna
+        fonte = "archivio" if args.senza_ricerca and args.fonte == "auto" else args.fonte
+        p = Parametri("data", dal=args.dal, al=args.al, usa_ricerca=not args.senza_ricerca,
+                      fonte=fonte, parole_gdelt=args.parole_gdelt, **comuni)
+        radice = Path(args.cartella) if args.cartella else radice_locale()
+        cartella = cartella_rassegna(p, args.testata, radice)
+        print(f"\nCartella della rassegna stampa: {cartella}\n")
+        esegui_rassegna(p, args.testata, CartellaLocale(cartella), cartella,
+                      rete=Rete(pausa=args.pausa, log=print), log=print, salva_grezzi=not args.no_grezzi)
+        print(f"\nFatto. Corpus unico e scheda della rassegna in: {cartella}")
+        return
     if args.comando == "data":
         if args.dal > args.al:
             sys.exit("La data iniziale è successiva a quella finale.")

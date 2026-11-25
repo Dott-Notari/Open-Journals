@@ -37,6 +37,14 @@ PIANO = {
     "independent": ("data", OGGI - timedelta(days=80), 2, None),
     "mirror": ("data", date(2010, 1, 1), 1, None),
     "elmundo": ("data", date(2015, 1, 1), 2, None),
+    "tuttonapoli": ("data", date(2016, 1, 1), 1, None),
+    "calcionapoli24": ("data", date(2012, 1, 1), 1, None),
+    "areanapoli": ("data", date(2020, 1, 1), 1, None),
+    "calcionapoli1926": ("data", date(2017, 1, 1), 2, None),
+    "spazionapoli": ("data", date(2020, 1, 1), 2, None),
+    "ilnapolista": ("data", date(2011, 1, 1), 2, None),
+    "calcionapoli1926_parole": ("data", date(2017, 1, 1), 30, None),
+    "ilnapolista_parole": ("data", date(2011, 1, 1), 30, None),
     "fatto_parole": ("data", date(2015, 1, 1), 30, None),
     "avvenire_parole": ("data", date(2015, 1, 1), "mese", None),
     "verita_parole": ("data", OGGI - timedelta(days=700), 30, None),
@@ -61,6 +69,8 @@ ELENCHI = {
     "independent": "https://www.independent.co.uk/news/uk/politics",
     "mirror": "https://www.mirror.co.uk/news/politics/",
     "elmundo": "https://www.elmundo.es/espana.html",
+    "calcionapoli1926": "https://www.calcionapoli1926.it/interviste/",
+    "ilnapolista": "https://www.ilnapolista.it/category/napoli/",
 }
 # pagine elenco che il sito non permette di sfogliare oltre la prima: si provano sugli ultimi giorni
 SOLO_PRIMA_PAGINA = ("corriere", "manifesto", "sole24ore", "independent", "mirror", "elmundo", "libero")
@@ -77,7 +87,17 @@ PIANO.update({
 })
 
 # casi che provano la ricerca per parole con il motore della testata
+# testate venezuelane: un giorno a caso negli ultimi due anni (le sitemap più corte partono dal 2024)
+for _k in ("elnacional", "ultimasnoticias", "eldiario", "correodelorinoco", "diariovea", "elpitazo", "runrunes",
+           "cronicauno", "elestimulo", "caraotadigital", "informe21", "avn", "telesur", "venezuelanalysis",
+           "caracaschronicles", "elcarabobeno", "primicia"):
+    PIANO[_k] = ("data", OGGI - timedelta(days=480 if _k in ("avn", "telesur") else 700), 1, None)
+PIANO["2001online"] = ("data", OGGI, 1, None)
+for _k in ("ultimasnoticias", "runrunes", "cronicauno", "venezuelanalysis"):
+    PIANO[f"{_k}_parole"] = ("data", OGGI - timedelta(days=700), 30, None)
+
 PAROLE = {c: ["migrant*"] for c in PIANO if c.endswith(("_parole", "_gdelt"))}
+PAROLE.update({c: ["maradona"] for c in ("calcionapoli1926_parole", "ilnapolista_parole")})
 FONTE = {c: c.rsplit("_", 1)[1] for c in PIANO if c.endswith(("_wayback", "_gdelt"))}
 PAROLE_GDELT = {c: ["migrants", "refugees"] for c in PIANO if c.endswith("_gdelt")}
 
