@@ -1,12 +1,14 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
-import { UserCheck, UserX, Save, Stethoscope, CheckCircle2, AlertTriangle, PauseCircle, PlayCircle, Trash2 } from 'lucide-react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
+import { UserCheck, UserX, Save, Stethoscope, CheckCircle2, AlertTriangle, PauseCircle, PlayCircle, Trash2, Newspaper } from 'lucide-react';
 import Segmenti from './Segmenti';
 import { supabase } from '@/lib/supabase';
-import { trovaFonte, data } from '@/lib/fonti';
+import { trovaFonte, data, GRUPPI, RAPPORTI } from '@/lib/fonti';
 import LogoFonte from './LogoFonte';
 import Avatar from './Avatar';
 import { Cronometro, Spia } from './Tempo';
+
+const TITOLI_GRUPPI = { ...Object.fromEntries(GRUPPI), video: 'Video', rassegna: 'Più testate insieme' };
 import { useEstrazioniInTempoReale } from '@/lib/tempoReale';
 
 const SCHEDE = [['richieste', 'Utenti'], ['fonti', 'Fonti'], ['registro', 'Registro'], ['impostazioni', 'Impostazioni']];
@@ -138,25 +140,32 @@ export default function Docente() {
           <table className="tabella-fonti">
             <thead><tr><th scope="col">Fonte</th><th scope="col">Collaudo</th><th scope="col">Online</th><th scope="col">Attiva</th></tr></thead>
             <tbody>
-              {fonti.map((f) => (
-                <tr key={f.chiave}>
+              {fonti.map((f, i) => (
+                <Fragment key={f.chiave}>
+                {f.gruppo !== fonti[i - 1]?.gruppo && (
+                  <tr><th scope="rowgroup" colSpan={4} className="spaziato" style={{ paddingTop: i ? 26 : 10 }}>{TITOLI_GRUPPI[f.gruppo] ?? f.gruppo}</th></tr>
+                )}
+                <tr>
                   <td><span className="riga" style={{ gap: 12, flexWrap: 'nowrap' }}>
                     <span className="placca-tabella" style={{ width: 96, height: 44, flexShrink: 0, borderRadius: 10, background: 'var(--carta-logo)', display: 'grid', placeItems: 'center', padding: 6 }}>
-                      <LogoFonte chiave={f.chiave} nome={f.nome} area={1100} massimo={30} />
+                      {f.chiave === 'rassegna' ? <Newspaper size={22} color="#111111" aria-hidden="true" />
+                        : RAPPORTI[f.chiave] ? <LogoFonte chiave={f.chiave} nome={f.nome} area={1100} massimo={30} />
+                        : <span className="tenue piccolo" style={{ color: '#8792A2' }}>senza logo</span>}
                     </span>
                     <span style={{ fontWeight: 600 }} translate="no">{trovaFonte(f.chiave)?.nome ?? f.nome}</span>
                   </span></td>
                   <td>
-                    <details>
+                    {f.chiave === 'rassegna' ? <span className="tenue piccolo">Usa le testate disponibili online</span> : <details>
                       <summary style={{ cursor: 'pointer' }}>{f.esito_collaudo}{f.collaudo_il ? `, ${data.format(new Date(f.collaudo_il))}` : ''}</summary>
                       <pre style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', fontSize: '0.78rem', margin: '8px 0 0' }}>{f.dettaglio_collaudo || '-'}</pre>
-                    </details>
+                    </details>}
                   </td>
                   <td><input type="checkbox" role="switch" className="interruttore" aria-label={`Disponibile online: ${f.nome}`}
                     checked={f.disponibile_online} onChange={(e) => cambiaFonte(f.chiave, 'disponibile_online', e.target.checked)} /></td>
                   <td><input type="checkbox" role="switch" className="interruttore" aria-label={`Attiva: ${f.nome}`}
                     checked={f.attiva} onChange={(e) => cambiaFonte(f.chiave, 'attiva', e.target.checked)} /></td>
                 </tr>
+                </Fragment>
               ))}
             </tbody>
           </table>

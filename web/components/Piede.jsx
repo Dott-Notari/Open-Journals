@@ -8,7 +8,7 @@ export default function Piede() {
         <span className="tenue piccolo">Sociologia della comunicazione interculturale</span>
       </div>
       <span className="piccolo"><span className="tenue">Responsabili scientifici</span><br />Vincenzo Esposito, Francesco Notari</span>
-      <span className="tenue piccolo">Materiali per uso di studio e ricerca</span>
+      <span className="tenue piccolo">I testi raccolti servono per studio e ricerca e non vanno ridistribuiti.</span>
     </footer>
   );
 }

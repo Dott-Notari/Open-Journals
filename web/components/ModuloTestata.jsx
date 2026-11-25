@@ -1,28 +1,18 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CalendarRange, LayoutList, Link2, History } from 'lucide-react';
+import Link from 'next/link';
+import { CalendarRange, LayoutList, Link2, History, Newspaper } from 'lucide-react';
 import Segmenti from './Segmenti';
 import Azioni from './Azioni';
 import Info from './Info';
 import { inviaEstrazione, lista } from '@/lib/invia';
 import { FONTI_INDIRIZZI } from '@/lib/guida';
-import { giorno } from '@/lib/fonti';
+import { fuoriArchivio } from '@/lib/fonti';
 
 const MODI = [['data', 'Periodo', CalendarRange], ['elenco', 'Pagina elenco', LayoutList], ['link', 'Link', Link2]];
 const FORMATI = [['docx', 'Word'], ['txt', 'Testo'], ['html', 'HTML'], ['xlsx', 'Excel'], ['jsonl', 'JSONL'], ['tlab', 'T-LAB']];
 const LINGUE = { en: ' (in inglese)', es: ' (in spagnolo)' };
-
-// Il periodo scelto parte prima di quanto arriva l'archivio della testata?
-function primaDellArchivio(fonte, dal) {
-  if (!dal) return null;
-  if (fonte.coperturaDal && dal < fonte.coperturaDal) return `L'archivio di ${fonte.nome} parte dal ${giorno.format(new Date(fonte.coperturaDal))}.`;
-  if (fonte.recenteGiorni) {
-    const limite = new Date(Date.now() - fonte.recenteGiorni * 864e5).toISOString().slice(0, 10);
-    if (dal < limite) return `Per data ${fonte.nome} copre solo ${fonte.recenteGiorni === 1 ? 'le uscite del giorno' : `gli ultimi ${fonte.recenteGiorni} giorni circa`}.`;
-  }
-  return null;
-}
 
 export default function ModuloTestata({ fonte }) {
   const router = useRouter();
@@ -30,12 +20,15 @@ export default function ModuloTestata({ fonte }) {
   const [modo, setModo] = useState('data');
   const [indirizzi, setIndirizzi] = useState('auto');
   const [dal, setDal] = useState('');
+  const [al, setAl] = useState('');
   const [tutte, setTutte] = useState('no');
   const [dove, setDove] = useState('testo');
   const [invio, setInvio] = useState(false);
   const [errore, setErrore] = useState('');
   const vociIndirizzi = fonte.fonti.filter((k) => k !== 'gdelt').map((k) => [k, FONTI_INDIRIZZI[k][0]]);
-  const avviso = modo === 'data' && ['auto', 'archivio'].includes(indirizzi) ? primaDellArchivio(fonte, dal) : null;
+  // per SpazioNapoli il 2011-2019 è escluso dal robots.txt anche passando da Wayback
+  const wb = fonte.fonti.includes('wayback') && fonte.chiave !== 'spazionapoli';
+  const avviso = modo === 'data' && ['auto', 'archivio'].includes(indirizzi) ? fuoriArchivio(fonte, dal, al) : null;
 
   async function invia(e) {
     e.preventDefault();
@@ -95,13 +88,13 @@ export default function ModuloTestata({ fonte }) {
           {modo !== 'link' && (
             <div className="due">
               <label className="etichetta">Dal<input className="campo" type="date" name="dal" required={modo === 'data'} value={dal} onChange={(e) => setDal(e.target.value)} /></label>
-              <label className="etichetta">Al<input className="campo" type="date" name="al" required={modo === 'data'} /></label>
+              <label className="etichetta">Al<input className="campo" type="date" name="al" required={modo === 'data'} value={al} onChange={(e) => setAl(e.target.value)} /></label>
             </div>
           )}
           {avviso && (
             <div className="avviso giallo riga" style={{ justifyContent: 'space-between' }}>
-              <span>{avviso} {fonte.fonti.includes('wayback') ? 'Per arrivare a quelle date puoi usare Wayback.' : ''}</span>
-              {fonte.fonti.includes('wayback') && (
+              <span>{avviso} {wb ? 'Per arrivare a quelle date puoi usare Wayback.' : ''}</span>
+              {wb && (
                 <button type="button" className="pulsante compatto secondario" onClick={() => setIndirizzi('wayback')}><History size={16} aria-hidden="true" />Usa Wayback</button>
               )}
             </div>
@@ -137,7 +130,7 @@ export default function ModuloTestata({ fonte }) {
           <legend>Parole chiave{LINGUE[fonte.lingua] ?? ''} <Info etichetta="Come usare le parole chiave">
             {g.parole} L&apos;asterisco tronca la parola: migrant* trova migrante e migranti. Se lasci il campo vuoto arrivano tutti gli articoli.
           </Info></legend>
-          <input className="campo" name="parole" autoComplete="off" aria-label="Parole chiave" lang={fonte.lingua} required={modo === 'data' && indirizzi === 'ricerca'} placeholder="migrant*, accoglienza…" />
+          <input className="campo" name="parole" autoComplete="off" aria-label="Parole chiave" lang={fonte.lingua} required={modo === 'data' && indirizzi === 'ricerca'} placeholder={{ es: 'migrante*, frontera…', en: 'migrant*, border…' }[fonte.lingua] ?? 'migrant*, accoglienza…'} />
           <div className="riga" style={{ gap: 10 }}>
             <Segmenti voci={[['no', 'Almeno una'], ['si', 'Tutte']]} valore={tutte} onCambio={setTutte} etichetta="Corrispondenza" />
             <Segmenti voci={[['testo', 'In tutto il testo'], ['titolo', 'Solo titolo e sommario']]} valore={dove} onCambio={setDove} etichetta="Dove cercare" />
@@ -157,6 +150,10 @@ export default function ModuloTestata({ fonte }) {
           </label>
         </fieldset>
       </div>
+      <p className="tenue riga" style={{ gap: 8, fontSize: 14 }}>
+        <Newspaper size={16} aria-hidden="true" />La stessa ricerca su più testate insieme?
+        <Link href={`/rassegna?testate=${fonte.chiave}`}>Componi una rassegna stampa</Link>
+      </p>
       <Azioni invio={invio} errore={errore} sintesi={`${fonte.nome}, ${MODI.find((m) => m[0] === modo)[1].toLowerCase()}${modo === 'data' && indirizzi !== 'auto' ? `, ${FONTI_INDIRIZZI[indirizzi][0]}` : ''}`} />
     </form>
   );

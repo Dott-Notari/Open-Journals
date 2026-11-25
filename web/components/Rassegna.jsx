@@ -3,6 +3,7 @@ import { FONTI } from '@/lib/fonti';
 
 // Due nastri di testate che scorrono in versi opposti; si fermano al passaggio del puntatore.
 const testate = FONTI.filter((f) => f.chiave !== 'youtube');
+const mezzo = Math.ceil(testate.length / 2);
 const nastro = (lista) => [...lista, ...lista].map((f, i) => (
   <span className="placca" key={f.chiave + i}><LogoFonte chiave={f.chiave} nome={f.nome} area={2200} massimo={40} /></span>
 ));
@@ -10,8 +11,8 @@ const nastro = (lista) => [...lista, ...lista].map((f, i) => (
 export default function Rassegna() {
   return (
     <div className="rassegna" aria-hidden="true">
-      <div className="nastro">{nastro(testate.slice(0, 7))}</div>
-      <div className="nastro inverso">{nastro(testate.slice(7))}</div>
+      <div className="nastro">{nastro(testate.slice(0, mezzo))}</div>
+      <div className="nastro inverso">{nastro(testate.slice(mezzo))}</div>
     </div>
   );
 }

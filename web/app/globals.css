@@ -123,6 +123,27 @@ button, a, label, summary { touch-action: manipulation; -webkit-tap-highlight-co
 .stato { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--tenue); white-space: nowrap; }
 .stato::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--ok)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c, var(--ok)) 22%, transparent); }
 
+/* Ricerca tra le testate e tessera della rassegna */
+.cerca-fonti { display: flex; align-items: center; gap: 10px; max-width: 420px; min-height: 48px; padding: 0 18px; border-radius: 999px; color: var(--tenue); }
+.cerca-fonti input { flex: 1; min-width: 0; border: 0; background: transparent; font-size: 1rem; color: var(--testo); outline: none; min-height: 46px; }
+.cerca-fonti:has(input:focus-visible) { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accento) 22%, transparent); }
+.conta { display: inline-grid; place-items: center; min-width: 26px; height: 22px; padding: 0 7px; margin-left: 6px; border-radius: 999px; background: var(--linea); font-size: 0.78rem; letter-spacing: 0; }
+.mazzo { display: grid; grid-template-columns: repeat(2, auto); gap: 8px; justify-content: center; }
+.mazzo .placca { height: 46px; padding: 0 16px; }
+.mazzo .placca:nth-child(odd) { transform: rotate(-2.5deg); } .mazzo .placca:nth-child(even) { transform: rotate(2deg) translateY(6px); }
+.tessera.video .faccia:has(.mazzo) { background: transparent; box-shadow: none; }
+
+/* Scelta delle testate nella rassegna */
+.gruppo-scelta { display: flex; flex-direction: column; gap: 10px; padding: 14px 0 4px; border-top: 1px solid var(--linea); }
+.gruppo-scelta:first-of-type { border-top: 0; padding-top: 0; }
+.gettone[aria-disabled] { opacity: 0.45; cursor: not-allowed; }
+.casella-gruppo { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 6px; cursor: pointer; font-size: 0.95rem; }
+.casella-gruppo input { position: absolute; opacity: 0; pointer-events: none; }
+.casella-gruppo > span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; border: 1.5px solid var(--tenue); transition: background 160ms, border-color 160ms; }
+.casella-gruppo:has(input:checked) > span, .casella-gruppo:has(input:indeterminate) > span { background: var(--primario); border-color: var(--primario); color: var(--fondo); }
+.casella-gruppo:has(input:focus-visible) > span { outline: 2.5px solid var(--accento); outline-offset: 3px; }
+.aiuto { font-size: 0.88rem; color: var(--tenue); margin: 0; }
+
 /* Numeri in alto */
 .cifre { display: flex; flex-wrap: wrap; gap: 10px 36px; }
 .cifra { display: flex; align-items: baseline; gap: 8px; }

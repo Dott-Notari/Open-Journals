@@ -4,7 +4,7 @@ import Rassegna from '@/components/Rassegna';
 import Contatore from '@/components/Contatore';
 import Piede from '@/components/Piede';
 import { Completo } from '@/components/Logo';
-import { FONTI } from '@/lib/fonti';
+import { FONTI, RASSEGNA } from '@/lib/fonti';
 import { supabaseServer } from '@/lib/supabase-server';
 
 export default async function Home() {
@@ -14,7 +14,7 @@ export default async function Home() {
     sb.rpc('statistiche').single(),
   ]);
   const mappa = Object.fromEntries((stati || []).map((s) => [s.chiave, s]));
-  const fonti = FONTI.map((f) => ({
+  const fonti = [...FONTI, RASSEGNA].map((f) => ({
     ...f, disponibile: !!(mappa[f.chiave]?.attiva && mappa[f.chiave]?.disponibile_online), esito: mappa[f.chiave]?.esito_collaudo ?? 'mai',
   }));
   return (

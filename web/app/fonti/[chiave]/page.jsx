@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { ChevronLeft, Laptop } from 'lucide-react';
 import LogoFonte from '@/components/LogoFonte';
 import Rivela from '@/components/Rivela';
@@ -16,6 +16,7 @@ export async function generateMetadata({ params }) {
 
 export default async function PaginaFonte({ params }) {
   const { chiave } = await params;
+  if (chiave === 'rassegna') redirect('/rassegna');
   const fonte = trovaFonte(chiave);
   if (!fonte) notFound();
   const sb = await supabaseServer();

@@ -1,6 +1,6 @@
 {
-  "motore": "1.13 (Siti_API)",
-  "generato": "2026-11-12",
+  "motore": "1.14 (Siti_API)",
+  "generato": "2026-11-25",
   "regole_generali": {
     "user_agent": "ScraperDidattico/1.0 (ricerca e didattica universitaria, Sociologia della comunicazione interculturale)",
     "pausa_predefinita_secondi": 2.0,
@@ -1405,6 +1405,1842 @@
       "risorse_non_usate": [
         "l'API offre anche sezioni, tag e campi strutturati (bodyText, byline, wordcount): si potrebbe evitare lo scaricamento delle pagine; per ora si usa la pagina, come per le altre testate"
       ]
+    },
+    {
+      "chiave": "tuttonapoli",
+      "nome": "TuttoNapoli",
+      "sito": "https://www.tuttonapoli.net",
+      "dominio": "tuttonapoli.net",
+      "lingua": "it",
+      "gruppo": "napoli",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS TCC (rete TuttoMercatoWeb), HTML",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2010-01-01",
+          "copertura": "completo: identificativi progressivi degli articoli, estremi del periodo trovati con una ricerca binaria (circa un minuto prima di iniziare)",
+          "come": "identificativi progressivi degli articoli (/?action=read&idnotizia=N): ricerca binaria del primo e dell'ultimo articolo del periodo, poi tutti quelli compresi; archivio completo",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "la ricerca /ricerca/?word= esiste, ma il robots.txt esclude «start=», cioè le pagine dopo la prima"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni (/notizie/, /calciomercato-napoli/…): solo la prima pagina, perché il robots.txt esclude «start=»"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "non necessaria"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testata sportiva locale)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/rss/ (ultimi articoli)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sezioni; esclude /partite, /calendario_classifica e la paginazione «start=»",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (molti articoli sono lanci ANSA ripresi)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, anche per periodi lontani; parole chiave come filtro, meglio con --cerca-in titolo.",
+      "risorse_non_usate": [
+        "sitemap news (ultimi due giorni): usata per trovare l'ultimo identificativo",
+        "conteggio letture (/?action=letture&idnotizia=N): non pertinente",
+        "mappatura completa con reverse-api-engineer in Siti_API/tuttonapoli"
+      ]
+    },
+    {
+      "chiave": "calcionapoli24",
+      "nome": "CalcioNapoli24",
+      "sito": "https://www.calcionapoli24.it",
+      "dominio": "calcionapoli24.it",
+      "lingua": "it",
+      "gruppo": "napoli",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario (PHP), HTML",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2011-03-30",
+          "copertura": "completo: sitemap numerate in ordine cronologico",
+          "come": "sitemap numerate in ordine cronologico (circa 1000 articoli ciascuna, dal marzo 2011) più la sitemap degli articoli recenti; la ricerca del sito è esclusa dal robots.txt",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "la pagina /search-result è esclusa dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni (/calcio_mercato/, /le_interviste/…): solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "non necessaria"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non verificato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente sitemap e articoli; esclude la ricerca",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data; parole chiave come filtro.",
+      "risorse_non_usate": [
+        "sitemap degli articoli recenti (recent-sitemap.xml) e delle categorie (cat-sitemap.xml)"
+      ]
+    },
+    {
+      "chiave": "areanapoli",
+      "nome": "AreaNapoli",
+      "sito": "https://www.areanapoli.it",
+      "dominio": "areanapoli.it",
+      "lingua": "it",
+      "gruppo": "napoli",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario, HTML",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap a blocchi di 25.000 articoli (circa un anno ciascuno), dal più recente",
+          "come": "sitemap da 25.000 articoli in ordine dal più recente, con la data di ogni articolo; si leggono solo i blocchi che coprono il periodo",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore di ricerca pubblico interrogabile"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni (/calciomercato/, /interviste/…): solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "non necessaria"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/rss/google_news.xml"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; esclude /m, /test e diversi bot di monitoraggio dei diritti",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data; parole chiave come filtro.",
+      "risorse_non_usate": [
+        "sitemap statica delle pagine di servizio (sitemap-static.xml)"
+      ]
+    },
+    {
+      "chiave": "calcionapoli1926",
+      "nome": "CalcioNapoli1926",
+      "sito": "https://www.calcionapoli1926.it",
+      "dominio": "calcionapoli1926.it",
+      "lingua": "it",
+      "gruppo": "napoli",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2016-10-15",
+          "copertura": "completo tramite API WordPress",
+          "come": "API REST di WordPress con filtro per date: archivio completo dall'ottobre 2016",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/pagina-2/",
+          "pagine": "categorie (/category/<nome>/) paginate con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "non necessaria"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed (indicato nel robots.txt come sitemap)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; esclude /api, /modal e i parametri app_*",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "categorie e tag via /wp-json/wp/v2/categories e /tags: utilizzabili per filtri futuri"
+      ]
+    },
+    {
+      "chiave": "spazionapoli",
+      "nome": "SpazioNapoli",
+      "sito": "https://www.spazionapoli.it",
+      "dominio": "spazionapoli.it",
+      "lingua": "it",
+      "gruppo": "napoli",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2020-01-01",
+          "copertura": "sitemap annuali; il robots.txt esclude gli articoli 2011-2019",
+          "come": "sitemap annuali degli articoli, con la data nell'indirizzo; il robots.txt esclude gli articoli dal 2011 al 2019 e gli indirizzi con «&» (quindi l'API con filtri e la ricerca)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "il robots.txt esclude ?s= e qualsiasi indirizzo con «&», quindi anche l'API con filtri"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "archivi per giorno /AAAA/MM/GG/ (solo la prima pagina), categorie"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "non serve per 2011-2019: il robots.txt esclude comunque gli articoli"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "esclude gli anni 2011-2019, la ricerca, gli indirizzi con «&», AMP e negozio",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data dal 2020; parole chiave come filtro.",
+      "risorse_non_usate": [
+        "API REST di WordPress aperta (131.000 articoli) ma utilizzabile solo con un parametro alla volta"
+      ]
+    },
+    {
+      "chiave": "ilnapolista",
+      "nome": "il Napolista",
+      "sito": "https://www.ilnapolista.it",
+      "dominio": "ilnapolista.it",
+      "lingua": "it",
+      "gruppo": "napoli",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2010-03-24",
+          "copertura": "completo tramite API WordPress (tutto il sito, non solo la categoria Napoli)",
+          "come": "API REST di WordPress con filtro per date: archivio completo dal marzo 2010. Si interroga tutto il sito (calcio, Napoli, altri sport, cultura); per la sola categoria Napoli si usa il comando elenco con https://www.ilnapolista.it/category/napoli/",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie (/category/napoli/, /category/flash-news/…) paginate con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "non necessaria"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "feed di categoria esclusi dal robots.txt"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; esclude ?s=, i feed di categoria e alcune cartelle di contenuti multimediali",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per il solo Napoli: elenco https://www.ilnapolista.it/category/napoli/ oppure parole chiave sul sito intero.",
+      "risorse_non_usate": [
+        "la categoria Napoli (/category/napoli/) è piccola (circa 4.600 articoli): molte notizie sul Napoli sono in flash-news, serie-a, edicola"
+      ]
+    },
+    {
+      "chiave": "elnacional",
+      "nome": "El Nacional",
+      "sito": "https://www.elnacional.com",
+      "dominio": "elnacional.com",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "circa 316 sitemap degli articoli (Yoast) in ordine cronologico, filtrate per data di modifica; l'API di WordPress è esclusa dal robots.txt",
+          "come": "circa 316 sitemap degli articoli (Yoast) in ordine cronologico, filtrate per data di modifica; l'API di WordPress è esclusa dal robots.txt",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML esclusa o non pubblica"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "categorie: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (WordPress)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap; esclude /wp-json/, la ricerca ?s=",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "ultimasnoticias",
+      "nome": "Últimas Noticias",
+      "sito": "https://ultimasnoticias.com.ve",
+      "dominio": "ultimasnoticias.com.ve",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "API REST di WordPress con filtro per date (circa 200.000 articoli)",
+          "come": "API REST di WordPress con filtro per date (circa 200.000 articoli)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ e /category/<nome>/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "eldiario",
+      "nome": "El Diario",
+      "sito": "https://eldiario.com",
+      "dominio": "eldiario.com",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap degli articoli (Yoast) con la data nell'indirizzo, dal 2019; l'API di WordPress risponde ma ignora il filtro per date",
+          "come": "sitemap degli articoli (Yoast) con la data nell'indirizzo, dal 2019; l'API di WordPress risponde ma ignora il filtro per date",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML esclusa o non pubblica"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "categorie: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (WordPress)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "2001online",
+      "nome": "2001online",
+      "sito": "https://2001online.com",
+      "dominio": "2001online.com",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo la sitemap news (articoli degli ultimi giorni); per il passato --fonte wayback. La ricerca /buscar/ è esclusa dal robots.txt",
+          "come": "solo la sitemap news (articoli degli ultimi giorni); per il passato --fonte wayback. La ricerca /buscar/ è esclusa dal robots.txt",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "la ricerca /buscar/ è esclusa dal robots.txt"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non verificato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; esclude /buscar/, /portadas/, login e area utenti",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Monitoraggio dei giorni correnti; per il passato --fonte wayback (la data è nell'indirizzo degli articoli).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "correodelorinoco",
+      "nome": "Correo del Orinoco",
+      "sito": "https://www.correodelorinoco.gob.ve",
+      "dominio": "correodelorinoco.gob.ve",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap di WordPress degli articoli (2000 per file) in ordine cronologico; le pagine non dichiarano la data, quindi vale quella della sitemap (giorno, senza ora); l'API di WordPress richiede l'accesso (401). Con link ed elenco la data resta vuota",
+          "come": "sitemap di WordPress degli articoli (2000 per file) in ordine cronologico; le pagine non dichiarano la data, quindi vale quella della sitemap (giorno, senza ora); l'API di WordPress richiede l'accesso (401). Con link ed elenco la data resta vuota",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML esclusa o non pubblica"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "categorie: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (WordPress)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente a questo User-Agent (blocchi solo per alcuni bot)",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "diariovea",
+      "nome": "Diario VEA",
+      "sito": "https://diariovea.com.ve",
+      "dominio": "diariovea.com.ve",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2020-09-09",
+          "copertura": "API REST di WordPress con filtro per date, dal settembre 2020",
+          "come": "API REST di WordPress con filtro per date, dal settembre 2020",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ e /category/<nome>/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "elpitazo",
+      "nome": "El Pitazo",
+      "sito": "https://elpitazo.net",
+      "dominio": "elpitazo.net",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap degli articoli (Yoast) in ordine cronologico, filtrate per data di modifica; affidabile dal dicembre 2025: gli articoli precedenti risultano modificati in blocco (gennaio 2019 e fine 2025), quindi per quei periodi la ricerca per data è incompleta (meglio --fonte wayback); anche l'API di WordPress restituisce solo gli articoli recenti",
+          "come": "sitemap degli articoli (Yoast) in ordine cronologico, filtrate per data di modifica; affidabile dal dicembre 2025: gli articoli precedenti risultano modificati in blocco (gennaio 2019 e fine 2025), quindi per quei periodi la ricerca per data è incompleta (meglio --fonte wayback); anche l'API di WordPress restituisce solo gli articoli recenti",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML esclusa o non pubblica"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "categorie: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (WordPress)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "runrunes",
+      "nome": "Runrun.es",
+      "sito": "https://runrun.es",
+      "dominio": "runrun.es",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2006-10-19",
+          "copertura": "API REST di WordPress con filtro per date, dal 2006",
+          "come": "API REST di WordPress con filtro per date, dal 2006",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ e /category/<nome>/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "cronicauno",
+      "nome": "Crónica Uno",
+      "sito": "https://cronica.uno",
+      "dominio": "cronica.uno",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2015-01-04",
+          "copertura": "API REST di WordPress con filtro per date, dal 2015",
+          "come": "API REST di WordPress con filtro per date, dal 2015",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ e /category/<nome>/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "elestimulo",
+      "nome": "El Estímulo",
+      "sito": "https://elestimulo.com",
+      "dominio": "elestimulo.com",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2014-04-08",
+          "copertura": "API REST di WordPress con filtro per date, dal 2014",
+          "come": "API REST di WordPress con filtro per date, dal 2014",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ e /category/<nome>/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "caraotadigital",
+      "nome": "Caraota Digital",
+      "sito": "https://caraotadigital.net",
+      "dominio": "caraotadigital.net",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap degli articoli in ordine cronologico, filtrate per data di modifica; l'API di WordPress e la paginazione /page/ sono escluse dal robots.txt",
+          "come": "sitemap degli articoli in ordine cronologico, filtrate per data di modifica; l'API di WordPress e la paginazione /page/ sono escluse dal robots.txt",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML esclusa o non pubblica"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "categorie: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (WordPress)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap; esclude /wp-json/, /page/, la ricerca",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "informe21",
+      "nome": "Informe21",
+      "sito": "https://www.informe21.com",
+      "dominio": "informe21.com",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "Wix",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap del blog (piattaforma Wix), filtrate per data di modifica",
+          "come": "sitemap del blog (piattaforma Wix), filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML esclusa o non pubblica"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "categorie: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (WordPress)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "avn",
+      "nome": "AVN – Agencia Venezolana de Noticias",
+      "sito": "https://avn.info.ve",
+      "dominio": "avn.info.ve",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap degli articoli (Yoast) dall'aprile 2024, filtrate per data di modifica; l'API di WordPress è esclusa dal robots.txt",
+          "come": "sitemap degli articoli (Yoast) dall'aprile 2024, filtrate per data di modifica; l'API di WordPress è esclusa dal robots.txt",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML esclusa o non pubblica"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "categorie: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (WordPress)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; esclude /wp-json/",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "telesur",
+      "nome": "teleSUR English",
+      "sito": "https://www.telesurenglish.net",
+      "dominio": "telesurenglish.net",
+      "lingua": "en",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap degli articoli (Yoast, 200 per file, dal più recente) dal luglio 2024 al 19 novembre 2025, filtrate per data di modifica; dopo, le sitemap non sono aggiornate (usare --fonte wayback); l'API di WordPress è esclusa dal robots.txt",
+          "come": "sitemap degli articoli (Yoast, 200 per file, dal più recente) dal luglio 2024 al 19 novembre 2025, filtrate per data di modifica; dopo, le sitemap non sono aggiornate (usare --fonte wayback); l'API di WordPress è esclusa dal robots.txt",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML esclusa o non pubblica"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "categorie: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (WordPress)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap a questo User-Agent (blocchi solo per alcuni bot); esclude /wp-json/",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "venezuelanalysis",
+      "nome": "Venezuelanalysis",
+      "sito": "https://venezuelanalysis.com",
+      "dominio": "venezuelanalysis.com",
+      "lingua": "en",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2003-08-23",
+          "copertura": "API REST di WordPress con filtro per date, dal 2003 (in inglese)",
+          "come": "API REST di WordPress con filtro per date, dal 2003 (in inglese)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ e /category/<nome>/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "caracaschronicles",
+      "nome": "Caracas Chronicles",
+      "sito": "https://www.caracaschronicles.com",
+      "dominio": "caracaschronicles.com",
+      "lingua": "en",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2002-09-20",
+          "copertura": "API REST di WordPress con filtro per date, dal 2002 (in inglese)",
+          "come": "API REST di WordPress con filtro per date, dal 2002 (in inglese)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ e /category/<nome>/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "elcarabobeno",
+      "nome": "El Carabobeño",
+      "sito": "https://www.el-carabobeno.com",
+      "dominio": "el-carabobeno.com",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2014-06-05",
+          "copertura": "API REST di WordPress con filtro per date, dal 2014",
+          "come": "API REST di WordPress con filtro per date, dal 2014",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ e /category/<nome>/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
+    },
+    {
+      "chiave": "primicia",
+      "nome": "Primicia",
+      "sito": "https://primicia.com.ve",
+      "dominio": "primicia.com.ve",
+      "lingua": "es",
+      "gruppo": "venezuela",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "circa 176 sitemap degli articoli (Yoast) in ordine cronologico dal 2019, filtrate per data di modifica; l'API di WordPress richiede l'accesso (401)",
+          "come": "circa 176 sitemap degli articoli (Yoast) in ordine cronologico dal 2019, filtrate per data di modifica; l'API di WordPress richiede l'accesso (401)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: API chiusa o esclusa dal robots.txt, ricerca HTML esclusa o non pubblica"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "categorie: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura parziale (testate venezuelane)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/ (WordPress)"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli, sitemap e API",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
+      ]
     }
   ],
   "escluse": [
@@ -1439,6 +3275,46 @@
     {
       "testata": "libero.it (portale)",
       "motivo": "è il portale Italiaonline, non il quotidiano: nel motore c'è Libero Quotidiano"
+    },
+    {
+      "testata": "Panorama (Venezuela)",
+      "motivo": "sito offline dalla metà del 2023 (dominio inesistente); solo copie dell'Internet Archive, che lo strumento non usa"
+    },
+    {
+      "testata": "El Universal (Venezuela)",
+      "motivo": "robots.txt «Disallow: /» per tutti: nessun accesso automatico consentito"
+    },
+    {
+      "testata": "Globovisión",
+      "motivo": "robots.txt «Disallow: /» per tutti: nessun accesso automatico consentito"
+    },
+    {
+      "testata": "TalCual",
+      "motivo": "protezione anti-bot sull'API e sulle pagine"
+    },
+    {
+      "testata": "El Periodiquito",
+      "motivo": "protezione anti-bot (home e API rispondono 403 con verifica)"
+    },
+    {
+      "testata": "Efecto Cocuyo",
+      "motivo": "home e articoli negati con 403 allo strumento (l'API di WordPress risponde, ma gli articoli non si possono scaricare)"
+    },
+    {
+      "testata": "La Patilla",
+      "motivo": "articoli negati con 403 allo strumento (l'API di WordPress risponde, ma gli articoli non si possono scaricare)"
+    },
+    {
+      "testata": "El Tiempo (eltiempove.com)",
+      "motivo": "sito irraggiungibile nelle verifiche del 24-25 novembre 2026"
+    },
+    {
+      "testata": "Frontera Digital (fronteradigital.com)",
+      "motivo": "il dominio è in vendita e non ospita più la testata"
+    },
+    {
+      "testata": "El Luchador",
+      "motivo": "API di WordPress disattivata e nessuna sitemap degli articoli (la sitemap elenca solo le categorie): gli articoli non si possono trovare per data; restano utilizzabili i comandi link ed elenco"
     }
   ],
   "fonti_da_valutare": [

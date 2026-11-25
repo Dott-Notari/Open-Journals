@@ -1,16 +1,16 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Search } from 'lucide-react';
 import LogoFonte from './LogoFonte';
-import { statoFonte } from '@/lib/fonti';
+import { statoFonte, GRUPPI } from '@/lib/fonti';
 
 const ridotto = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Tessera di vetro: la lastra con il logo segue di poco il puntatore e si avvicina.
-function Tessera({ f, onApri }) {
+function Tessera({ f, onApri, children, href = `/fonti/${f.chiave}`, largo }) {
   const el = useRef(null);
   const giri = useRef(null);
   useEffect(() => {
@@ -31,12 +31,18 @@ function Tessera({ f, onApri }) {
   const s = statoFonte(f);
   const video = f.chiave === 'youtube';
   return (
-    <Link ref={el} href={`/fonti/${f.chiave}`} className={`tessera vetro${video ? ' video' : ''}`} data-tessera=""
-      onPointerMove={muovi} onPointerLeave={fuori} onClick={(e) => onApri(e, el.current, `/fonti/${f.chiave}`)}
+    <Link ref={el} href={href} className={`tessera vetro${video || largo ? ' video' : ''}`} data-tessera=""
+      onPointerMove={muovi} onPointerLeave={fuori} onClick={(e) => onApri(e, el.current, href)}
       aria-label={`${f.nome}, ${s.testo.toLowerCase()}`}>
-      <span className="faccia"><LogoFonte chiave={f.chiave} nome={f.nome} area={video ? 9000 : 3800} massimo={video ? 72 : 60} /></span>
+      <span className="faccia">{children ?? <LogoFonte chiave={f.chiave} nome={f.nome} area={video ? 9000 : 3800} massimo={video ? 72 : 60} />}</span>
       <span className="piede">
-        {video ? (
+        {largo ? (
+          <>
+            <span className="titolo-3">Rassegna stampa</span>
+            <span className="tenue">La stessa ricerca, per periodo, su più testate insieme: un solo archivio con una scheda per testata</span>
+            <span className="stato" style={{ '--c': s.colore }}>{s.testo}</span>
+          </>
+        ) : video ? (
           <>
             <span className="titolo-3">Video da YouTube</span>
             <span className="tenue">Video singoli, playlist e canali, con il testo del parlato</span>
@@ -70,21 +76,45 @@ export default function GrigliaFonti({ fonti }) {
       .to(altre, { autoAlpha: 0, scale: 0.94, duration: 0.28, ease: 'power2.in', stagger: 0.008 }, 0)
       .to(el, { scale: 1.06, duration: 0.42, ease: 'expo.out' }, 0);
   }
-  const gruppi = [['italiane', 'Testate italiane'], ['estere', 'Testate estere']]
-    .map(([k, titolo]) => [k, titolo, fonti.filter((f) => f.gruppo === k)]).filter(([, , l]) => l.length);
+  const [cerca, setCerca] = useState('');
+  const q = cerca.trim().toLowerCase();
+  const passa = (f) => !q || f.nome.toLowerCase().includes(q) || f.dominio?.includes(q);
+  const gruppi = GRUPPI.map(([k, titolo]) => [k, titolo, fonti.filter((f) => f.gruppo === k && passa(f))]).filter(([, , l]) => l.length);
   const yt = fonti.find((f) => f.chiave === 'youtube');
+  const rassegna = fonti.find((f) => f.chiave === 'rassegna');
+  const campione = fonti.filter((f) => ['corriere', 'elmundo', 'ilnapolista', 'runrunes'].includes(f.chiave));
   return (
     <div ref={box} style={{ display: 'flex', flexDirection: 'column', gap: 44 }}>
+      <label className="cerca-fonti vetro">
+        <Search size={18} aria-hidden="true" />
+        <input type="search" value={cerca} onChange={(e) => setCerca(e.target.value)} placeholder={`Cerca tra ${fonti.filter((f) => f.dominio && f.chiave !== 'youtube').length} testate…`}
+          aria-label="Cerca una testata" autoComplete="off" spellCheck={false} />
+      </label>
       {gruppi.map(([k, titolo, lista]) => (
         <section key={k} aria-labelledby={`gruppo-${k}`} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <h2 id={`gruppo-${k}`} className="spaziato tenue" style={{ margin: 0 }}>{titolo}</h2>
+          <h2 id={`gruppo-${k}`} className="spaziato tenue" style={{ margin: 0 }}>{titolo} <span className="conta">{lista.length}</span></h2>
           <div className="griglia">{lista.map((f) => <Tessera key={f.chiave} f={f} onApri={apri} />)}</div>
         </section>
       ))}
-      <section aria-labelledby="video" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-        <h2 id="video" className="spaziato tenue" style={{ margin: 0 }}>Video</h2>
-        <div className="griglia"><Tessera f={yt} onApri={apri} /></div>
-      </section>
+      {q && !gruppi.length && <p className="tenue">Nessuna testata con «{cerca.trim()}».</p>}
+      {!q && (
+        <section aria-labelledby="insieme" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+          <h2 id="insieme" className="spaziato tenue" style={{ margin: 0 }}>Più testate insieme</h2>
+          <div className="griglia">
+            <Tessera f={rassegna} onApri={apri} href="/rassegna" largo>
+              <span className="mazzo" aria-hidden="true">
+                {campione.map((f) => <span key={f.chiave} className="placca"><LogoFonte chiave={f.chiave} nome={f.nome} area={1500} massimo={30} /></span>)}
+              </span>
+            </Tessera>
+          </div>
+        </section>
+      )}
+      {!q && (
+        <section aria-labelledby="video" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+          <h2 id="video" className="spaziato tenue" style={{ margin: 0 }}>Video</h2>
+          <div className="griglia"><Tessera f={yt} onApri={apri} /></div>
+        </section>
+      )}
     </div>
   );
 }

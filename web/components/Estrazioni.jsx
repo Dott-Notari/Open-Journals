@@ -20,6 +20,10 @@ const CONCLUSE = ['completata', 'interrotta', 'errore', 'annullata'];
 function sintesi(e) {
   const p = e.parametri || {};
   const pezzi = [];
+  if (p.testate?.length) {
+    const nomi = p.testate.map((k) => trovaFonte(k)?.nome ?? k);
+    pezzi.push(`${nomi.length} testate: ${nomi.length > 4 ? `${nomi.slice(0, 4).join(', ')} e altre ${nomi.length - 4}` : nomi.join(', ')}`);
+  }
   if (p.dal) pezzi.push(`dal ${giorno.format(new Date(p.dal))} al ${giorno.format(new Date(p.al))}`);
   if (p.link) pezzi.push(`${p.link.length} link`);
   if (p.elenco) pezzi.push('da una pagina elenco');
@@ -49,7 +53,7 @@ export default function Estrazioni() {
     if (!user) return;
     setUtente(user.id);
     const { data: r, error } = await sb.from('estrazioni')
-      .select('id,fonte,modalita,parametri,stato,richiesta,creata_il,avviata_il,iniziata_il,conclusa_il,battito,segnale,segnale_testo,articoli,esaminati,errore,scheda,file_cancellati_il,estrazione_file(id,nome,tipo,dimensione,percorso)')
+      .select('id,fonte,modalita,parametri,stato,richiesta,creata_il,avviata_il,iniziata_il,conclusa_il,battito,segnale,segnale_testo,avanzamento,articoli,esaminati,errore,scheda,file_cancellati_il,estrazione_file(id,nome,tipo,dimensione,percorso)')
       .eq('utente', user.id).eq('nascosta', false).order('creata_il', { ascending: false }).limit(100);
     if (error) setErrore('Impossibile caricare le estrazioni: ricarica la pagina.');
     else setRighe(r);
@@ -115,7 +119,8 @@ export default function Estrazioni() {
             <li key={e.id} className="vetro" data-riga="" style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div className="riga" style={{ alignItems: 'center', gap: 16 }}>
                 <span style={{ width: 112, height: 56, borderRadius: 12, background: 'var(--carta-logo)', display: 'grid', placeItems: 'center', padding: 8, flexShrink: 0 }}>
-                  <LogoFonte chiave={e.fonte} nome={trovaFonte(e.fonte)?.nome ?? e.fonte} area={1500} massimo={36} />
+                  {e.fonte === 'rassegna' ? <Newspaper size={28} strokeWidth={1.7} color="#111111" aria-hidden="true" />
+                    : <LogoFonte chiave={e.fonte} nome={trovaFonte(e.fonte)?.nome ?? e.fonte} area={1500} massimo={36} />}
                 </span>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0, flex: '1 1 340px' }}>
                   <span style={{ fontSize: '1.12rem', fontWeight: 600 }} translate="no">{trovaFonte(e.fonte)?.nome ?? e.fonte}</span>
@@ -138,6 +143,9 @@ export default function Estrazioni() {
                     <span className="tenue piccolo numeri">{e.articoli} raccolti su {e.esaminati} esaminati</span>
                     <Spia stato={e.stato} battito={e.battito} segnale={e.segnale} avviata={e.avviata_il} />
                   </div>
+                  {e.fonte === 'rassegna' && e.avanzamento?.includes('testata ') && (
+                    <p className="piccolo" style={{ margin: 0 }}>{e.avanzamento.split(' | ')[0].replace(/^estrazione, t/, 'T')}</p>
+                  )}
                   {e.segnale_testo && e.segnale !== 'ok' && <p className="tenue piccolo">{e.segnale_testo}</p>}
                 </div>
               )}
@@ -170,7 +178,7 @@ export default function Estrazioni() {
               </div>
               {e.scheda && (
                 <details>
-                  <summary style={{ cursor: 'pointer', minHeight: 32 }}>Scheda</summary>
+                  <summary style={{ cursor: 'pointer', minHeight: 32 }}>{e.fonte === 'rassegna' ? 'Scheda della rassegna, testata per testata' : 'Scheda'}</summary>
                   <pre style={{ whiteSpace: 'pre-wrap', fontSize: '0.8rem', margin: '10px 0 0', maxHeight: 360, overflow: 'auto' }}>{e.scheda}</pre>
                 </details>
               )}
@@ -178,6 +186,7 @@ export default function Estrazioni() {
           );
         })}
       </ul>
+      <p className="tenue piccolo" style={{ margin: 0 }}>I testi raccolti servono per studio e ricerca e non vanno ridistribuiti.</p>
     </>
   );
 }

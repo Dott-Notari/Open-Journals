@@ -7,20 +7,43 @@ export const RAPPORTI = { ansa: 1, corriere: 12.93, fatto: 2.45, ilgiornale: 6.6
   independent: 4.29, mirror: 2.64, elmundo: 7.5 };
 
 // testate la cui ricerca per data copre solo gli ultimi giorni (avviso sulle date)
-const SOLO_RECENTE = { mattino: 1, messaggero: 1, independent: 90 };
+const SOLO_RECENTE = { mattino: 1, messaggero: 1, independent: 90, '2001online': 3 };
+// date da cui l'archivio è affidabile quando il JSON non le mette in copertura_dal (si leggono nel testo della copertura)
+const AFFIDABILE_DAL = { elpitazo: '2025-12-01', avn: '2024-04-01', eldiario: '2019-01-01', primicia: '2019-01-01' };
+// archivi che si fermano prima di oggi
+const COPERTURA_FINO = { telesur: '2025-11-19' };
+
+export const GRUPPI = [['italiane', 'Testate italiane'], ['estere', 'Testate estere'], ['napoli', 'Napoli, testate sportive'], ['venezuela', 'Venezuela']];
 
 // Elenco delle fonti: le testate attive del motore (regole_testate.json) più YouTube
 export const FONTI = [
   ...REGOLE.testate.filter((t) => t.stato === 'attiva').map((t) => ({
     chiave: t.chiave, nome: t.nome, dominio: t.dominio, gruppo: t.gruppo, lingua: t.lingua,
-    coperturaDal: t.modalita.data.copertura_dal, recenteGiorni: SOLO_RECENTE[t.chiave] ?? null,
+    coperturaDal: t.modalita.data.copertura_dal || AFFIDABILE_DAL[t.chiave] || null,
+    coperturaFino: COPERTURA_FINO[t.chiave] ?? null, recenteGiorni: SOLO_RECENTE[t.chiave] ?? null,
     fonti: t.modalita.data.fonti_consentite, ricerca: t.modalita.parole_con_ricerca_del_sito.disponibile,
     primaPagina: t.modalita.elenco.solo_prima_pagina, guida: GUIDA[t.chiave], nota: GUIDA[t.chiave]?.periodo ?? '',
   })),
   { chiave: 'youtube', nome: 'YouTube', dominio: 'youtube.com', gruppo: 'video', nota: '' },
 ];
 
-export const trovaFonte = (chiave) => FONTI.find((f) => f.chiave === chiave);
+export const TESTATE = FONTI.filter((f) => f.gruppo !== 'video');
+
+// La rassegna stampa è una fonte a sé per la coda e per il docente, ma non ha pagina propria
+export const RASSEGNA = { chiave: 'rassegna', nome: 'Rassegna stampa', gruppo: 'rassegna', nota: '' };
+
+export const trovaFonte = (chiave) => (chiave === 'rassegna' ? RASSEGNA : FONTI.find((f) => f.chiave === chiave));
+
+// Il periodo scelto esce da quello che l'archivio della testata copre? (avviso, non blocca)
+export function fuoriArchivio(fonte, dal, al) {
+  if (dal && fonte.coperturaDal && dal < fonte.coperturaDal) return `L'archivio di ${fonte.nome} è affidabile dal ${giorno.format(new Date(fonte.coperturaDal))}.`;
+  if (al && fonte.coperturaFino && al > fonte.coperturaFino) return `L'archivio di ${fonte.nome} si ferma al ${giorno.format(new Date(fonte.coperturaFino))}.`;
+  if (dal && fonte.recenteGiorni) {
+    const limite = new Date(Date.now() - fonte.recenteGiorni * 864e5).toISOString().slice(0, 10);
+    if (dal < limite) return `Per data ${fonte.nome} copre solo ${fonte.recenteGiorni === 1 ? 'le uscite del giorno' : `gli ultimi ${fonte.recenteGiorni} giorni circa`}.`;
+  }
+  return null;
+}
 
 export const data = new Intl.DateTimeFormat('it-IT', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Europe/Rome' });
 export const giorno = new Intl.DateTimeFormat('it-IT', { dateStyle: 'short', timeZone: 'Europe/Rome' });
