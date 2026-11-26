@@ -18,8 +18,9 @@ const NUMERI = [
   ['giorni_conservazione', 'Conservazione dei file', 1, 30, 'giorni'],
   ['parallele_per_fonte', 'Parallele per testata', 1, 4, 'al massimo'],
   ['pausa_secondi', 'Pausa tra le richieste', 1, 5, 'secondi'],
+  ['max_parti', 'Parti al massimo', 1, 200, 'parti'],
 ];
-const INTERRUTTORI = [['registrazioni_aperte', 'Registrazioni aperte'], ['ansa_estrazioni_attive', 'Estrazioni ANSA'],
+const INTERRUTTORI = [['tempo_illimitato', 'Tempo di estrazione illimitato'], ['registrazioni_aperte', 'Registrazioni aperte'], ['ansa_estrazioni_attive', 'Estrazioni ANSA'],
   ['ansa_indicizzazione_attiva', 'Indice quotidiano ANSA']];
 
 export default function Docente() {
@@ -29,6 +30,7 @@ export default function Docente() {
   const [fonti, setFonti] = useState([]);
   const [registro, setRegistro] = useState([]);
   const [imp, setImp] = useState(null);
+  const [illimitato, setIllimitato] = useState(true);
   const [esito, setEsito] = useState('');
   const [diagnosi, setDiagnosi] = useState(null);
   async function verifica() {
@@ -54,7 +56,7 @@ export default function Docente() {
       sb.from('registro_estrazioni').select('*').order('creata_il', { ascending: false }).limit(200),
       sb.from('impostazioni').select('*').single(),
     ]);
-    setStudenti(s.data || []); setFonti(f.data || []); setRegistro(r.data || []); setImp(i.data);
+    setStudenti(s.data || []); setFonti(f.data || []); setRegistro(r.data || []); setImp(i.data); if (i.data) setIllimitato(i.data.tempo_illimitato ?? true);
     const percorsi = (s.data || []).map((u) => u.foto).filter(Boolean);
     if (percorsi.length) {
       const { data: firmati } = await sb.storage.from('foto').createSignedUrls(percorsi, 3600);
@@ -95,7 +97,7 @@ export default function Docente() {
   async function salva(e) {
     e.preventDefault();
     const d = new FormData(e.currentTarget);
-    const valori = Object.fromEntries(NUMERI.map(([k]) => [k, Number(d.get(k))]));
+    const valori = Object.fromEntries(NUMERI.filter(([k]) => d.get(k) !== null).map(([k]) => [k, Number(d.get(k))]));
     INTERRUTTORI.forEach(([k]) => { valori[k] = d.get(k) === 'on'; });
     valori.domini_email_ammessi = (d.get('domini') || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
     const { error } = await sb.from('impostazioni').update(valori).eq('id', true);
@@ -215,9 +217,9 @@ export default function Docente() {
 
       {scheda === 'impostazioni' && imp && (
         <form onSubmit={salva} className="modulo vetro">
-          <div className="due">
-            {NUMERI.map(([k, t, min, max, unita]) => (
-              <label key={k} className="etichetta">{t}
+          <div className="due tre">
+            {NUMERI.filter(([k]) => k !== 'max_parti' || illimitato).map(([k, t, min, max, unita]) => (
+              <label key={k} className="etichetta">{k === 'tempo_max_minuti' && illimitato ? 'Durata di ogni parte' : t}
                 <span className="campo-unita">
                   <input className="campo" type="number" name={k} min={min} max={max} step={k === 'pausa_secondi' ? 0.5 : 1} required defaultValue={imp[k]} inputMode="decimal" />
                   <span aria-hidden="true">{unita}</span>
@@ -227,9 +229,17 @@ export default function Docente() {
           </div>
           <div>
             {INTERRUTTORI.map(([k, t]) => (
-              <label key={k} className="riga" style={{ justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--linea)', cursor: 'pointer' }}>
-                <span style={{ fontWeight: 550 }}>{t}</span>
-                <input type="checkbox" role="switch" className="interruttore" name={k} defaultChecked={imp[k]} />
+              <label key={k} className="riga" style={{ justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--linea)', cursor: 'pointer', flexWrap: 'nowrap' }}>
+                <span style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <span style={{ fontWeight: 550 }}>{t}</span>
+                  {k === 'tempo_illimitato' && (
+                    <span className="tenue piccolo">{illimitato
+                      ? "Un'estrazione lunga prosegue da sola in più parti, ognuna lunga al massimo la durata indicata sopra, fino al numero massimo di parti. GitHub non permette lavori più lunghi di sei ore."
+                      : "Ogni estrazione si ferma alla durata indicata sopra; chi la avvia può riprenderla a mano."}</span>
+                  )}
+                </span>
+                <input type="checkbox" role="switch" className="interruttore" name={k} defaultChecked={imp[k]}
+                  onChange={k === 'tempo_illimitato' ? (e) => setIllimitato(e.target.checked) : undefined} />
               </label>
             ))}
           </div>

@@ -96,7 +96,29 @@ PIANO["2001online"] = ("data", OGGI, 1, None)
 for _k in ("ultimasnoticias", "runrunes", "cronicauno", "venezuelanalysis"):
     PIANO[f"{_k}_parole"] = ("data", OGGI - timedelta(days=700), 30, None)
 
+# testate di videogiochi (25 novembre 2026): un giorno a caso negli ultimi due anni
+for _k in ("ign", "ignitalia", "eurogamer", "polygon", "kotaku", "pcgamer", "rockpapershotgun", "gamesradar",
+           "gameinformer", "vgc", "thegamer", "gamerant", "multiplayer", "everyeye", "spaziogames", "gamereactor",
+           "gamesource", "gamesindustry", "gamedeveloper"):
+    PIANO[_k] = ("data", OGGI - timedelta(days=700), 1, None)
+# testate francesi, spagnole e altre di videogiochi (25 novembre 2026, sera)
+for _k in ("lemonde", "lefigaro", "20minutesfr", "franceinfo", "bfmtv", "lci", "cnews", "france24", "latribune",
+           "humanite", "lacroix", "lobs", "lexpress", "courrier", "eldiarioes", "ara", "publico", "okdiario", "efe",
+           "europapress", "eurogameres", "ignespana", "gamereactores", "3djuegos", "pushsquare", "purexbox",
+           "nintendolife"):
+    PIANO[_k] = ("data", OGGI - timedelta(days=700), 1, None)
+for _k in ("abc", "20minutoses", "elespanol", "diariovasco", "elcorreo", "ideal", "surinenglish", "diariosur",
+           "vandal", "hobbyconsolas"):
+    PIANO[_k] = ("data", OGGI - timedelta(days=1), 1, None)
+PIANO["libertaddigital"] = ("data", OGGI - timedelta(days=1), 1, None)
+PIANO["elconfidencial"] = ("data", OGGI - timedelta(days=1), 1, None)
+PIANO["larazon"] = ("data", OGGI - timedelta(days=700), 1, None)
+PIANO["mediapart"] = ("data", OGGI - timedelta(days=90), 2, None)
+PIANO["canard"] = ("data", OGGI - timedelta(days=90), 7, None)
+PIANO["gamereactor_parole"] = ("data", OGGI - timedelta(days=700), 30, None)
+
 PAROLE = {c: ["migrant*"] for c in PIANO if c.endswith(("_parole", "_gdelt"))}
+PAROLE["gamereactor_parole"] = ["nintendo"]
 PAROLE.update({c: ["maradona"] for c in ("calcionapoli1926_parole", "ilnapolista_parole")})
 FONTE = {c: c.rsplit("_", 1)[1] for c in PIANO if c.endswith(("_wayback", "_gdelt"))}
 PAROLE_GDELT = {c: ["migrants", "refugees"] for c in PIANO if c.endswith("_gdelt")}

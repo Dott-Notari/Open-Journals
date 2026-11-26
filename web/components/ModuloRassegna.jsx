@@ -10,7 +10,7 @@ import { GRUPPI, fuoriArchivio, oggi } from '@/lib/fonti';
 import CampoData from './CampoData';
 
 const FORMATI = [['docx', 'Word'], ['txt', 'Testo'], ['html', 'HTML'], ['xlsx', 'Excel'], ['jsonl', 'JSONL'], ['tlab', 'T-LAB']];
-const LINGUE = { it: 'italiano', es: 'spagnolo', en: 'inglese' };
+const LINGUE = { it: 'italiano', es: 'spagnolo', en: 'inglese', fr: 'francese', ca: 'catalano' };
 
 // Casella del gruppo: piena se tutte le testate sono scelte, a metà se solo alcune.
 function CasellaGruppo({ stato, onCambio, etichetta }) {
@@ -25,7 +25,7 @@ function CasellaGruppo({ stato, onCambio, etichetta }) {
   );
 }
 
-export default function ModuloRassegna({ testate, iniziali, minuti }) {
+export default function ModuloRassegna({ testate, iniziali, minuti, illimitato }) {
   const router = useRouter();
   const [scelte, setScelte] = useState(() => new Set(iniziali));
   const [dal, setDal] = useState('');
@@ -67,7 +67,7 @@ export default function ModuloRassegna({ testate, iniziali, minuti }) {
 
   const sintesi = !elenco.length ? 'Nessuna testata scelta'
     : elenco.length === 1 ? `${elenco[0].nome}: con una sola testata parte un'estrazione normale`
-    : `${elenco.length} testate, ${minuti} minuti al massimo in tutto`;
+    : `${elenco.length} testate, ${illimitato ? 'senza limite di tempo' : `${minuti} minuti al massimo in tutto`}`;
 
   return (
     <form onSubmit={invia} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

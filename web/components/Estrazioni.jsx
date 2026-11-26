@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import Link from 'next/link';
-import { Clock, LoaderCircle, CheckCircle2, PauseCircle, AlertTriangle, XCircle, FileArchive, Film, Music, Newspaper, Trash2, Square, RotateCw } from 'lucide-react';
+import { Clock, LoaderCircle, CheckCircle2, PauseCircle, AlertTriangle, XCircle, FileArchive, Film, Music, Newspaper, Trash2, Square, RotateCw, ArrowDownRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { trovaFonte, data, giorno, peso } from '@/lib/fonti';
 import LogoFonte from './LogoFonte';
@@ -53,7 +53,7 @@ export default function Estrazioni() {
     if (!user) return;
     setUtente(user.id);
     const { data: r, error } = await sb.from('estrazioni')
-      .select('id,fonte,modalita,parametri,stato,richiesta,creata_il,avviata_il,iniziata_il,conclusa_il,battito,segnale,segnale_testo,avanzamento,articoli,esaminati,errore,scheda,file_cancellati_il,estrazione_file(id,nome,tipo,dimensione,percorso)')
+      .select('id,fonte,modalita,parametri,stato,richiesta,creata_il,avviata_il,iniziata_il,conclusa_il,battito,segnale,segnale_testo,avanzamento,parte,riprende_da,articoli,esaminati,errore,scheda,file_cancellati_il,estrazione_file(id,nome,tipo,dimensione,percorso)')
       .eq('utente', user.id).eq('nascosta', false).order('creata_il', { ascending: false }).limit(100);
     if (error) setErrore('Impossibile caricare le estrazioni: ricarica la pagina.');
     else setRighe(r);
@@ -112,7 +112,8 @@ export default function Estrazioni() {
       )}
       <ul ref={lista} style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
         {righe.map((e) => {
-          const [etichetta, Icona, colore] = STATI[e.stato];
+          const proseguita = e.stato === 'interrotta' && righe.some((x) => x.riprende_da === e.id && x.parte > (e.parte || 1));
+          const [etichetta, Icona, colore] = proseguita ? ['Prosegue nella parte successiva', ArrowDownRight, 'var(--testo)'] : STATI[e.stato];
           const scadenza = e.conclusa_il && new Date(new Date(e.conclusa_il).getTime() + giorni * 864e5);
           const inCorso = e.stato === 'in_corso' || e.stato === 'avviata';
           return (
@@ -123,7 +124,10 @@ export default function Estrazioni() {
                     : <LogoFonte chiave={e.fonte} nome={trovaFonte(e.fonte)?.nome ?? e.fonte} area={1500} massimo={36} />}
                 </span>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0, flex: '1 1 340px' }}>
-                  <span style={{ fontSize: '1.12rem', fontWeight: 600 }} translate="no">{trovaFonte(e.fonte)?.nome ?? e.fonte}</span>
+                  <span className="riga" style={{ gap: 8 }}>
+                    <span style={{ fontSize: '1.12rem', fontWeight: 600 }} translate="no">{trovaFonte(e.fonte)?.nome ?? e.fonte}</span>
+                    {e.parte > 1 && <span className="conta" style={{ marginLeft: 0 }}>parte {e.parte}</span>}
+                  </span>
                   <span className="tenue" style={{ overflowWrap: 'anywhere' }}>{sintesi(e)}</span>
                   <span className="tenue piccolo numeri">
                     {data.format(new Date(e.creata_il))}
@@ -152,7 +156,7 @@ export default function Estrazioni() {
               {!inCorso && e.iniziata_il && e.conclusa_il && (
                 <span className="tenue piccolo numeri">Durata <Cronometro inizio={e.iniziata_il} fine={e.conclusa_il} /></span>
               )}
-              {e.errore && <p className={`avviso ${e.stato === 'errore' ? 'errore' : 'giallo'}`} style={{ margin: 0 }}>{e.errore}</p>}
+              {e.errore && <p className={`avviso ${e.stato === 'errore' ? 'errore' : proseguita ? 'blu' : 'giallo'}`} style={{ margin: 0 }}>{e.errore}</p>}
               <div className="riga" style={{ gap: 8 }}>
                 {!e.file_cancellati_il && e.estrazione_file.filter((f) => f.tipo !== 'ripresa').map((f) => {
                   const IconaFile = ICONE_FILE[f.tipo];
@@ -167,7 +171,8 @@ export default function Estrazioni() {
                 {inCorso && (e.richiesta === 'ferma'
                   ? <span className="tenue piccolo" aria-live="polite">Fermata in corso, tra poco trovi qui i file…</span>
                   : <button type="button" className="pulsante compatto secondario" onClick={() => ferma(e.id)}><Square size={15} aria-hidden="true" />Ferma e scarica</button>)}
-                {e.stato === 'interrotta' && !e.file_cancellati_il && e.estrazione_file.some((f) => f.tipo === 'ripresa') && (
+                {e.stato === 'interrotta' && !e.file_cancellati_il && e.estrazione_file.some((f) => f.tipo === 'ripresa')
+                  && !righe.some((x) => x.riprende_da === e.id && !['errore', 'annullata'].includes(x.stato)) && (
                   <button type="button" className="pulsante compatto" onClick={() => riprendi(e.id)}><RotateCw size={16} aria-hidden="true" />Riprendi</button>
                 )}
                 {CONCLUSE.includes(e.stato) && (

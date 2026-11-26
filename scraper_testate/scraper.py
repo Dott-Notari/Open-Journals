@@ -55,14 +55,14 @@ def lista(s):
 
 
 def testate_valide(s):
-    """Una o più testate separate da virgola, oppure un gruppo: «tutte», «italiane», «estere», «napoli», «venezuela»."""
+    """Una o più testate separate da virgola, oppure un gruppo: «tutte», «italiane», «estere», «napoli», «venezuela», «videogiochi», «francesi», «spagnole»."""
     from motore.testate import GRUPPI
     gruppi = GRUPPI
     chiavi = gruppi.get(s.strip().lower()) or lista(s)
     ignote = [k for k in chiavi if k not in TESTATE]
     if ignote:
         raise argparse.ArgumentTypeError(f"testate non previste: {', '.join(ignote)} "
-                                         f"(disponibili: {', '.join(TESTATE)}, oppure tutte/italiane/estere/napoli/venezuela)")
+                                         f"(disponibili: {', '.join(TESTATE)}, oppure tutte/italiane/estere/napoli/venezuela/videogiochi/francesi/spagnole)")
     return list(dict.fromkeys(chiavi))
 
 
@@ -110,7 +110,7 @@ def riga_di_comando(argv):
     sub = ap.add_subparsers(dest="comando", required=True)
     sp = sub.add_parser("data", help="articoli di una o più testate in un intervallo di date")
     sp.add_argument("testata", type=testate_valide,
-                    help="chiave della testata, più chiavi separate da virgola, oppure un gruppo: tutte/italiane/estere/napoli/venezuela")
+                    help="chiave della testata, più chiavi separate da virgola, oppure un gruppo: tutte/italiane/estere/napoli/venezuela/videogiochi/francesi/spagnole")
     sp.add_argument("--dal", type=data_valida, required=True)
     sp.add_argument("--al", type=data_valida, default=date.today().isoformat())
     sp.add_argument("--senza-ricerca", action="store_true",
@@ -145,7 +145,7 @@ def riga_di_comando(argv):
     sp.add_argument("--pausa", type=float, default=PAUSA_DEFAULT)
     sub.add_parser("testate", help="elenco delle testate disponibili")
     sp = sub.add_parser("pacchetto", help="cartella per aggiornare la piattaforma online con Claude (chat)")
-    sp.add_argument("--cartella", default=None, help="dove scriverla (default Desktop/Pacchetto_Claude_Piattaforma)")
+    sp.add_argument("--cartella", default=None, help="dove scriverla (default Desktop/Siti_API/piattaforma)")
     sp = sub.add_parser("schede", help="schede Word e Markdown delle testate, con gli esiti delle prove")
     sp.add_argument("--cartella", default=None, help="dove scriverle (default Desktop/Siti_API/schede_testate)")
     sub.add_parser("diagnosi", help="controlla Python, librerie, ffmpeg e deno")

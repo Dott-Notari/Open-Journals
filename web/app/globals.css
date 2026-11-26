@@ -183,6 +183,7 @@ textarea.campo { padding: 12px 16px; resize: vertical; line-height: 1.5; }
 .due { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; align-items: stretch; }
 /* nelle griglie di campi le etichette restano in alto e i campi sulla stessa riga, anche se un'etichetta va a capo */
 .due > .etichetta > :is(.campo, .campo-unita, span:has(> .campo)) { margin-top: auto; }
+.due.tre { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
 .campo-unita { position: relative; display: block; }
 .campo-unita .campo { padding-right: 96px; font-variant-numeric: tabular-nums; }
 .campo-unita > span { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--tenue); font-size: 0.9rem; font-weight: 400; pointer-events: none; }
@@ -244,6 +245,10 @@ textarea.campo { padding: 12px 16px; resize: vertical; line-height: 1.5; }
 @media (prefers-color-scheme: dark) { :root:not([data-tema="chiaro"]) .pulsante-google { background: #131314; border-color: #8E918F; color: #E3E3E3; } }
 .separatore { display: flex; align-items: center; gap: 12px; margin: 0; }
 .separatore::before, .separatore::after { content: ""; flex: 1; height: 1px; background: var(--linea); }
+
+.consigli { display: flex; flex-direction: column; gap: 6px; padding: 0 6px; }
+.consigli p { display: flex; gap: 10px; align-items: flex-start; margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--tenue); }
+.consigli svg { flex-shrink: 0; margin-top: 2px; color: var(--accento); }
 
 /* Info: piccola nota che nasce dall'icona */
 .info { position: relative; display: inline-flex; }

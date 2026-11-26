@@ -1,6 +1,6 @@
 # Scraper didattico delle testate giornalistiche (versione Siti_API)
 
-Questa copia, in `Desktop/Siti_API/motore_testate`, estende il motore di `Desktop/scraper_testate` con quanto emerso dalla mappatura con reverse-api-engineer (cartelle `Siti_API/<testata>/`). La copia originale non è stata modificata. Le estrazioni finiscono in `Desktop/Siti_API/estrazioni/<testata>/…`, con la stessa struttura di sempre. Le schede delle testate, con le modalità possibili per ciascuna e gli esiti delle prove, sono in `Desktop/Siti_API/schede_testate/`.
+Questa copia, in `Desktop/Siti_API/motore_testate`, estende il motore di `scraper_testate` (versione 1.13, ora in `Siti_API/archivio/scraper_testate_1.13`) con quanto emerso dalla mappatura con reverse-api-engineer (cartelle in `Siti_API/archivio/mappature_rae_2026-11/`). La copia originale non è stata modificata. Le estrazioni finiscono in `Desktop/Siti_API/estrazioni/<testata>/…`, con la stessa struttura di sempre. Le schede delle testate, con le modalità possibili per ciascuna e gli esiti delle prove, sono in `Desktop/Siti_API/schede_testate/`.
 
 ## Novità della versione 1.14
 
@@ -11,7 +11,7 @@ python scraper.py rassegna napoli,verita,corriere --dal 2026-11-01 --al 2026-11-
 python scraper.py rassegna tutte --dal 2026-11-20 --al 2026-11-20 --cerca-in titolo --parole "migrant*"
 ```
 
-Si indicano chiavi e gruppi (`italiane`, `estere`, `napoli`, `tutte`) separati da virgola. Ogni testata usa il suo metodo migliore: la ricerca del sito quando ci sono parole chiave e la testata la consente, altrimenti l'archivio per data. Restano le regole di sempre (robots.txt, pause, nessun aggiramento di paywall). Il risultato finisce in `estrazioni/_rassegna/<data>_rassegna-…/` e ha la struttura di una normale estrazione:
+Si indicano chiavi e gruppi (`italiane`, `estere`, `napoli`, `venezuela`, `videogiochi`, `tutte`) separati da virgola. Ogni testata usa il suo metodo migliore: la ricerca del sito quando ci sono parole chiave e la testata la consente, altrimenti l'archivio per data. Restano le regole di sempre (robots.txt, pause, nessun aggiramento di paywall). Il risultato finisce in `estrazioni/_rassegna/<data>_rassegna-…/` e ha la struttura di una normale estrazione:
 - un file per articolo, `corpus_completo.docx`, `indice_articoli.xlsx`, `corpus.jsonl` e `corpus_tlab.txt`, con la testata nella colonna Testata e nella variabile T-LAB `*TESTATA`;
 - `scheda_rassegna.txt`, con l'esito testata per testata;
 - `testate/<chiave>/scheda_estrazione.txt`, con i dettagli di ciascuna testata.
@@ -55,6 +55,35 @@ I motivi sono anche in `schede_testate/README.md`.
 ## Novità della versione 1.13
 
 **Rispetto del robots.txt.** Prima di ogni richiesta lo strumento legge il robots.txt della testata secondo lo standard RFC 9309, con i caratteri jolly che il modulo standard di Python ignora. Gli indirizzi esclusi non vengono scaricati e sono contati nella scheda, e il Crawl-delay dichiarato sostituisce la pausa quando è più lungo (Daily Mirror: 10 secondi). Come prima, lo strumento si presenta con un User-Agent che dichiara la finalità di ricerca e non aggira paywall né protezioni anti-bot.
+
+**Testate di videogiochi e recensioni, gruppo `videogiochi` (19, dalla 1.15).** In `motore/testate/videogiochi.py`, scritte sulla ricognizione del 25 novembre 2026 senza reverse-api-engineer.
+
+| Metodo | Testate |
+|---|---|
+| sitemap mensili, filtrate per data di modifica | `polygon`, `thegamer`, `gamerant` (circa dal 2023), `pcgamer`, `gamesradar`, `gamedeveloper`; `kotaku` verifica tutto il mese (date di modifica non affidabili) |
+| sitemap annuali, filtrate per data di modifica | `ign`, `eurogamer`, `rockpapershotgun`, `gamesindustry` |
+| sitemap numerate in ordine cronologico | `ignitalia`, `everyeye`, `spaziogames` (date affidabili dal giugno 2018), `gamesource`, `gameinformer` (più recensioni e anteprime) |
+| ricerca binaria sulla data degli articoli | `vgc` (2-3 minuti prima di iniziare; Crawl-delay 5 s) |
+| sitemap a file fissi | `multiplayer` (notizie brevi solo per gli ultimi tre mesi) |
+| API di WordPress, anche per parole | `gamereactor` |
+
+Escluse: GameSpot, Destructoid, GamesVillage (anti-bot), Eurogamer Italia (rimanda a eurogamer.net), OpenCritic e Metacritic (aggregatori di voti, da valutare con una modalità a parte).
+
+**Testate francesi e spagnole, gruppi `francesi` (16) e `spagnole` (17), e altre 9 di videogiochi (dalla 1.16).** In `motore/testate/francia.py`, `spagna.py` e `videogiochi.py`, con le classi generiche di `motore/testate/generiche.py`; ricognizione del 25 novembre 2026, senza reverse-api-engineer.
+
+| Metodo | Testate |
+|---|---|
+| sitemap per giorno, settimana o mese (scelte dal nome del file) | `lemonde`, `lefigaro`, `20minutesfr`, `franceinfo`, `bfmtv`, `france24`, `latribune`, `humanite`, `lacroix`, `lobs`, `lexpress`, `courrier`, `eldiarioes`, `ara`, `publico`, `europapress`, `3djuegos` |
+| sitemap numerate in ordine cronologico | `lci`, `cnews` (Crawl-delay 10 s), `ignespana` |
+| sitemap annuali | `eurogameres`, `pushsquare`, `purexbox`, `nintendolife` (Crawl-delay 5 s) |
+| pagine d'archivio giornaliere (l'API ignora le date) | `okdiario` |
+| API di WordPress | `efe`, `gamereactores` |
+| sitemap fisse (alcuni mesi) | `mediapart`, `canard` (quasi tutto riservato agli abbonati) |
+| sitemap mensili trovate con reverse-api-engineer | `larazon` (dal 2007) |
+| solo uscite recenti (feed RSS delle sezioni) | `elconfidencial` (il robots.txt vieta l'archivio) |
+| solo uscite recenti (sitemap news) | `abc`, `20minutoses`, `elespanol`, `libertaddigital`, `diariovasco`, `elcorreo`, `ideal`, `surinenglish`, `diariosur`, `vandal`, `hobbyconsolas` |
+
+Escluse con motivo in `schede.ESCLUSE`: Libération, Le Parisien, Les Échos, Le Point, Marianne, AFP, Cadena SER, Nivel20 (anti-bot o 403), El Periódico (406), RTVE (robots.txt esclude i .xml), La Voz de Galicia (Crawl-delay 60 s), La Vanguardia (archivio per data dietro AWS WAF con CAPTCHA), MeriStation (articoli 403 allo User-Agent dichiarato), Zonared (sitemap senza date), DeVuego (catalogo), GameSpot España (non esiste), gamestorrents.com (pirateria).
 
 **Ricerca per parole chiave con il motore della testata.** Con `data … --parole`, sulle testate che lo consentono le parole vengono cercate nel motore di ricerca del sito invece di scaricare tutto l'archivio del periodo. Su periodi lunghi è molto più veloce. Gli articoli proposti vengono poi scaricati e verificati, come sempre. Le testate interessate sono:
 
@@ -102,7 +131,7 @@ In tutti i casi gli articoli vengono scaricati dal sito della testata e verifica
 
 **Schede delle testate.** `python scraper.py schede` riscrive le schede in `Siti_API/schede_testate/`: un file Word e Markdown per testata, l'indice `README.md` e `riepilogo_testate.xlsx`, con gli esiti dell'ultima `prova`.
 
-**Pacchetto per la piattaforma online.** `python scraper.py pacchetto` scrive sul Desktop la cartella `Pacchetto_Claude_Piattaforma`. Contiene le regole per testata (JSON e Markdown), l'interfaccia del motore, le istruzioni da dare a Claude (chat) per aggiornare la piattaforma, gli esiti delle prove, il codice del motore e le schede. Va rigenerata dopo ogni aggiornamento.
+**Pacchetto per la piattaforma online.** `python scraper.py pacchetto` scrive la cartella `Siti_API/piattaforma`. Contiene le regole per testata (JSON e Markdown), l'interfaccia del motore, le istruzioni da dare a Claude (chat) per aggiornare la piattaforma, gli esiti delle prove, il codice del motore e le schede. Va rigenerata dopo ogni aggiornamento.
 
 **Più testate con un comando.** Al posto della testata si possono indicare più chiavi separate da virgola, oppure `tutte`, `italiane` o `estere`. Ogni testata produce la sua cartella. Le testate che non si possono interrogare (per esempio il Guardian senza chiave) vengono saltate e il riepilogo finale lo dice.
 

@@ -12,6 +12,7 @@ from . import MOTORE  # noqa: F401
 from motore import comune as C
 from motore.destinazioni import ZipMemoria
 from motore.esecuzione import cartella_per, esegui
+from motore.testate import TESTATE
 from motore.rassegna import chiavi_rassegna, descrittore_rassegna, esegui_rassegna
 from motore.modello import Parametri
 from motore.rete import Rete
@@ -100,8 +101,12 @@ def esegui_testata(dati, sb, stato, impostazioni):
     lavoro = Path(tempfile.mkdtemp(prefix="lavoro_"))
     if dati.get("riprende_da"):
         stato.fase("recupero del punto di ripresa")
-        pacchetto = sb.scarica(f"{dati['utente']}/{dati['riprende_da']}/_ripresa.zip")
-        zipfile.ZipFile(io.BytesIO(pacchetto)).extractall(lavoro)
+        try:
+            pacchetto = sb.scarica(f"{dati['utente']}/{dati['riprende_da']}/_ripresa.zip")
+            zipfile.ZipFile(io.BytesIO(pacchetto)).extractall(lavoro)
+        except Exception:
+            # continuazione di una rassegna: la testata riparte da capo, non c'è stato salvato
+            stato.log("nessun punto di ripresa: la testata riparte dall'inizio del periodo")
 
     tempo = int(dati["tempo_max_minuti"]) * 60
     stato.fase("estrazione degli articoli")
@@ -126,10 +131,23 @@ def esegui_testata(dati, sb, stato, impostazioni):
         errore = "Il sito ha attivato una protezione anti-bot: l'estrazione si è fermata. Riprova più tardi."
     elif stato.fermata_per_tempo:
         errore = f"Fermata dopo {dati['tempo_max_minuti']} minuti: l'archivio contiene ciò che è stato raccolto. Puoi riprenderla."
+    esaminati = numero(scheda, "Indirizzi esaminati")
+    # tempo illimitato: finito il tempo della parte, si prosegue da soli se questa parte ha lavorato
+    # serve un passo avanti rispetto alla parte precedente, altrimenti si girerebbe a vuoto
+    prima = 0
+    if dati.get("riprende_da"):
+        r = sb.seleziona("estrazioni", select="esaminati,fonte", id=f"eq.{dati['riprende_da']}")
+        prima = (r[0].get("esaminati") or 0) if r and r[0].get("fonte") == dati["fonte"] else 0
+    continua = (stato.fermata_per_tempo and not stato.fermata_richiesta and not stato.bloccato
+                and dati.get("tempo_illimitato") and esaminati > prima)
+    if continua:
+        errore = (f"Parte {dati.get('parte') or 1} conclusa dopo {dati['tempo_max_minuti']} minuti: l'estrazione prosegue da sola "
+                  "nella parte successiva, dal punto in cui si è fermata. L'archivio dell'ultima parte conterrà tutti gli articoli.")
     return {
+        "continua": {} if continua else None,
         "stato": "interrotta" if interrotta else "completata",
         "articoli": numero(scheda, "Articoli raccolti"),
-        "esaminati": numero(scheda, "Indirizzi esaminati"),
+        "esaminati": esaminati,
         "scheda": scheda,
         "errore": errore,
         "file": [{"nome": f"{radice}.zip", "tipo": "zip", "dati": dati_zip, "mime": "application/zip"}]
@@ -194,9 +212,31 @@ def esegui_rassegna_piattaforma(dati, sb, stato, impostazioni):
     elif interrotta:
         errore = (f"Rassegna incompleta: limite di {dati['tempo_max_minuti']} minuti raggiunto o sito che ha "
                   "bloccato le richieste. L'esito per testata è nella scheda.")
+    # tempo illimitato: le testate interrotte o non avviate passano alla parte successiva
+    continua = None
+    if interrotta and stato.fermata_per_tempo and not stato.fermata_richiesta and dati.get("tempo_illimitato") \
+            and len(righe_t) == len(chiavi):
+        interrotte = [k for k, r in zip(chiavi, righe_t) if r[3].startswith("INTERROTTA")]
+        non_avviate = [k for k, r in zip(chiavi, righe_t) if r[3].startswith("non avviata")]
+        fatte = len(chiavi) - len(interrotte) - len(non_avviate)
+        # se in tutta la parte non si è chiusa nessuna testata, quella interrotta è troppo lunga per una
+        # rassegna: si lascia fuori (si estrae da sola), così ogni parte fa comunque un passo avanti
+        lasciate = [] if fatte else interrotte
+        restanti = [k for k in chiavi if (k in interrotte and fatte) or k in non_avviate]
+        if restanti:
+            base = {k: v for k, v in p.items() if k != "testate"}
+            continua = ({"fonte": restanti[0], "parametri": {**base, "fonte": "auto"}} if len(restanti) == 1
+                        else {"fonte": "rassegna", "parametri": {**base, "testate": restanti}})
+            nomi = lambda ks: ", ".join(TESTATE[k].nome if k in TESTATE else k for k in ks)
+            errore = (f"Parte {dati.get('parte') or 1} conclusa dopo {dati['tempo_max_minuti']} minuti. "
+                      f"Proseguono da sole nella parte successiva, con un archivio a parte: {nomi(restanti)}.")
+            if lasciate:
+                errore += (f" {nomi(lasciate)} richiede più tempo di una parte: per averla completa "
+                           "avviala da sola dalla sua pagina, dove prosegue in più parti.")
     if saltate:
         errore = ((errore or "") + f" Testate saltate: {', '.join(saltate)}.").strip()
     return {
+        "continua": continua,
         "stato": "interrotta" if (interrotta or stato.fermata_richiesta) else "completata",
         "articoli": int(m.group(1)) if m else stato.articoli,
         "esaminati": sum(int(r[2]) for r in righe_t),

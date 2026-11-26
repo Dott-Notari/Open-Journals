@@ -83,6 +83,13 @@ def main():
             "dimensione_totale": totale, "avanzamento": "conclusa", "log": stato.testo_log()},
             id=f"eq.{id_estrazione}")
         pubblico(f"[fine] {esito['stato']}: {esito['articoli']} elementi raccolti, {len(esito['file'])} file")
+        if esito.get("continua") is not None and esito["stato"] == "interrotta":
+            c = esito["continua"]
+            try:
+                nuova = sb.rpc("continua_estrazione", p_id=id_estrazione, p_fonte=c.get("fonte"), p_parametri=c.get("parametri"))
+                pubblico("[continua] accodata la parte successiva" if nuova else "[continua] limite di parti raggiunto")
+            except Exception as e:   # l'estrazione resta interrotta e si può riprendere a mano
+                pubblico(f"[continua] non riuscita: {e.__class__.__name__}")
         return 0
     except Exception as e:
         stato.chiudi()

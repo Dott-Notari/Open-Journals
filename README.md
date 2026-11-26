@@ -6,7 +6,7 @@ Piattaforma del corso di Sociologia della comunicazione interculturale per costr
 
 ```
 scraper-testate-piattaforma/
-├── scraper_testate/            motore Python 1.14, identico alla versione locale
+├── scraper_testate/            motore Python 1.16, identico alla versione locale
 ├── piattaforma/                collegamento tra motore, Supabase e GitHub Actions
 │   ├── esegui_estrazione.py         esegue un'estrazione registrata (testate o YouTube)
 │   ├── testate_piattaforma.py       motore con ZipMemoria, indice per l'ANSA, nota di piattaforma
@@ -37,6 +37,8 @@ scraper-testate-piattaforma/
     ├── migrations/0006_motore_113.sql     motore 1.13: fonte degli indirizzi, nuove testate estere
     ├── migrations/0007_profili_battito.sql profilo con foto, sospensione, spia del motore, tempo reale
     ├── migrations/0008_motore_114_rassegna.sql motore 1.14: testate di Napoli e del Venezuela, rassegna stampa
+    ├── migrations/0009_accesso_google.sql  nome dagli account Google (pulsante attivo con NEXT_PUBLIC_ACCESSO_GOOGLE=1)
+    ├── migrations/0010_motore_116.sql      motore 1.16: videogiochi, francesi, spagnole; tempo illimitato in più parti
     └── docente_iniziale.sql         assegnazione del ruolo di docente dopo la prima registrazione
 ```
 

@@ -366,6 +366,32 @@ ESCLUSE = {
                   "possono scaricare)",
     "El Tiempo (eltiempove.com)": "sito irraggiungibile nelle verifiche del 24-25 novembre 2026",
     "Frontera Digital (fronteradigital.com)": "il dominio è in vendita e non ospita più la testata",
+    "GameSpot": "protezione anti-bot (home, sitemap e API rispondono 403 con verifica)",
+    "Destructoid": "protezione anti-bot: gli articoli rispondono 403 con verifica allo strumento",
+    "GamesVillage": "protezione anti-bot (home e sitemap rispondono 403 con verifica)",
+    "Eurogamer Italia": "il dominio eurogamer.it rimanda a eurogamer.net: l'edizione italiana non è più online",
+    "OpenCritic": "aggregatore di voti: il dato utile sono i punteggi delle recensioni, non gli articoli; "
+                  "richiederebbe una modalità a parte (da valutare)",
+    "Metacritic": "aggregatore di voti (come OpenCritic); le sue notizie riguardano soprattutto cinema e TV; "
+                  "da valutare con una modalità a parte",
+    "Libération": "protezione anti-bot (home e articoli rispondono 403 con verifica)",
+    "Le Parisien": "home, sitemap e API rispondono 403 allo strumento",
+    "Les Échos": "home e sitemap news rispondono 403 allo strumento",
+    "Le Point": "protezione anti-bot (403 con verifica, anche sul robots.txt)",
+    "Marianne": "home e sitemap rispondono 403 allo strumento",
+    "AFP": "sito istituzionale dell'agenzia: risponde 403 allo strumento e non pubblica i dispacci",
+    "Cadena SER": "protezione anti-bot (home 403 con verifica)",
+    "El Periódico": "risponde 406 allo User-Agent dichiarato dello strumento, anche al robots.txt",
+    "RTVE": "il robots.txt esclude tutti i file .xml («Disallow: /*.xml$»), comprese le sitemap",
+    "La Voz de Galicia": "il robots.txt chiede 60 secondi tra le richieste: un'estrazione di 50 articoli durerebbe un'ora",
+    "La Vanguardia": "nessuna sitemap; l'archivio per data (hemeroteca.lavanguardia.com/search?fecha=) è dietro AWS WAF con CAPTCHA (mappatura rae del 26 novembre 2026): non si aggira",
+    "MeriStation (as.com)": "gli articoli rispondono 403 allo User-Agent dichiarato (anche le sitemap di as.com); verificato il 26 novembre 2026",
+    "GameSpot España": "il dominio es.gamespot.com non esiste",
+    "gamestorrents.com (indicato come GamesTribune)": "non è una testata ma un sito di giochi pirata: escluso",
+    "Zonared": "le sitemap delle sezioni non riportano date e gli indirizzi non le contengono: non si può cercare per "
+               "periodo (resta il comando elenco)",
+    "Nivel20": "risponde 202 senza contenuto anche al robots.txt (verifica anti-bot)",
+    "DeVuego": "è un catalogo di giochi e studi spagnoli, non una testata",
     "El Luchador": "API di WordPress disattivata e nessuna sitemap degli articoli (la sitemap elenca solo le "
                    "categorie): gli articoli non si possono trovare per data; restano utilizzabili i comandi link ed elenco",
 }
@@ -578,3 +604,83 @@ def _schede_venezuela():
 
 
 _schede_venezuela()
+
+
+# ------------------------------------------------------------------ testate di videogiochi (25 novembre 2026)
+ROBOTS_VG = {
+    "vgc": "consente; Crawl-delay 5 secondi (rispettato)",
+    "metacritic": "consente; vieta l'accesso ai bot di IA nominati",
+}
+
+
+def _schede_videogiochi():
+    from .testate.videogiochi import VIDEOGIOCHI, Multiplayer, _Ordinate, _Periodiche
+    from .testate.generiche import _ConDate
+    from .testate.napoli import _WordPress
+    for t in VIDEOGIOCHI:
+        if t.chiave in S:
+            continue
+        lingua = {"en": "inglese", "es": "spagnolo"}.get(t.lingua, "italiano")
+        if isinstance(t, _WordPress):
+            dati = dict(piattaforma="WordPress", archivio=("sì", t.note_ricerca_data),
+                        ricerca=("sì", "API REST di WordPress con ricerca (search) e filtro per date"),
+                        elenchi="categorie e tag paginati con /page/N/", rss="/feed/",
+                        consigli="Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.")
+        elif isinstance(t, (_Periodiche, _Ordinate, Multiplayer, _ConDate)):
+            dati = dict(piattaforma="CMS proprietario o WordPress senza API aperta",
+                        archivio=("sì" + (f", dal {t.INIZIO.year}" if getattr(t, "INIZIO", None) else ""),
+                                  t.note_ricerca_data),
+                        ricerca=("no", "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"),
+                        elenchi="sezioni: solo la prima pagina", rss="non usato",
+                        consigli="Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro "
+                                 "(--cerca-in titolo per scaricare meno).")
+        else:
+            continue
+        S[t.chiave] = dict(nome=t.nome, sito=re.match(r"https?://[^/]+", getattr(t, "INDICE", "") or getattr(t, "API", "") or
+                                    (getattr(t, "MODELLI", ()) or getattr(t, "FILES", ()) or
+                                     getattr(t, "INDICI", ()))[0]).group(0),
+                           testo=f"integrale (in {lingua})",
+                           robots=ROBOTS_VG.get(t.chiave, "consente articoli e sitemap"),
+                           wayback="possibile", gdelt="copertura scarsa (testate di settore)",
+                           altre=["ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"],
+                           **dati)
+
+
+_schede_videogiochi()
+
+
+# ------------------------------------------------------------------ testate francesi e spagnole (25 novembre 2026)
+def _schede_fr_es():
+    from .testate.francia import FRANCIA
+    from .testate.spagna import SPAGNA
+    from .testate.generiche import _FileFissi
+    from .testate.napoli import _WordPress
+    nomi = {"fr": "francese", "es": "spagnolo", "ca": "catalano", "en": "inglese"}
+    for t in FRANCIA + SPAGNA:
+        if t.chiave in S:
+            continue
+        recenti = isinstance(t, _FileFissi) and t.SOLO_RECENTI
+        if isinstance(t, _WordPress):
+            ricerca = ("sì", "API REST di WordPress con ricerca (search) e filtro per date")
+            consigli = "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date."
+        else:
+            ricerca = ("no", "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro")
+            consigli = ("Solo i giorni più recenti; per il passato --fonte wayback." if recenti else
+                        "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro "
+                        "(--cerca-in titolo per scaricare meno).")
+        sito = "https://" + ("" if t.dominio.startswith(("www.", "es.", "it.")) or t.dominio.count(".") > 1
+                             else "www.") + t.dominio
+        S[t.chiave] = dict(nome=t.nome, sito=sito.replace("www.okdiario", "okdiario").replace("www.efe.com", "efe.com"),
+                           piattaforma="WordPress" if isinstance(t, _WordPress) else "CMS della testata",
+                           archivio=("solo recente" if recenti else "sì" + (f", dal {t.INIZIO.year}"
+                                     if getattr(t, "INIZIO", None) else ""), t.note_ricerca_data),
+                           ricerca=ricerca, elenchi="sezioni: solo la prima pagina", rss="non usato",
+                           testo=f"integrale o parziale per gli articoli riservati (in {nomi.get(t.lingua, t.lingua)})",
+                           robots="consente articoli e sitemap" + (
+                               "; Crawl-delay rispettato" if t.chiave in ("cnews", "courrier", "mediapart", "publico")
+                               else ""),
+                           wayback="possibile", gdelt="copertura buona (testate nazionali)", consigli=consigli,
+                           altre=["ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"])
+
+
+_schede_fr_es()

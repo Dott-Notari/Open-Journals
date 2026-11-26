@@ -1,4 +1,4 @@
-// Istruzioni per testata, campo per campo. Riscritte a partire da regole_testate.json (motore 1.14):
+// Istruzioni per testata, campo per campo. Riscritte a partire da regole_testate.json (motore 1.16):
 // quando il motore cambia, si aggiorna il JSON e si rileggono queste righe.
 export const GUIDA = {
   ilgiornale: {
@@ -210,6 +210,31 @@ Object.assign(GUIDA, {
     passato: "Prima del 2019 serve Wayback, che è lento.",
   }),
 });
+
+// Per le testate senza una voce scritta a mano (videogiochi, francesi, spagnole del motore 1.16) la guida si
+// ricava dal JSON delle regole: copertura, ricerca, pagine elenco, Wayback e consigli della testata.
+const LINGUE = { it: '', en: 'in inglese', es: 'in spagnolo', fr: 'in francese', ca: 'in catalano' };
+const ripulisci = (t) => {
+  if (!t) return '';
+  const x = t.replace(/--fonte wayback/g, 'Wayback').replace(/--cerca-in titolo/g, 'la ricerca solo in titolo e sommario')
+    .replace(/--fonte (\w+)/g, '$1').replace(/\s+/g, ' ').trim();
+  return x.charAt(0).toUpperCase() + x.slice(1) + (/[.!?]$/.test(x) ? '' : '.');
+};
+export function guidaDaRegole(t) {
+  const m = t.modalita, lingua = LINGUE[t.lingua] ? `, ${LINGUE[t.lingua]},` : '';
+  const r = m.parole_con_ricerca_del_sito;
+  return {
+    periodo: ripulisci(m.data.copertura),
+    parole: r.disponibile
+      ? `Con le parole chiave${lingua} si usa la ricerca del sito, che filtra già per data. Se nel periodo non trova nulla, la piattaforma passa da sola all'archivio.`
+      : `Il sito non ha una ricerca interrogabile: le parole${lingua} filtrano gli articoli raccolti. Cercarle solo in titolo e sommario fa scaricare molto meno.`,
+    elenco: m.elenco.solo_prima_pagina || /solo la prima pagina/.test(m.elenco.pagine || '') ? 'Delle sezioni si legge solo la prima pagina.' : ripulisci(m.elenco.pagine),
+    passato: /solo le uscite recenti|solo le notizie recenti|ultimi giorni/.test(m.data.copertura)
+      ? "Per i periodi passati usa Wayback: prende gli indirizzi dall'Internet Archive e scarica gli articoli dal sito. È lento."
+      : 'Wayback è possibile, ma lento: serve solo dove l\'archivio non arriva.',
+    consiglio: ripulisci(t.consigli),
+  };
+}
 
 export const FONTI_INDIRIZZI = {
   auto: ['Automatica', 'Con parole chiave usa la ricerca del sito quando la testata la offre, altrimenti l\'archivio.'],

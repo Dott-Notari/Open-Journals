@@ -1,6 +1,6 @@
 {
-  "motore": "1.14 (Siti_API)",
-  "generato": "2026-11-25",
+  "motore": "1.16 (Siti_API)",
+  "generato": "2026-11-26",
   "regole_generali": {
     "user_agent": "ScraperDidattico/1.0 (ricerca e didattica universitaria, Sociologia della comunicazione interculturale)",
     "pausa_predefinita_secondi": 2.0,
@@ -3241,6 +3241,4645 @@
       "risorse_non_usate": [
         "mappatura e verifica del 24-25 novembre 2026; dettagli tecnici in Siti_API/<testata>/ quando disponibili"
       ]
+    },
+    {
+      "chiave": "ign",
+      "nome": "IGN",
+      "sito": "https://www.ign.com",
+      "dominio": "ign.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "1996-01-01",
+          "copertura": "sitemap annuali degli articoli dal 1996 (recensioni, notizie, guide), filtrate per data di modifica",
+          "come": "sitemap annuali degli articoli dal 1996 (recensioni, notizie, guide), filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "ignitalia",
+      "nome": "IGN Italia",
+      "sito": "https://it.ign.com",
+      "dominio": "it.ign.com",
+      "lingua": "it",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap degli articoli numerate (circa 100.000 articoli), filtrate per data di modifica",
+          "come": "sitemap degli articoli numerate (circa 100.000 articoli), filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in italiano)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "eurogamer",
+      "nome": "Eurogamer",
+      "sito": "https://www.eurogamer.net",
+      "dominio": "eurogamer.net",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "1999-01-01",
+          "copertura": "sitemap annuali dal 1999, filtrate per data di modifica (gli articoli aggiornati molto dopo l'uscita possono finire nell'anno dell'aggiornamento)",
+          "come": "sitemap annuali dal 1999, filtrate per data di modifica (gli articoli aggiornati molto dopo l'uscita possono finire nell'anno dell'aggiornamento)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "polygon",
+      "nome": "Polygon",
+      "sito": "https://www.polygon.com",
+      "dominio": "polygon.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2023-03-01",
+          "copertura": "sitemap mensili degli articoli (circa gli ultimi tre anni e mezzo), filtrate per data di modifica",
+          "come": "sitemap mensili degli articoli (circa gli ultimi tre anni e mezzo), filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "kotaku",
+      "nome": "Kotaku",
+      "sito": "https://kotaku.com",
+      "dominio": "kotaku.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2005-08-01",
+          "copertura": "sitemap mensili dal 2005; le date di modifica non sono affidabili, quindi si verifica ogni articolo del mese (lento sui periodi brevi: circa 300 articoli al mese)",
+          "come": "sitemap mensili dal 2005; le date di modifica non sono affidabili, quindi si verifica ogni articolo del mese (lento sui periodi brevi: circa 300 articoli al mese)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "pcgamer",
+      "nome": "PC Gamer",
+      "sito": "https://www.pcgamer.com",
+      "dominio": "pcgamer.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2005-06-01",
+          "copertura": "sitemap mensili dal 2005 (fitte dal 2008), filtrate per data di modifica",
+          "come": "sitemap mensili dal 2005 (fitte dal 2008), filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "rockpapershotgun",
+      "nome": "Rock Paper Shotgun",
+      "sito": "https://www.rockpapershotgun.com",
+      "dominio": "rockpapershotgun.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2007-01-01",
+          "copertura": "sitemap annuali dal 2007, filtrate per data di modifica",
+          "come": "sitemap annuali dal 2007, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "gamesradar",
+      "nome": "GamesRadar+",
+      "sito": "https://www.gamesradar.com",
+      "dominio": "gamesradar.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "1999-11-01",
+          "copertura": "sitemap mensili dal 1999, filtrate per data di modifica (anche cinema, TV e fumetti)",
+          "come": "sitemap mensili dal 1999, filtrate per data di modifica (anche cinema, TV e fumetti)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "gameinformer",
+      "nome": "Game Informer",
+      "sito": "https://gameinformer.com",
+      "dominio": "gameinformer.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap degli articoli in ordine cronologico dal 2001 (data nell'indirizzo), più le sitemap di recensioni e anteprime filtrate per data di modifica",
+          "come": "sitemap degli articoli in ordine cronologico dal 2001 (data nell'indirizzo), più le sitemap di recensioni e anteprime filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "vgc",
+      "nome": "Video Games Chronicle",
+      "sito": "https://www.videogameschronicle.com",
+      "dominio": "videogameschronicle.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2019-01-01",
+          "copertura": "sitemap degli articoli in ordine di pubblicazione dal 2019; le date di modifica arrivano settimane dopo l'uscita, quindi gli estremi del periodo si trovano con una ricerca binaria sulla data dichiarata dagli articoli (circa 30 richieste, 2-3 minuti con la pausa di 5 secondi chiesta dal robots.txt)",
+          "come": "sitemap degli articoli in ordine di pubblicazione dal 2019; le date di modifica arrivano settimane dopo l'uscita, quindi gli estremi del periodo si trovano con una ricerca binaria sulla data dichiarata dagli articoli (circa 30 richieste, 2-3 minuti con la pausa di 5 secondi chiesta dal robots.txt)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente; Crawl-delay 5 secondi (rispettato)",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "thegamer",
+      "nome": "TheGamer",
+      "sito": "https://www.thegamer.com",
+      "dominio": "thegamer.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2023-01-01",
+          "copertura": "sitemap mensili degli articoli (circa gli ultimi quattro anni), filtrate per data di modifica",
+          "come": "sitemap mensili degli articoli (circa gli ultimi quattro anni), filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "gamerant",
+      "nome": "GameRant",
+      "sito": "https://gamerant.com",
+      "dominio": "gamerant.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2023-01-01",
+          "copertura": "sitemap mensili degli articoli, filtrate per data di modifica; molti articoli al giorno (conviene --cerca-in titolo o un periodo breve)",
+          "come": "sitemap mensili degli articoli, filtrate per data di modifica; molti articoli al giorno (conviene --cerca-in titolo o un periodo breve)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "multiplayer",
+      "nome": "Multiplayer.it",
+      "sito": "https://multiplayer.it",
+      "dominio": "multiplayer.it",
+      "lingua": "it",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap di articoli e recensioni (archivio completo) e di notizie (solo gli ultimi tre mesi circa), filtrate per data di modifica",
+          "come": "sitemap di articoli e recensioni (archivio completo) e di notizie (solo gli ultimi tre mesi circa), filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in italiano)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "everyeye",
+      "nome": "Everyeye.it",
+      "sito": "https://www.everyeye.it",
+      "dominio": "everyeye.it",
+      "lingua": "it",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap dei contenuti in ordine cronologico (notizie, recensioni, speciali), filtrate per data di modifica",
+          "come": "sitemap dei contenuti in ordine cronologico (notizie, recensioni, speciali), filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in italiano)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "spaziogames",
+      "nome": "Spaziogames",
+      "sito": "https://www.spaziogames.it",
+      "dominio": "spaziogames.it",
+      "lingua": "it",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap degli articoli in ordine cronologico; date di modifica affidabili dal giugno 2018 (prima riportano il 1980)",
+          "come": "sitemap degli articoli in ordine cronologico; date di modifica affidabili dal giugno 2018 (prima riportano il 1980)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in italiano)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "gamereactor",
+      "nome": "Gamereactor Italia",
+      "sito": "https://www.gamereactor.it",
+      "dominio": "gamereactor.it",
+      "lingua": "it",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "API REST di WordPress con filtro per date (circa 118.000 articoli)",
+          "come": "API REST di WordPress con filtro per date (circa 118.000 articoli)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in italiano)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "gamesource",
+      "nome": "GameSource",
+      "sito": "https://www.gamesource.it",
+      "dominio": "gamesource.it",
+      "lingua": "it",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap numerate per tipo (notizie, recensioni, anteprime, editoriali) in ordine cronologico dal 2008, filtrate per data di modifica",
+          "come": "sitemap numerate per tipo (notizie, recensioni, anteprime, editoriali) in ordine cronologico dal 2008, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in italiano)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "gamesindustry",
+      "nome": "GamesIndustry.biz",
+      "sito": "https://www.gamesindustry.biz",
+      "dominio": "gamesindustry.biz",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2000-01-01",
+          "copertura": "sitemap annuali, filtrate per data di modifica (notizie sull'industria del videogioco)",
+          "come": "sitemap annuali, filtrate per data di modifica (notizie sull'industria del videogioco)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "gamedeveloper",
+      "nome": "Game Developer",
+      "sito": "https://www.gamedeveloper.com",
+      "dominio": "gamedeveloper.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "1999-01-01",
+          "copertura": "sitemap mensili di notizie e articoli dal 1999 (ex Gamasutra), filtrate per data; testata di settore, in inglese",
+          "come": "sitemap mensili di notizie e articoli dal 1999 (ex Gamasutra), filtrate per data; testata di settore, in inglese",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "eurogameres",
+      "nome": "Eurogamer España",
+      "sito": "https://www.eurogamer.es",
+      "dominio": "eurogamer.es",
+      "lingua": "es",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2005-01-01",
+          "copertura": "sitemap annuali, filtrate per data di modifica",
+          "come": "sitemap annuali, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "ignespana",
+      "nome": "IGN España",
+      "sito": "https://es.ign.com",
+      "dominio": "es.ign.com",
+      "lingua": "es",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap degli articoli numerate, filtrate per data di modifica",
+          "come": "sitemap degli articoli numerate, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "gamereactores",
+      "nome": "Gamereactor España",
+      "sito": "https://www.gamereactor.es",
+      "dominio": "gamereactor.es",
+      "lingua": "es",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "API REST di WordPress con filtro per date (circa 105.000 articoli)",
+          "come": "API REST di WordPress con filtro per date (circa 105.000 articoli)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "categorie e tag paginati con /page/N/"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "/feed/"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "3djuegos",
+      "nome": "3DJuegos",
+      "sito": "https://www.3djuegos.com",
+      "dominio": "3djuegos.com",
+      "lingua": "es",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap mensili delle notizie (circa 1.200 al mese), filtrate per data di modifica; recensioni e speciali non hanno una sitemap per data",
+          "come": "sitemap mensili delle notizie (circa 1.200 al mese), filtrate per data di modifica; recensioni e speciali non hanno una sitemap per data",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "vandal",
+      "nome": "Vandal",
+      "sito": "https://vandal.elespanol.com",
+      "dominio": "vandal.elespanol.com",
+      "lingua": "es",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le notizie recenti (sitemap news); il passato con --fonte wayback",
+          "come": "solo le notizie recenti (sitemap news); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "hobbyconsolas",
+      "nome": "Hobby Consolas",
+      "sito": "https://www.hobbyconsolas.com",
+      "dominio": "hobbyconsolas.com",
+      "lingua": "es",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti (circa due settimane); il passato con --fonte wayback",
+          "come": "solo le uscite recenti (circa due settimane); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "pushsquare",
+      "nome": "Push Square",
+      "sito": "https://www.pushsquare.com",
+      "dominio": "pushsquare.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2008-07-01",
+          "copertura": "sitemap annuali degli articoli, filtrate per data di modifica; il robots.txt chiede 5 secondi tra le richieste",
+          "come": "sitemap annuali degli articoli, filtrate per data di modifica; il robots.txt chiede 5 secondi tra le richieste",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "purexbox",
+      "nome": "Pure Xbox",
+      "sito": "https://www.purexbox.com",
+      "dominio": "purexbox.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2008-01-01",
+          "copertura": "sitemap annuali degli articoli, filtrate per data di modifica; il robots.txt chiede 5 secondi tra le richieste",
+          "come": "sitemap annuali degli articoli, filtrate per data di modifica; il robots.txt chiede 5 secondi tra le richieste",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "nintendolife",
+      "nome": "Nintendo Life",
+      "sito": "https://www.nintendolife.com",
+      "dominio": "nintendolife.com",
+      "lingua": "en",
+      "gruppo": "videogiochi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS proprietario o WordPress senza API aperta",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2006-01-01",
+          "copertura": "sitemap annuali degli articoli, filtrate per data di modifica; il robots.txt chiede 5 secondi tra le richieste",
+          "come": "sitemap annuali degli articoli, filtrate per data di modifica; il robots.txt chiede 5 secondi tra le richieste",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura scarsa (testate di settore)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "lemonde",
+      "nome": "Le Monde",
+      "sito": "https://www.lemonde.fr",
+      "dominio": "lemonde.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap settimanali degli articoli (archivio dal 1944), data nell'indirizzo; molti articoli sono riservati agli abbonati e risultano con il testo parziale",
+          "come": "sitemap settimanali degli articoli (archivio dal 1944), data nell'indirizzo; molti articoli sono riservati agli abbonati e risultano con il testo parziale",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "lefigaro",
+      "nome": "Le Figaro",
+      "sito": "https://www.lefigaro.fr",
+      "dominio": "lefigaro.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap giornaliere degli articoli; parte degli articoli è riservata agli abbonati",
+          "come": "sitemap giornaliere degli articoli; parte degli articoli è riservata agli abbonati",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "20minutesfr",
+      "nome": "20 Minutes",
+      "sito": "https://www.20minutes.fr",
+      "dominio": "20minutes.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2006-02-01",
+          "copertura": "sitemap mensili dal 2006, data nell'indirizzo",
+          "come": "sitemap mensili dal 2006, data nell'indirizzo",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "franceinfo",
+      "nome": "franceinfo",
+      "sito": "https://www.franceinfo.fr",
+      "dominio": "franceinfo.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap mensili degli articoli dal 2011, filtrate per data di modifica",
+          "come": "sitemap mensili degli articoli dal 2011, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "bfmtv",
+      "nome": "BFMTV",
+      "sito": "https://www.bfmtv.com",
+      "dominio": "bfmtv.com",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap mensili dei contenuti dal 2006, filtrate per data di modifica",
+          "come": "sitemap mensili dei contenuti dal 2006, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "lci",
+      "nome": "TF1 Info (LCI)",
+      "sito": "https://www.tf1info.fr",
+      "dominio": "tf1info.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap dei contenuti numerate in ordine cronologico dal 2011, filtrate per data di modifica",
+          "come": "sitemap dei contenuti numerate in ordine cronologico dal 2011, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "cnews",
+      "nome": "CNews",
+      "sito": "https://www.cnews.fr",
+      "dominio": "cnews.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap numerate in ordine cronologico dal 2012, data nell'indirizzo; il robots.txt chiede 10 secondi tra le richieste",
+          "come": "sitemap numerate in ordine cronologico dal 2012, data nell'indirizzo; il robots.txt chiede 10 secondi tra le richieste",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap; Crawl-delay rispettato",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "france24",
+      "nome": "France 24",
+      "sito": "https://www.france24.com",
+      "dominio": "france24.com",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2007-01-01",
+          "copertura": "sitemap mensili dell'edizione francese dal 2007, data nell'indirizzo",
+          "come": "sitemap mensili dell'edizione francese dal 2007, data nell'indirizzo",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "latribune",
+      "nome": "La Tribune",
+      "sito": "https://www.latribune.fr",
+      "dominio": "latribune.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap settimanali degli articoli, filtrate per data di modifica",
+          "come": "sitemap settimanali degli articoli, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "humanite",
+      "nome": "L'Humanité",
+      "sito": "https://www.humanite.fr",
+      "dominio": "humanite.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap giornaliere (archivio dal 1997); parte degli articoli è riservata agli abbonati",
+          "come": "sitemap giornaliere (archivio dal 1997); parte degli articoli è riservata agli abbonati",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "lacroix",
+      "nome": "La Croix",
+      "sito": "https://www.la-croix.com",
+      "dominio": "la-croix.com",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "1998-01-01",
+          "copertura": "sitemap mensili degli articoli dal 1998, filtrate per data di modifica",
+          "come": "sitemap mensili degli articoli dal 1998, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "lobs",
+      "nome": "L'Obs",
+      "sito": "https://www.nouvelobs.com",
+      "dominio": "nouvelobs.com",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "1999-02-01",
+          "copertura": "sitemap mensili dal 1999, data nell'indirizzo",
+          "come": "sitemap mensili dal 1999, data nell'indirizzo",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "lexpress",
+      "nome": "L'Express",
+      "sito": "https://www.lexpress.fr",
+      "dominio": "lexpress.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2020-01-01",
+          "copertura": "sitemap settimanali dal 2020, filtrate per data di modifica",
+          "come": "sitemap settimanali dal 2020, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "mediapart",
+      "nome": "Mediapart",
+      "sito": "https://www.mediapart.fr",
+      "dominio": "mediapart.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap delle sezioni (alcuni mesi), data nell'indirizzo; quasi tutto è riservato agli abbonati: si raccolgono titolo e attacco; il robots.txt chiede 3 secondi tra le richieste",
+          "come": "sitemap delle sezioni (alcuni mesi), data nell'indirizzo; quasi tutto è riservato agli abbonati: si raccolgono titolo e attacco; il robots.txt chiede 3 secondi tra le richieste",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap; Crawl-delay rispettato",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "canard",
+      "nome": "Le Canard enchaîné",
+      "sito": "https://www.lecanardenchaine.fr",
+      "dominio": "lecanardenchaine.fr",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "una sitemap con circa 11.000 articoli, filtrata per data di modifica; quasi tutto è riservato agli abbonati: si raccolgono titolo e attacco",
+          "come": "una sitemap con circa 11.000 articoli, filtrata per data di modifica; quasi tutto è riservato agli abbonati: si raccolgono titolo e attacco",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "courrier",
+      "nome": "Courrier international",
+      "sito": "https://www.courrierinternational.com",
+      "dominio": "courrierinternational.com",
+      "lingua": "fr",
+      "gruppo": "francesi",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2001-01-01",
+          "copertura": "sitemap settimanali dal 2001; il robots.txt chiede 10 secondi tra le richieste; parte degli articoli è riservata agli abbonati",
+          "come": "sitemap settimanali dal 2001; il robots.txt chiede 10 secondi tra le richieste; parte degli articoli è riservata agli abbonati",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap; Crawl-delay rispettato",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in francese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "abc",
+      "nome": "ABC",
+      "sito": "https://www.abc.es",
+      "dominio": "abc.es",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti (sitemap news, ultimi giorni); il passato con --fonte wayback",
+          "come": "solo le uscite recenti (sitemap news, ultimi giorni); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "eldiarioes",
+      "nome": "elDiario.es",
+      "sito": "https://www.eldiario.es",
+      "dominio": "eldiario.es",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2012-09-01",
+          "copertura": "sitemap mensili dal 2012, filtrate per data di modifica",
+          "come": "sitemap mensili dal 2012, filtrate per data di modifica",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "20minutoses",
+      "nome": "20minutos",
+      "sito": "https://www.20minutos.es",
+      "dominio": "20minutos.es",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti (circa due settimane); il passato con --fonte wayback",
+          "come": "solo le uscite recenti (circa due settimane); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "elespanol",
+      "nome": "El Español",
+      "sito": "https://www.elespanol.com",
+      "dominio": "www.elespanol.com",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap news e una sitemap di circa 7.000 articoli scelti dal 2016: copertura parziale per gli anni passati, completa solo per gli ultimi giorni",
+          "come": "sitemap news e una sitemap di circa 7.000 articoli scelti dal 2016: copertura parziale per gli anni passati, completa solo per gli ultimi giorni",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "publico",
+      "nome": "Público",
+      "sito": "https://www.publico.es",
+      "dominio": "publico.es",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "sitemap mensili delle notizie, filtrate per data di modifica; il robots.txt chiede 5 secondi tra le richieste",
+          "come": "sitemap mensili delle notizie, filtrate per data di modifica; il robots.txt chiede 5 secondi tra le richieste",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap; Crawl-delay rispettato",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "libertaddigital",
+      "nome": "Libertad Digital",
+      "sito": "https://www.libertaddigital.com",
+      "dominio": "libertaddigital.com",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti (ultimi giorni); il passato con --fonte wayback",
+          "come": "solo le uscite recenti (ultimi giorni); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "okdiario",
+      "nome": "OkDiario",
+      "sito": "https://okdiario.com",
+      "dominio": "okdiario.com",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "pagine d'archivio giornaliere del sito (l'API di WordPress ignora il filtro per date); circa 150-300 articoli al giorno",
+          "come": "pagine d'archivio giornaliere del sito (l'API di WordPress ignora il filtro per date); circa 150-300 articoli al giorno",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "efe",
+      "nome": "Agencia EFE",
+      "sito": "https://efe.com",
+      "dominio": "efe.com",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "WordPress",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "API REST di WordPress con filtro per date (circa 180.000 notizie dell'agenzia)",
+          "come": "API REST di WordPress con filtro per date (circa 180.000 notizie dell'agenzia)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "ricerca",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": true,
+          "motore": "API REST di WordPress con ricerca e filtro per date",
+          "solo_parole_intere": false,
+          "profondita": "filtro per date sul sito",
+          "se_non_arriva_al_periodo": "passa da solo all'archivio per data",
+          "motivo_se_assente": null
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": false,
+          "paginazione": "{base}/page/{n}/",
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Per parole chiave la ricerca del sito; per un periodo completo, l'API per date.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "europapress",
+      "nome": "Europa Press",
+      "sito": "https://www.europapress.es",
+      "dominio": "europapress.es",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2006-01-01",
+          "copertura": "sitemap giornaliere dal 2006 (agenzia di stampa), data nell'indirizzo",
+          "come": "sitemap giornaliere dal 2006 (agenzia di stampa), data nell'indirizzo",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "ara",
+      "nome": "Ara",
+      "sito": "https://www.ara.cat",
+      "dominio": "ara.cat",
+      "lingua": "ca",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2010-11-01",
+          "copertura": "sitemap mensili dal 2010, filtrate per data di modifica (in catalano)",
+          "come": "sitemap mensili dal 2010, filtrate per data di modifica (in catalano)",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in catalano)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "elconfidencial",
+      "nome": "El Confidencial",
+      "sito": "https://www.elconfidencial.com",
+      "dominio": "elconfidencial.com",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti dai feed RSS delle sezioni (circa 15 articoli ciascuno, copertura parziale): niente sitemap e il robots.txt vieta l'archivio per data; il passato con --fonte wayback",
+          "come": "solo le uscite recenti dai feed RSS delle sezioni (circa 15 articoli ciascuno, copertura parziale): niente sitemap e il robots.txt vieta l'archivio per data; il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "larazon",
+      "nome": "La Razón",
+      "sito": "https://www.larazon.es",
+      "dominio": "larazon.es",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": "2007-01-01",
+          "copertura": "sitemap mensili dei contenuti dal 2007, data nell'indirizzo",
+          "come": "sitemap mensili dei contenuti dal 2007, data nell'indirizzo",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Archivio per data, preferibilmente su periodi brevi; parole chiave come filtro (--cerca-in titolo per scaricare meno).",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "diariovasco",
+      "nome": "El Diario Vasco",
+      "sito": "https://www.diariovasco.com",
+      "dominio": "diariovasco.com",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "come": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "elcorreo",
+      "nome": "El Correo",
+      "sito": "https://www.elcorreo.com",
+      "dominio": "elcorreo.com",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "come": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "ideal",
+      "nome": "Ideal",
+      "sito": "https://www.ideal.es",
+      "dominio": "ideal.es",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "come": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "surinenglish",
+      "nome": "Sur in English",
+      "sito": "https://www.surinenglish.com",
+      "dominio": "surinenglish.com",
+      "lingua": "en",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "come": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in inglese)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
+    },
+    {
+      "chiave": "diariosur",
+      "nome": "Diario Sur",
+      "sito": "https://www.diariosur.es",
+      "dominio": "diariosur.es",
+      "lingua": "es",
+      "gruppo": "spagnole",
+      "stato": "attiva",
+      "piattaforma_sito": "CMS della testata",
+      "modalita": {
+        "data": {
+          "disponibile": true,
+          "copertura_dal": null,
+          "copertura": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "come": "solo le uscite recenti (circa sei settimane); il passato con --fonte wayback",
+          "fonti_consentite": [
+            "auto",
+            "archivio",
+            "wayback",
+            "gdelt"
+          ],
+          "fonte_predefinita": "auto"
+        },
+        "parole_con_ricerca_del_sito": {
+          "disponibile": false,
+          "motore": null,
+          "solo_parole_intere": false,
+          "profondita": null,
+          "se_non_arriva_al_periodo": null,
+          "motivo_se_assente": "nessun motore interrogabile: si usano le sitemap e le parole chiave come filtro"
+        },
+        "parole_come_filtro": {
+          "disponibile": true,
+          "cerca_in": [
+            "testo",
+            "titolo"
+          ],
+          "nota": "con cerca_in=titolo gli articoli senza le parole nell'indirizzo non vengono scaricati"
+        },
+        "elenco": {
+          "disponibile": true,
+          "solo_prima_pagina": true,
+          "paginazione": null,
+          "pagine": "sezioni: solo la prima pagina"
+        },
+        "link": {
+          "disponibile": true
+        },
+        "wayback": {
+          "disponibile": true,
+          "efficiente": false,
+          "nota": "possibile"
+        },
+        "gdelt": {
+          "disponibile": true,
+          "sperimentale": true,
+          "parole": "in inglese (parole_gdelt)",
+          "nota": "copertura buona (testate nazionali)"
+        },
+        "rss": {
+          "nel_motore": false,
+          "nota": "non usato"
+        }
+      },
+      "vincoli": {
+        "robots_txt": "consente articoli e sitemap",
+        "crawl_delay_secondi": null,
+        "pausa_minima_secondi": 1.0,
+        "testo": "integrale o parziale per gli articoli riservati (in spagnolo)",
+        "paywall": "mai aggirato: gli articoli riservati hanno il testo che la testata rende pubblico"
+      },
+      "consigli": "Solo i giorni più recenti; per il passato --fonte wayback.",
+      "risorse_non_usate": [
+        "ricognizione del 25 novembre 2026 (robots.txt, API, sitemap), senza reverse-api-engineer"
+      ]
     }
   ],
   "escluse": [
@@ -3311,6 +7950,98 @@
     {
       "testata": "Frontera Digital (fronteradigital.com)",
       "motivo": "il dominio è in vendita e non ospita più la testata"
+    },
+    {
+      "testata": "GameSpot",
+      "motivo": "protezione anti-bot (home, sitemap e API rispondono 403 con verifica)"
+    },
+    {
+      "testata": "Destructoid",
+      "motivo": "protezione anti-bot: gli articoli rispondono 403 con verifica allo strumento"
+    },
+    {
+      "testata": "GamesVillage",
+      "motivo": "protezione anti-bot (home e sitemap rispondono 403 con verifica)"
+    },
+    {
+      "testata": "Eurogamer Italia",
+      "motivo": "il dominio eurogamer.it rimanda a eurogamer.net: l'edizione italiana non è più online"
+    },
+    {
+      "testata": "OpenCritic",
+      "motivo": "aggregatore di voti: il dato utile sono i punteggi delle recensioni, non gli articoli; richiederebbe una modalità a parte (da valutare)"
+    },
+    {
+      "testata": "Metacritic",
+      "motivo": "aggregatore di voti (come OpenCritic); le sue notizie riguardano soprattutto cinema e TV; da valutare con una modalità a parte"
+    },
+    {
+      "testata": "Libération",
+      "motivo": "protezione anti-bot (home e articoli rispondono 403 con verifica)"
+    },
+    {
+      "testata": "Le Parisien",
+      "motivo": "home, sitemap e API rispondono 403 allo strumento"
+    },
+    {
+      "testata": "Les Échos",
+      "motivo": "home e sitemap news rispondono 403 allo strumento"
+    },
+    {
+      "testata": "Le Point",
+      "motivo": "protezione anti-bot (403 con verifica, anche sul robots.txt)"
+    },
+    {
+      "testata": "Marianne",
+      "motivo": "home e sitemap rispondono 403 allo strumento"
+    },
+    {
+      "testata": "AFP",
+      "motivo": "sito istituzionale dell'agenzia: risponde 403 allo strumento e non pubblica i dispacci"
+    },
+    {
+      "testata": "Cadena SER",
+      "motivo": "protezione anti-bot (home 403 con verifica)"
+    },
+    {
+      "testata": "El Periódico",
+      "motivo": "risponde 406 allo User-Agent dichiarato dello strumento, anche al robots.txt"
+    },
+    {
+      "testata": "RTVE",
+      "motivo": "il robots.txt esclude tutti i file .xml («Disallow: /*.xml$»), comprese le sitemap"
+    },
+    {
+      "testata": "La Voz de Galicia",
+      "motivo": "il robots.txt chiede 60 secondi tra le richieste: un'estrazione di 50 articoli durerebbe un'ora"
+    },
+    {
+      "testata": "La Vanguardia",
+      "motivo": "nessuna sitemap; l'archivio per data (hemeroteca.lavanguardia.com/search?fecha=) è dietro AWS WAF con CAPTCHA (mappatura rae del 26 novembre 2026): non si aggira"
+    },
+    {
+      "testata": "MeriStation (as.com)",
+      "motivo": "gli articoli rispondono 403 allo User-Agent dichiarato (anche le sitemap di as.com); verificato il 26 novembre 2026"
+    },
+    {
+      "testata": "GameSpot España",
+      "motivo": "il dominio es.gamespot.com non esiste"
+    },
+    {
+      "testata": "gamestorrents.com (indicato come GamesTribune)",
+      "motivo": "non è una testata ma un sito di giochi pirata: escluso"
+    },
+    {
+      "testata": "Zonared",
+      "motivo": "le sitemap delle sezioni non riportano date e gli indirizzi non le contengono: non si può cercare per periodo (resta il comando elenco)"
+    },
+    {
+      "testata": "Nivel20",
+      "motivo": "risponde 202 senza contenuto anche al robots.txt (verifica anti-bot)"
+    },
+    {
+      "testata": "DeVuego",
+      "motivo": "è un catalogo di giochi e studi spagnoli, non una testata"
     },
     {
       "testata": "El Luchador",

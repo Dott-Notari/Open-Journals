@@ -1,7 +1,7 @@
 """Impostazioni generali del motore."""
 from pathlib import Path
 
-VERSIONE = "1.14 (Siti_API)"
+VERSIONE = "1.16 (Siti_API)"
 UA = ("ScraperDidattico/1.0 (ricerca e didattica universitaria, "
       "Sociologia della comunicazione interculturale)")
 PAUSA_DEFAULT = 2.0      # secondi minimi tra due richieste allo stesso sito

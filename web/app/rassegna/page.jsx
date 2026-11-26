@@ -13,12 +13,13 @@ export default async function PaginaRassegna({ searchParams }) {
   const sb = await supabaseServer();
   const [{ data: stati }, { data: imp }] = await Promise.all([
     sb.from('stato_testate').select('chiave,attiva,disponibile_online'),
-    sb.from('impostazioni').select('ansa_estrazioni_attive,tempo_max_minuti').single(),
+    sb.from('impostazioni').select('ansa_estrazioni_attive,tempo_max_minuti,tempo_illimitato').single(),
   ]);
   const mappa = Object.fromEntries((stati || []).map((s) => [s.chiave, !!(s.attiva && s.disponibile_online)]));
   const testate = TESTATE.map((f) => ({ ...f, disponibile: !!mappa[f.chiave] && !(f.chiave === 'ansa' && !imp?.ansa_estrazioni_attive) }));
   const iniziali = String(scelte).split(',').filter((k) => testate.some((f) => f.chiave === k && f.disponibile));
   const minuti = imp?.tempo_max_minuti ?? 330;
+  const illimitato = imp?.tempo_illimitato ?? true;
 
   return (
     <main id="contenuto" className="pagina" style={{ maxWidth: 920, gap: 28 }}>
@@ -37,7 +38,7 @@ export default async function PaginaRassegna({ searchParams }) {
             <span className="riga" style={{ gap: 4 }}>
               <span className="tenue">La stessa ricerca, per periodo, su più testate. Un solo archivio.</span>
               <Info etichetta="Come funziona la rassegna">
-                {`Ogni testata viene letta con il suo metodo e ha la sua copertura: un archivio completo, le sitemap o solo gli ultimi giorni. L'esito di ciascuna, con il numero di articoli e i problemi incontrati, è nel file scheda_rassegna.txt dentro lo zip. Il limite di ${minuti} minuti vale per l'intera rassegna, non per ogni testata.`}
+                {`Ogni testata viene letta con il suo metodo e ha la sua copertura: un archivio completo, le sitemap o solo gli ultimi giorni. L'esito di ciascuna, con il numero di articoli e i problemi incontrati, è nel file scheda_rassegna.txt dentro lo zip. ${illimitato ? `Non c'è limite di tempo: ogni ${minuti} minuti la rassegna chiude una parte con le testate concluse e le altre proseguono da sole nella parte successiva, con un archivio a parte.` : `Il limite di ${minuti} minuti vale per l'intera rassegna, non per ogni testata.`}`}
               </Info>
             </span>
           </div>
@@ -45,7 +46,7 @@ export default async function PaginaRassegna({ searchParams }) {
         <div data-sale="">
           {!mappa.rassegna ? (
             <div className="vetro" style={{ padding: 24 }}><p>La rassegna stampa al momento è sospesa dal docente. Puoi sempre fare un&apos;estrazione per ogni testata.</p></div>
-          ) : <ModuloRassegna testate={testate} iniziali={iniziali} minuti={minuti} />}
+          ) : <ModuloRassegna testate={testate} iniziali={iniziali} minuti={minuti} illimitato={illimitato} />}
         </div>
       </Rivela>
     </main>

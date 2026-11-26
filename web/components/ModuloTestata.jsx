@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { CalendarRange, LayoutList, Link2, History, Newspaper } from 'lucide-react';
+import { CalendarRange, LayoutList, Link2, History, Newspaper, Lightbulb, Timer } from 'lucide-react';
 import Segmenti from './Segmenti';
 import Azioni from './Azioni';
 import Info from './Info';
@@ -13,7 +13,8 @@ import CampoData from './CampoData';
 
 const MODI = [['data', 'Periodo', CalendarRange], ['elenco', 'Pagina elenco', LayoutList], ['link', 'Link', Link2]];
 const FORMATI = [['docx', 'Word'], ['txt', 'Testo'], ['html', 'HTML'], ['xlsx', 'Excel'], ['jsonl', 'JSONL'], ['tlab', 'T-LAB']];
-const LINGUE = { en: ' (in inglese)', es: ' (in spagnolo)' };
+const LINGUE = { en: ' (in inglese)', es: ' (in spagnolo)', fr: ' (in francese)', ca: ' (in catalano)' };
+const ESEMPI = { es: 'migrante*, frontera…', en: 'migrant*, border…', fr: 'migrant*, frontière…', ca: 'migrant*, frontera…' };
 
 export default function ModuloTestata({ fonte }) {
   const router = useRouter();
@@ -68,6 +69,11 @@ export default function ModuloTestata({ fonte }) {
           <dt>Consiglio</dt><dd>{g.consiglio}</dd>
         </dl>
       </details>
+
+      <div className="consigli">
+        <p><Lightbulb size={18} aria-hidden="true" /><span>{g.consiglio}</span></p>
+        {fonte.lenta && <p><Timer size={18} aria-hidden="true" /><span>{fonte.lenta}</span></p>}
+      </div>
 
       <div className="modulo vetro">
         <fieldset>
@@ -134,7 +140,7 @@ export default function ModuloTestata({ fonte }) {
           <legend>Parole chiave{LINGUE[fonte.lingua] ?? ''} <Info etichetta="Come usare le parole chiave">
             {g.parole} L&apos;asterisco tronca la parola: migrant* trova migrante e migranti. Se lasci il campo vuoto arrivano tutti gli articoli.
           </Info></legend>
-          <input className="campo" name="parole" autoComplete="off" aria-label="Parole chiave" lang={fonte.lingua} required={modo === 'data' && indirizzi === 'ricerca'} placeholder={{ es: 'migrante*, frontera…', en: 'migrant*, border…' }[fonte.lingua] ?? 'migrant*, accoglienza…'} />
+          <input className="campo" name="parole" autoComplete="off" aria-label="Parole chiave" lang={fonte.lingua} required={modo === 'data' && indirizzi === 'ricerca'} placeholder={ESEMPI[fonte.lingua] ?? 'migrant*, accoglienza…'} />
           <div className="riga" style={{ gap: 10 }}>
             <Segmenti voci={[['no', 'Almeno una'], ['si', 'Tutte']]} valore={tutte} onCambio={setTutte} etichetta="Corrispondenza" />
             <Segmenti voci={[['testo', 'In tutto il testo'], ['titolo', 'Solo titolo e sommario']]} valore={dove} onCambio={setDove} etichetta="Dove cercare" />

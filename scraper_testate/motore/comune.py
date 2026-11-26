@@ -140,7 +140,11 @@ def ricuci(t):
 
 
 def testo_pulito(t):
-    t = unicodedata.normalize("NFC", t or "")
+    if isinstance(t, dict):      # alcuni JSON-LD danno {"@value": …} o {"name": …} al posto del testo
+        t = t.get("@value") or t.get("name") or t.get("text") or ""
+    elif isinstance(t, list):
+        t = " ".join(x if isinstance(x, str) else "" for x in t)
+    t = unicodedata.normalize("NFC", t if isinstance(t, str) else str(t or ""))
     t = t.replace("\xa0", " ")
     return ricuci(re.sub(r"[ \t]+", " ", t).strip())
 

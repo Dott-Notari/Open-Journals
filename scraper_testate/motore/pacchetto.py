@@ -1,5 +1,5 @@
 """Pacchetto per aggiornare la piattaforma online con Claude (chat): regole per testata, interfaccia del
-motore, istruzioni e codice. python scraper.py pacchetto  scrive la cartella sul Desktop.
+motore, istruzioni e codice. python scraper.py pacchetto  scrive la cartella Siti_API/piattaforma.
 
 Le regole sono ricavate dal codice (testate, motori di ricerca, paginazione, Wayback) e dalle schede,
 più i dati di copertura qui sotto, verificati con le prove del 12 novembre 2026."""
@@ -200,14 +200,14 @@ def _md_interfaccia(campi):
           "- `tempo_max` (secondi) vale per lo scaricamento degli articoli, non per la raccolta degli indirizzi.",
           "- Con Wayback e GDELT si usano solo gli indirizzi; gli articoli si scaricano dal sito della testata.",
           "- Doppioni (stesso titolo e data) scartati; ricerche che non arrivano al periodo passano all'archivio.", "",
-          "## Rassegna stampa (novità della 1.14)", "",
+          "## Rassegna stampa (dalla 1.14)", "",
           "Una sola estrazione su più testate, con un corpus unico:", "", "```python",
           "from motore.rassegna import esegui_rassegna",
           "p = Parametri(modalita=\"data\", dal=\"2026-11-01\", al=\"2026-11-07\", parole=[\"de bruyne\"],",
           "              formati=[\"xlsx\", \"jsonl\", \"tlab\"])",
           "zip_bytes = esegui_rassegna(p, [\"napoli\", \"verita\"], ZipMemoria(), None, rete=Rete(pausa=2), tempo_max=None)",
           "```", "",
-          "- Il secondo argomento accetta chiavi e gruppi (`italiane`, `estere`, `napoli`, `venezuela`, `tutte`); `p.testata` è ignorato.",
+          "- Il secondo argomento accetta chiavi e gruppi (`italiane`, `estere`, `napoli`, `venezuela`, `videogiochi`, `francesi`, `spagnole`, `tutte`); `p.testata` è ignorato.",
           "- Ogni testata usa il suo metodo migliore (ricerca del sito se ci sono parole e la testata la consente, "
           "altrimenti archivio), con le regole di sempre.",
           "- Lo zip contiene il corpus unico (un file per articolo, `corpus_completo.docx`, `indice_articoli.xlsx`, "
@@ -215,7 +215,30 @@ def _md_interfaccia(campi):
           "e `testate/<chiave>/scheda_estrazione.txt`.",
           "- Una testata che non si può interrogare viene saltata e segnalata nella scheda della rassegna, senza fermare le altre.",
           "- `tempo_max` vale per l'insieme delle testate; `max_articoli` vale per ciascuna testata.", "",
-          "## Novità rispetto alla versione 1.13", "",
+          "## Novità della versione 1.16 rispetto alla 1.15", "",
+          "- Testate francesi, gruppo `francesi` (16, `motore/testate/francia.py`): lemonde, lefigaro, 20minutesfr, "
+          "franceinfo, bfmtv, lci, cnews, france24, latribune, humanite, lacroix, lobs, lexpress, mediapart, canard, courrier.",
+          "- Testate spagnole, gruppo `spagnole` (17, `motore/testate/spagna.py`): abc, eldiarioes, elconfidencial, larazon, 20minutoses, elespanol, "
+          "publico, libertaddigital, okdiario, efe, europapress, ara (in catalano), diariovasco, elcorreo, ideal, "
+          "surinenglish (in inglese), diariosur. Alcune espongono solo le uscite recenti (copertura «solo recente»).",
+          "- Nove testate di videogiochi in più nel gruppo `videogiochi` (28 in tutto): eurogameres, ignespana, "
+          "gamereactores, 3djuegos, vandal, hobbyconsolas, pushsquare, purexbox, nintendolife.",
+          "- Nuove lingue nell'attributo `lingua`: fr, ca.",
+          "- Nuovo modulo `motore/testate/generiche.py` (sitemap per giorno, settimana o mese; sitemap a file fissi).",
+          "- `comune.testo_pulito` accetta anche i valori non testuali di alcuni JSON-LD (correzione di un errore).",
+          "- Nessun cambiamento nell'interfaccia del motore.", "",
+          "## Novità della versione 1.15 rispetto alla 1.14", "",
+          "- Testate di videogiochi e recensioni, gruppo `videogiochi` (19 testate, `motore/testate/videogiochi.py`): "
+          "ign, ignitalia, eurogamer, polygon, kotaku, pcgamer, rockpapershotgun, gamesradar, gameinformer, vgc, "
+          "thegamer, gamerant, multiplayer, everyeye, spaziogames, gamereactor, gamesource, gamesindustry, gamedeveloper. "
+          "Lingua it o en.",
+          "- Metodi: sitemap mensili o annuali filtrate per data di modifica; sitemap numerate in ordine cronologico; "
+          "per VGC ricerca binaria sulla data degli articoli (2-3 minuti prima di iniziare, il robots.txt chiede 5 s "
+          "tra le richieste); API di WordPress con ricerca per Gamereactor Italia.",
+          "- Nuove escluse: GameSpot, Destructoid, GamesVillage (anti-bot), Eurogamer Italia (non più online), "
+          "OpenCritic e Metacritic (aggregatori di voti, da valutare a parte).",
+          "- Nessun cambiamento nell'interfaccia del motore: `esegui` ed `esegui_rassegna` restano identici.", "",
+          "## Novità della versione 1.14 rispetto alla 1.13", "",
           "- Rassegna stampa (`motore/rassegna.py`, comando `python scraper.py rassegna`).",
           "- Testate napoletane, gruppo `napoli`: tuttonapoli, calcionapoli24, areanapoli, calcionapoli1926, "
           "spazionapoli, ilnapolista (`motore/testate/napoli.py`).",
@@ -238,48 +261,50 @@ def _md_interfaccia(campi):
 ISTRUZIONI = """# Istruzioni per Claude: aggiornamento della piattaforma di scraping didattico
 
 ## Contesto
-Gestisco una piattaforma online che permette a studenti e ricercatori del corso di Sociologia della
-comunicazione interculturale di estrarre corpora di articoli di giornale. La piattaforma usa il motore Python
-«Scraper didattico delle testate» chiamando `motore.esecuzione.esegui(parametri, ZipMemoria(), None)`.
-Ho aggiornato il motore in locale alla versione {versione}: nuove testate (sei testate sportive
-napoletane e diciotto testate venezuelane), rassegna stampa su più testate con un corpus unico, ricerca con i motori dei siti, fonti Wayback
-e GDELT, rispetto del robots.txt. Ora devo portare la piattaforma allo stesso livello.
+Gestisco la piattaforma online «Open New Media», che permette a studenti e ricercatori del corso di Sociologia
+della comunicazione interculturale di estrarre corpora di articoli di giornale. È fatta così: interfaccia
+Next.js su Vercel (`web/`), database Supabase con migrazioni numerate (`supabase/migrations/`), estrazioni
+eseguite da GitHub Actions (`piattaforma/`, `.github/workflows/`), motore Python in `scraper_testate/`.
+La piattaforma online è ferma alla versione {versione_online} del motore e funziona. Le versioni intermedie non sono
+mai state applicate: questo aggiornamento porta la piattaforma direttamente alla {versione} e comprende tutto.
+Rispetto alla piattaforma online, il motore ha **{n_nuove} testate nuove**:
+{elenco_nuove}
+L'interfaccia del motore (`esegui`, `esegui_rassegna`, `Parametri`) non cambia.
 
-## File allegati
+## File
+- `caricamento_piattaforma.zip` (lo allego io in chat, da solo o dentro `per_la_piattaforma_{versione_file}.zip`): lo stato attuale della piattaforma, con il codice
+  di `web/`, `piattaforma/`, `supabase/` e i workflow. È la base su cui lavorare.
 - `02_regole_testate.json`: per ogni testata le modalità consentite, le coperture, i vincoli e i testi d'aiuto.
   È la fonte di verità per le impostazioni.
 - `03_regole_testate.md`: la stessa cosa in forma leggibile.
-- `04_interfaccia_motore.md`: come chiamare il motore, i campi di `Parametri`, le regole di esecuzione e le
-  novità rispetto alle versioni precedenti, compresa la rassegna stampa.
-- `05_esiti_prove.json`: esiti delle prove reali del {oggi}, caso per caso.
+- `04_interfaccia_motore.md`: come chiamare il motore e le novità delle ultime versioni.
+- `05_esiti_prove.json`: esiti delle prove reali, caso per caso.
 - `06_motore_{versione_file}.zip`: il codice aggiornato del motore (cartella `motore/` e `scraper.py`).
-- `07_schede/`: schede dettagliate per testata (Markdown) e riepilogo Excel.
+- `07_schede_testate.md`: le schede di tutte le testate in un solo file; `07_riepilogo_testate.xlsx`.
 
 ## Cosa ti chiedo
-1. **Prima di modificare qualcosa, chiedimi il codice o la configurazione della piattaforma** (form, validazioni,
-   elenco testate, chiamata al motore) se non te li ho già dati, e dimmi quali file ti servono.
-2. **Aggiorna il motore** sostituendo la cartella `motore/` con quella dello zip. Conserva eventuali personalizzazioni
-   della piattaforma e segnalamele.
-3. **Aggiorna le impostazioni per testata** seguendo `02_regole_testate.json`:
-   - elenco delle testate selezionabili: solo quelle con `"stato": "attiva"`, raggruppate per `gruppo`
-     (italiane, estere, napoli, venezuela);
-   - per ogni testata mostra solo le opzioni consentite: la scelta della fonte (`fonti_consentite`), l'opzione
-     «usa la ricerca del sito» solo se `parole_con_ricerca_del_sito.disponibile` è vero, l'avviso «solo la
-     prima pagina» per gli elenchi con `solo_prima_pagina`;
-   - validazione delle date: se `dal` è precedente a `copertura_dal`, o la copertura è «solo recente», mostra un
-     avviso che proponga `fonte = wayback` invece di bloccare;
-   - testi d'aiuto accanto ai campi, presi da `copertura`, `motore`, `profondita`, `consigli`;
-   - GDELT solo come opzione avanzata, marcata «sperimentale», con il campo delle parole in inglese;
-   - pausa: mai sotto `pausa_minima_secondi` della testata.
-4. **Aggiorna la chiamata al motore**, passando i nuovi campi `fonte`, `usa_ricerca` e `parole_gdelt`, e gestisci
-   l'eccezione `NonSupportato` mostrando il suo messaggio all'utente.
-5. **Aggiungi la rassegna stampa** (sezione «Rassegna stampa» di `04_interfaccia_motore.md`): nel form, una scelta
-   multipla di testate con caselle per gruppo (italiane, estere, napoli, venezuela) che chiama `esegui_rassegna` quando le
-   testate scelte sono più di una. Mostra all'utente che ogni testata usa il proprio metodo e copertura, e che
-   l'esito per testata è nella `scheda_rassegna.txt` dello zip. Mantieni la stessa durata massima delle estrazioni
-   singole, applicata all'intera rassegna stampa.
-6. **Restituiscimi** l'elenco delle modifiche, i file modificati completi e una breve lista di controlli da fare
-   dopo la pubblicazione (per esempio un'estrazione di prova per testata, con le date indicate in `05_esiti_prove.json`).
+1. **Parti da `caricamento_piattaforma.zip`.** Se ti manca, chiedimelo prima di modificare qualcosa.
+2. **Aggiorna il motore**: sostituisci `scraper_testate/` con il contenuto di `06_motore_{versione_file}.zip`
+   (senza toccare nient'altro della cartella) e `web/lib/regole_testate.json` con `02_regole_testate.json`.
+3. **Scrivi la migrazione `{migrazione}`** sul modello della `0008`: aggiungi i gruppi nuovi
+   ({gruppi_nuovi}) ai valori ammessi di `gruppo`, inserisci le {n_nuove} testate nuove in `stato_testate` (chiave, nome, domini, ordine,
+   fonti consentite, gruppo) e aggiorna ciò che nel database controlla domini e fonti. Le testate nuove nascono
+   non disponibili e le accende il collaudo, come per la 0008. Deve potersi rieseguire senza danni.
+4. **Aggiorna l'interfaccia**: i gruppi «Videogiochi», «Francesi» e «Spagnole» nella griglia delle fonti e nella
+   rassegna stampa (caselle per gruppo: {tutti_gruppi}), `web/lib/fonti.js` e i testi della guida.
+   **Loghi: i {n_loghi} loghi delle testate nuove non ci sono ancora**; li caricherò io più avanti in
+   `web/public/loghi/<chiave>.webp`. Prevedi quindi un ripiego che funzioni da subito (per esempio il nome della
+   testata in un riquadro) quando il file manca, e fai in modo che per aggiungere un logo basti caricare il file
+   con il nome giusto e, se serve, una voce in `RAPPORTI`. I loghi esistenti restano come sono.
+5. **Controlla i limiti di tempo e le coperture**: VGC impiega 2-3 minuti a trovare gli estremi del periodo (il
+   robots.txt chiede 5 secondi tra le richieste), Kotaku verifica tutti gli articoli del mese, CNews e Courrier
+   international chiedono 10 secondi tra le richieste. Per le testate con copertura «solo recente» (ABC,
+   El Confidencial, 20minutos, El Español, Libertad Digital, testate Vocento, Vandal, Hobby Consolas) vale l'avviso con
+   `fonte = wayback`. Valgono le stesse durate massime
+   delle altre testate; mostra all'utente il testo `consigli` della testata.
+6. **Restituiscimi** l'elenco delle modifiche, i file modificati completi (o un nuovo zip con la stessa struttura
+   di `caricamento_piattaforma.zip`) e una breve lista di controlli da fare dopo la pubblicazione: migrazione,
+   collaudo, un'estrazione di prova per testata nuova con le date di `05_esiti_prove.json`.
 
 ## Vincoli da rispettare (non negoziabili)
 - Il motore deve continuare a rispettare il robots.txt, a usare il suo User-Agent dichiarato e le pause minime.
@@ -298,52 +323,63 @@ conferma prima di aggiungere nuove schermate.
 
 LEGGIMI = """# Come usare questo pacchetto con Claude (chat)
 
-Questa cartella contiene tutto quello che serve per far aggiornare a Claude le impostazioni della piattaforma
-online di scraping, partendo dal motore locale (`Desktop/Siti_API/motore_testate`, versione {versione}).
+Aggiornamento della piattaforma online dalla versione {versione_online} alla {versione} del motore
+({n_nuove} testate nuove). I file da caricare sono già pronti, nell'ordine giusto, in `da_caricare_in_chat/`.
 
-## Passi
-1. Apri https://claude.ai e crea un **Progetto** (per esempio «Piattaforma scraping testate»).
-2. Nelle **conoscenze del progetto** carica:
-   - `02_regole_testate.json`, `03_regole_testate.md` e `04_interfaccia_motore.md`;
-   - `05_esiti_prove.json`, `06_motore_{versione_file}.zip` e i file di `07_schede/` (bastano i `.md` e l'Excel).
-3. Copia il contenuto di `01_ISTRUZIONI_PER_CLAUDE.md` nelle **istruzioni del progetto**, oppure incollalo come
-   primo messaggio di una nuova chat nel progetto.
-4. Claude ti chiederà il codice o la configurazione attuale della piattaforma: caricali nella chat (i file del
-   form, delle validazioni, della lista testate e il punto in cui si chiama il motore).
-5. Applica le modifiche che Claude restituisce, poi fai le estrazioni di prova che indica.
+## Metodo rapido (un solo file)
+In una nuova chat su https://claude.ai (con l'esecuzione di codice attiva) allega `per_la_piattaforma_{versione_file}.zip`
+e scrivi: «Leggi 01_ISTRUZIONI_PER_CLAUDE.md nello zip e procedi con l'aggiornamento. Lo stato attuale della
+piattaforma è in caricamento_piattaforma.zip, dentro lo stesso zip.»
+
+## Metodo con un Progetto (utile se lavorerai in più chat)
+1. Apri https://claude.ai e crea un **Progetto** (per esempio «Piattaforma scraping testate {versione_file}»).
+   Serve che nelle impostazioni sia attiva l'esecuzione di codice e la creazione di file, per leggere gli zip.
+2. **Istruzioni del progetto**: copia e incolla il testo di `da_caricare_in_chat/1_istruzioni_del_progetto.md`.
+3. **Conoscenze del progetto**: carica tutti i file della cartella `da_caricare_in_chat/2_conoscenze_del_progetto/`.
+4. **Nuova chat nel progetto**: allega `da_caricare_in_chat/3_da_allegare_in_chat/caricamento_piattaforma.zip` e
+   scrivi, per esempio: «Ecco lo stato attuale della piattaforma: procedi con l'aggiornamento come da istruzioni».
+5. Applica le modifiche che Claude restituisce (migrazione su Supabase, file su GitHub), lancia il collaudo dalla
+   scheda Actions, poi fai le estrazioni di prova che indica.
+6. Dopo la pubblicazione, sostituisci `caricamento_piattaforma.zip` con il nuovo stato della piattaforma.
+
+## Loghi
+I {n_loghi} loghi mancanti si raccolgono con `Siti_API/Loghi_testate_nuove.xlsx` e si caricano dopo, in
+`web/public/loghi/<chiave>.webp`: la piattaforma mostra il nome della testata finché il logo manca.
 
 ## Quando rigenerare il pacchetto
 Dopo ogni aggiornamento del motore o nuova prova:
 ```
 cd ~/Desktop/Siti_API/motore_testate
 source .venv/bin/activate
-python scraper.py prova          # facoltativo: riverifica tutte le testate
 python scraper.py schede
 python scraper.py pacchetto
 ```
-Il pacchetto viene riscritto in questa cartella con i dati aggiornati.
-
-## Contenuto
-| File | A cosa serve |
-|---|---|
-| `01_ISTRUZIONI_PER_CLAUDE.md` | il compito da dare a Claude, con i vincoli |
-| `02_regole_testate.json` | le regole per testata, da usare come configurazione |
-| `03_regole_testate.md` | le stesse regole in forma leggibile |
-| `04_interfaccia_motore.md` | come la piattaforma chiama il motore e cosa è cambiato |
-| `05_esiti_prove.json` | le prove reali, utili per i controlli dopo la pubblicazione |
-| `06_motore_{versione_file}.zip` | il codice aggiornato del motore |
-| `07_schede/` | le schede per testata e il riepilogo Excel |
 
 ## Nota
 Non caricare chiavi, password o file `.env`: il pacchetto non ne contiene e non ne servono.
 """
 
 
+def stato_online(cartella):
+    """Testate, loghi, gruppi e migrazioni della piattaforma online, letti da caricamento_piattaforma.zip."""
+    z = cartella / "caricamento_piattaforma.zip"
+    if not z.exists():
+        return None
+    with zipfile.ZipFile(z) as zz:
+        nomi = zz.namelist()
+        regole_f = next((n for n in nomi if n.endswith("web/lib/regole_testate.json")), None)
+        online = json.loads(zz.read(regole_f)) if regole_f else {}
+    loghi = {Path(n).stem for n in nomi if "/public/loghi/" in n and n.endswith(".webp")}
+    migr = sorted(Path(n).name for n in nomi if "/supabase/migrations/" in n and n.endswith(".sql"))
+    return {"versione": online.get("motore", "?").split()[0], "chiavi": {t["chiave"] for t in online.get("testate", [])},
+            "gruppi": {t.get("gruppo") for t in online.get("testate", [])}, "loghi": loghi, "migrazioni": migr}
+
+
 def scrivi_pacchetto(cartella=None, log=print):
     from .config import radice_locale
     from .schede import ultimi_esiti
     radice_motore = Path(__file__).resolve().parent.parent
-    cartella = Path(cartella or cartella_desktop() / "Pacchetto_Claude_Piattaforma")
+    cartella = Path(cartella or cartella_desktop() / "Siti_API" / "piattaforma")
     cartella.mkdir(parents=True, exist_ok=True)
     versione_file = VERSIONE.split()[0]
     testate, escluse, fonti = regole()
@@ -358,6 +394,20 @@ def scrivi_pacchetto(cartella=None, log=print):
                                           "gdelt": "indirizzi dall'indice GDELT (parole in inglese); sperimentale"}},
             "testate": testate, "escluse": escluse, "fonti_da_valutare": fonti}
     sostituzioni = {"versione": VERSIONE, "versione_file": versione_file, "oggi": date.today().isoformat()}
+    on = stato_online(cartella) or {"versione": "?", "chiavi": set(), "gruppi": set(), "loghi": set(), "migrazioni": []}
+    nuove = [t for t in testate if t["chiave"] not in on["chiavi"] and t.get("stato") == "attiva"]
+    per_gruppo = {}
+    for t in nuove:
+        per_gruppo.setdefault(t["gruppo"], []).append(t["chiave"])
+    ordine_gruppi = list(dict.fromkeys(t["gruppo"] for t in testate))
+    num = max([int(m[:4]) for m in on["migrazioni"] if m[:4].isdigit()] or [9]) + 1
+    senza_logo = [t["chiave"] for t in testate if t["chiave"] not in on["loghi"] and t.get("stato") == "attiva"]
+    sostituzioni.update(
+        versione_online=on["versione"], n_nuove=len(nuove), n_loghi=len(senza_logo),
+        elenco_nuove="\n".join(f"- gruppo `{g}` ({len(ks)}): " + ", ".join(ks) for g, ks in per_gruppo.items()),
+        gruppi_nuovi=", ".join(f"`{g}`" for g in per_gruppo if g not in on["gruppi"]) or "nessuno",
+        tutti_gruppi=", ".join(ordine_gruppi),
+        migrazione=f"{num:04d}_motore_{versione_file.replace('.', '')}.sql")
     (cartella / "00_LEGGIMI.md").write_text(LEGGIMI.format(**sostituzioni), encoding="utf-8")
     (cartella / "01_ISTRUZIONI_PER_CLAUDE.md").write_text(ISTRUZIONI.format(**sostituzioni), encoding="utf-8")
     (cartella / "02_regole_testate.json").write_text(json.dumps(dati, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -380,5 +430,34 @@ def scrivi_pacchetto(cartella=None, log=print):
     shutil.rmtree(dest, ignore_errors=True)
     if schede.exists():
         shutil.copytree(schede, dest, ignore=shutil.ignore_patterns("*.docx", "~$*"))
-    log(f"Pacchetto scritto in {cartella}")
+    # tutte le schede in un solo file, più comodo da caricare
+    md = sorted(dest.glob("*.md"), key=lambda f: (f.name != "README.md", f.name))
+    (cartella / "07_schede_testate.md").write_text(
+        "\n\n---\n\n".join(f.read_text(encoding="utf-8") for f in md), encoding="utf-8")
+    # cartella con i soli file da caricare, nell'ordine dei passi del LEGGIMI
+    pronti = cartella / "da_caricare_in_chat"
+    shutil.rmtree(pronti, ignore_errors=True)
+    (pronti / "2_conoscenze_del_progetto").mkdir(parents=True)
+    (pronti / "3_da_allegare_in_chat").mkdir()
+    shutil.copy(cartella / "01_ISTRUZIONI_PER_CLAUDE.md", pronti / "1_istruzioni_del_progetto.md")
+    for n in ("02_regole_testate.json", "03_regole_testate.md", "04_interfaccia_motore.md", "05_esiti_prove.json",
+              f"06_motore_{versione_file}.zip", "07_schede_testate.md"):
+        shutil.copy(cartella / n, pronti / "2_conoscenze_del_progetto" / n)
+    if (dest / "riepilogo_testate.xlsx").exists():
+        shutil.copy(dest / "riepilogo_testate.xlsx", pronti / "2_conoscenze_del_progetto" / "07_riepilogo_testate.xlsx")
+    if (cartella / "caricamento_piattaforma.zip").exists():
+        shutil.copy(cartella / "caricamento_piattaforma.zip", pronti / "3_da_allegare_in_chat" / "caricamento_piattaforma.zip")
+    # un unico zip da dare a Claude (chat): istruzioni, conoscenze e stato attuale della piattaforma
+    for vecchio in cartella.glob("per_la_piattaforma_*.zip"):
+        vecchio.unlink()
+    unico = cartella / f"per_la_piattaforma_{versione_file}.zip"
+    with zipfile.ZipFile(unico, "w", zipfile.ZIP_DEFLATED) as z:
+        z.write(cartella / "00_LEGGIMI.md", "00_LEGGIMI.md")
+        z.write(cartella / "01_ISTRUZIONI_PER_CLAUDE.md", "01_ISTRUZIONI_PER_CLAUDE.md")
+        for f in sorted((pronti / "2_conoscenze_del_progetto").iterdir()):
+            z.write(f, f.name)
+        if (cartella / "caricamento_piattaforma.zip").exists():
+            z.write(cartella / "caricamento_piattaforma.zip", "caricamento_piattaforma.zip")
+    log(f"Pacchetto scritto in {cartella}: {len(nuove)} testate nuove rispetto alla piattaforma online "
+        f"({on['versione']}), {len(senza_logo)} loghi mancanti")
     return cartella

@@ -12,9 +12,10 @@ def testo_nota(id_estrazione, giorni_conservazione, interrotta=False, righe_extr
          f"di Sociologia della comunicazione interculturale, motore versione {VERSIONE}.", ""]
     R += list(righe_extra)
     if interrotta:
-        R += ["L'estrazione si è fermata prima della fine. Dalla pagina Estrazioni si può riprendere",
-              "dal punto in cui si è interrotta, finché i file restano disponibili: il nuovo archivio",
-              "conterrà anche gli articoli già raccolti.", ""]
+        R += ["L'estrazione si è fermata prima della fine. Se il tempo è illimitato prosegue da sola",
+              "nella parte successiva; altrimenti dalla pagina Estrazioni si può riprendere dal punto",
+              "in cui si è interrotta, finché i file restano disponibili. Il nuovo archivio conterrà",
+              "anche gli articoli già raccolti.", ""]
     R += [f"I file restano disponibili sulla piattaforma per {giorni_conservazione} giorni.",
           "I materiali sono raccolti per finalità di studio e ricerca e non vanno ridistribuiti."]
     return "\n".join(R) + "\n"
